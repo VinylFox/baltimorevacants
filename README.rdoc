@@ -9,6 +9,7 @@ The site (in it's current state) displays a map with markers pulled from locatio
 So this site is meant to be free and open so that anyone can commit to the source code and in turn add to the value of the site. *What this means is that you should fork this code and make the changes you want to see, then submit a pull request when ready.*
 
 The following is a list of what this site needs done:
+* just use raw python in data.py, so it can be run locally on apache
 * A design
 * Make your own suggestion!
 
