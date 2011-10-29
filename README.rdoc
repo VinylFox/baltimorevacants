@@ -1,24 +1,26 @@
-Baltimore Vacants is the start of a web site that will let you browse through vacant properties in Baltimore City.
+Baltimore Vacants is a web site that will let you browse and see details about vacant properties in Baltimore City.
 
-This web site uses Baltimore City's own open data to get the list of currently vacant properties and since the data is pulled directly from Baltimores Open Data, the web site displays data as soon as Baltimore City updates it.
+The site uses Baltimore City's own open data to get the list of currently vacant properties, and since the data is pulled directly from Baltimore's Open Data, the data is up to date as soon as Baltimore City updates it.
 
-The site in it's current state displays a map with markers pulled from locations in Baltimore's Open Data. By default it starts in the geographic center of Baltimore City and panning or zooming the map will re-query Baltimore's Open Data for new locations within the new bounds.
-
-The actual data for vacant properties is not available yet, so in the meantime the map on the web site is fed by One Day Liquor License data, which should be very similar and simple to swap over to vacant housing data when that data becomes available.
+The site (in it's current state) displays a map with markers pulled from locations in Baltimore's Open Data. By default it starts in the geographic center of Baltimore City - panning or zooming the map will re-query Baltimore's Open Data for new locations within the new bounds.
 
 == Community Driven
 
-So this web site is meant to be free and open so that anyone can commit to the source code and in turn add to the value of the web site. What this means is that you should fork this code and make the changes you want to see, then submit a pull request when ready.
+So this site is meant to be free and open so that anyone can commit to the source code and in turn add to the value of the site. *What this means is that you should fork this code and make the changes you want to see, then submit a pull request when ready.*
 
 The following is a list of what this site needs done:
+* just use raw python in data.py, so it can be run locally on apache
 * A design
-* I dunno, gimme a suggestion.
+* Make your own suggestion!
 
 == The Site
 
-The site can be found at the following URL
+The site can be found at:
 http://baltimorevacants.appspot.com
-http://www.baltimorevacants.org (coming soon)
+
+Note that it's permanent home will eventually be http://www.baltimorevacants.org.
+
+The actual data for vacant properties is not available yet, so in the meantime the map on the site is fed by One Day Liquor License data, which should be very similar and simple to swap over to vacant housing data when that data becomes available.
 
 == Developing
 
