@@ -45,7 +45,8 @@ var strings = {
                 me.markerCluster['pnt' + point.lat + point.lng] = {
                     lat : point.lat,
                     lng : point.lng,
-                    points : [point]
+                    points : [point],
+                    desc : point.desc
                 };
             } else {
                 me.markerCluster['pnt'+point.lat+point.lng].points.push(point);
@@ -74,9 +75,13 @@ var strings = {
                     iconAnchor : new L.Point(20, 20)
                 });
             }
-            var mkr = new L.Marker(new L.LatLng(point.lat, point.lng), {
+            var latlng = new L.LatLng(point.lat, point.lng);
+            var mkr = new L.Marker(latlng, {
                 icon : new me.clusterIcons[x]()
             });
+            var popupContent = point.desc;
+            mkr.on('click',fn.updatePano);
+            mkr.bindPopup(popupContent);
             me.cache.markers.push(mkr);
             me.cache.cluster.addLayer(mkr);
         });
@@ -109,6 +114,7 @@ var strings = {
                         fn.vacantMarkers = [];
                         jQuery.each(d, function(i,e){
                             var marker = new L.LatLng(e[20][1],e[20][2])
+                            marker.desc = '$'+e[12]+'<br/>'+e[13]+'<br/>'+e[14]+'<br/>'+e[17]+'<br/>'+e[18];
                             fn.vacantMarkers.push(marker);
                         });
                         fn.placeMarkers(fn.vacantMarkers, true);
@@ -126,8 +132,27 @@ var strings = {
             }
         });
         
+    },
+    updatePano: function(e){
+        if (e){
+            var loc = new google.maps.LatLng(e.target._latlng.lat,e.target._latlng.lng);
+        }else{
+            var loc = new google.maps.LatLng(strings.bmoreCtrLat, strings.bmoreCtrLng);
+        }
+        if (panorama){
+            panorama.setPosition(loc);
+        }else{
+            panorama = new  google.maps.StreetViewPanorama(document.getElementById("panoramacontainer"),{
+              position: loc,
+              pov: {
+                heading: 34,
+                pitch: 10,
+                zoom: 1
+              }
+            });
+        }
     }
-}, lmap, tileLayer, slat, slon;
+}, lmap, tileLayer, slat, slon, panorama;
 
 $(document).ready(function(){
     
@@ -144,6 +169,7 @@ $(document).ready(function(){
     });
     lmap.addLayer(tileLayer);
     fn.mapUpdateView();
-        
+    fn.updatePano();
+    
     lmap.on('moveend', fn.mapUpdateView);
 });
