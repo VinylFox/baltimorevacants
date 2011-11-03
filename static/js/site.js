@@ -1,7 +1,7 @@
 var strings = {
-    geowait: "Let me find out whats happeing, mmm kay...",
-    geofailure: "Something went really wrong. Hide your kids, hide your wife.",
-    geonoresults: "Did not find anything in that area",
+    geowait: "Loading properties...",
+    geofailure: "Failed to load data.",
+    geonoresults: "No properties to map in this area",
     bmoreCtrLat: 39.290555,
     bmoreCtrLng: -76.609604,
     cmkey: '15e536b2a81349ea8e08f9a90800dd71'
@@ -119,7 +119,7 @@ var strings = {
                         });
                         fn.placeMarkers(fn.vacantMarkers, true);
                     }
-                    fn.showMessage('Found '+data.data.length+' results.');
+                    fn.showMessage('Found '+data.data.length+' properties.');
                 }else{
                     fn.showErrorMessage(strings.geonoresults);
                 }
