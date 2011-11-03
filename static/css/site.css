@@ -10,6 +10,9 @@ body {
   margin: 0 auto;
   padding: 25px 0 0;
 }
+#lmapcontainer {
+  color:#000;
+}
 a {
   color: #FFFEE9;
   text-decoration: underline;
