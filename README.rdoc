@@ -6,11 +6,11 @@ The site (in it's current state) displays a map with markers pulled from locatio
 
 == Community Driven
 
-So this site is meant to be free and open so that anyone can commit to the source code and in turn add to the value of the site. *What this means is that you should fork this code and make the changes you want to see, then submit a pull request when ready.*
+This site is meant to be free and open so that anyone can commit to the source code and in turn add to the value of the site. *What this means is that you should fork this code and make the changes you want to see, then submit a pull request when ready.*
 
 The following is a list of what this site needs done:
-* just use raw python in data.py, so it can be run locally on apache
-* A design
+* just use raw Python in data.py, so it can be run locally under Apache (split data fetch from App Engine features)
+* A beautiful design
 * Make your own suggestion!
 
 == The Site
@@ -18,13 +18,13 @@ The following is a list of what this site needs done:
 The site can be found at:
 http://baltimorevacants.appspot.com
 
-Note that it's permanent home will eventually be http://www.baltimorevacants.org.
+Note that it's permanent home will eventually be www.baltimorevacants.org.
 
 The actual data for vacant properties is not available yet, so in the meantime the map on the site is fed by One Day Liquor License data, which should be very similar and simple to swap over to vacant housing data when that data becomes available.
 
 == Developing
 
-This site is developed for Google App Engine, so to get it running you will need the Google App Engine Launcher and Python installed on your development machine.
+This site is deployed on Google App Engine, so to get it running locally you will need the <a href="http://code.google.com/appengine/downloads.html"Google App Engine SDK for Python</a> as well as Python installed on your development machine.
 
 == License
 

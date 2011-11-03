@@ -6,6 +6,8 @@
         <meta name="author" content="Shea Frederick">
         <link rel="stylesheet" href="static/css/leaflet.css">
         <link rel="stylesheet" href="static/css/site.css">
+        <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=IMPT+Sans' rel='stylesheet' type='text/css'>
         <script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
         <script type="application/javascript" src="static/js/leaflet.js"></script>
         <script type="application/javascript" src="static/js/site.js?ver=1"></script>
@@ -13,25 +15,36 @@
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     </head>
     <body>
+      <p class="important-note">November 2011: The actual data for vacant properties is not available yet, so in the meantime this map is fed by One Day Liquor License data. We will swap over to vacant housing data when it becomes available.</p>
+      <div id="main">
+        <h1>Baltimore Vacants</h1>
+        <h2 class="subtitle">Browse this map to see details about vacant properties in Baltimore City.</h2>
         <div id="lmapcontainer" style="width:800px;height:600px;"></div>
         <div id="search-msg-wrap">
             <div id="search-msg"></div>
         </div>
-        <div id="panoramacontainer" style="width:800px;height:400px;"></div>"
-        <script type="text/javascript">
-        
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-26641992-1']);
-          _gaq.push(['_setDomainName', 'baltimorevacants.appspot.com']);
-          _gaq.push(['_setAllowLinker', true]);
-          _gaq.push(['_trackPageview']);
-        
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        
-        </script>
+        <div id="panoramacontainer" style="width:800px;height:400px;"></div>
+        <p>We use Baltimore City's own open data to get the list of currently vacant properties, and since the data is pulled directly from Baltimore's data feed, it is up to date as soon as the City updates it.</p>
+        <div id="footer">
+          <p>Made in Baltimore by
+          <a href="http://vinylfox.com/">Shea Frederick</a>, with assistance from
+          <a href="http://jonathanjulian.com/">Jonathan Julian</a>
+          </p>
+          <p>Want to help out? <a href="https://github.com/VinylFox/baltimorevacants">Fork this project on github</a> and contribute!</p>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26641992-1']);
+        _gaq.push(['_setDomainName', 'baltimorevacants.appspot.com']);
+        _gaq.push(['_setAllowLinker', true]);
+        _gaq.push(['_trackPageview']);
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
     </body>
 </html>
