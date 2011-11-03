@@ -25,7 +25,7 @@ h1 {
   font-size: 68px;
   text-transform: uppercase;
   text-align: center;
-  margin: 0 5px 0;
+  margin: 0 5px 15px;
   padding: 0;
 }
 h2.subtitle {
@@ -33,7 +33,7 @@ h2.subtitle {
   font-weight: normal;
   text-align: center;
   padding:5px 0;
-  margin: 0 20px 15px;
+  margin: 0 0 1px;
   color: #272727;
   background-color: #DFDECB;
 }
@@ -45,9 +45,12 @@ p.important-note {
   margin:0;
 }
 #search-msg-wrap {
-  font-size: 10px;
-  text-align: center;
-  padding: 5px 5px 15px;
+  font-size: 11px;
+  text-align: right;
+  padding: 5px 15px;
+  margin: 1px 0;
+  color: #272727;
+  background-color: #DFDECB;
 }
 #footer {
   text-align: center;
