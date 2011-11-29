@@ -1,58 +1,55 @@
 body {
-  font-family: 'PT Sans', sans-serif;
-  background: #272727;
-  color: #DFDECB;
-  font-size: 16px;
-  margin:0;
+	font-family: 'PT Sans', sans-serif;
+	background: #272727;
+	color: #DFDECB;
+	font-size: 16px;
+	margin:0;
+	height: 100%;
+	width: 100%;
 }
+
+.header {
+	background: #333;
+	height: 40px;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 3;
+}
+
 #main {
-  width: 800px;
-  margin: 0 auto;
-  padding: 25px 0 0;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 40px;
+	left: 0;
 }
+
 #lmapcontainer {
-  color:#000;
+	height: 100%;
+	margin-right: 260px;	
 }
-a {
-  color: #FFFEE9;
-  text-decoration: underline;
+
+.sidebar {
+	width: 260px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	overflow: hidden;
+	height: 100%;
 }
-a:hover {
-  text-decoration: none;
-}
-h1 {
-  font-family: 'IM Fell DW Pica', serif;
-  font-size: 68px;
-  text-transform: uppercase;
-  text-align: center;
-  margin: 0 5px 15px;
-  padding: 0;
-}
-h2.subtitle {
-  font-size: 20px;
-  font-weight: normal;
-  text-align: center;
-  padding:5px 0;
-  margin: 0 0 1px;
-  color: #272727;
-  background-color: #DFDECB;
-}
-p.important-note {
-  border-bottom: 2px #AFAF1C solid;
-  color: #000;
-  background-color: #FFEF3C;
-  padding: 10px 20px;
-  margin:0;
-}
+
+
 #search-msg-wrap {
-  font-size: 11px;
-  text-align: right;
-  padding: 5px 15px;
-  margin: 1px 0;
-  color: #272727;
-  background-color: #DFDECB;
+	background: #CCC;
 }
-#footer {
-  text-align: center;
-  padding: 100px 0 100px;
+
+#panoramacontainer {
+	width: 260px;
+	height: 260px;
+}
+
+.expanded-listing {
+	display: none;
 }
