@@ -1,0 +1,128 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3";
+@import "includes/reset";
+@import "includes/leaflet";
+
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	min-height: 100%;
+	overflow: hidden;
+}
+
+h1 {
+	font-size: 32px;
+	font-weight: 100;
+}
+
+.header {
+	height: 80px;
+	width: 100%;
+	border-bottom: 1px solid #999;
+	z-index: 2;
+	position: relative;
+	h1 {
+		position: absolute;
+		top: 24px;
+		left: 20px;
+	}
+	 
+}
+
+#main {
+	width: 100%;
+	min-height: 100%;
+	height: 100%;
+	z-index: 1;
+	position: relative;
+	overflow: hidden;
+	.lmap-wrap {
+		height: 100%; 
+		width: 100%;
+		margin-left: -300px; //need to fix this	
+		overflow: hidden;
+		float: left;			
+	}
+		#lmapcontainer {
+			height: 100%; 
+			width: 100%;
+			margin-left: 300px; 
+		}
+	.r-sidebar {
+		width: 299px;
+		min-height: 100%;
+		height: 100%;
+		background: #CCC;
+		float: right;
+		border-left: 1px solid #999;
+	}
+}
+
+.vacant-results {
+	background: #F2F2F2;
+	min-height: 100%;
+	height: auto !important;
+	padding-bottom: 20px;
+}
+
+.vacant-results-list {
+	display: block;
+	height: auto;
+	overflow-y: scroll;
+	li {
+		padding: 10px;
+		border-bottom: 1px solid #999;
+		border-top: 1px solid #FFF;
+		span {
+			display: block;
+		}
+	}
+}
+
+.search-msg-wrap {
+	height: 40px;
+	display: block;
+}
+
+#panoramacontainer {
+	height: 220px;
+	width: 100%;
+}
+
+.credits {
+	height: 30px;
+	position: absolute;
+	bottom: 0;
+	width: auto;
+	display: block;
+}
+
+.more-info {
+	position: absolute;
+	right: 4px;
+	top: 4px;
+	
+	border: 1px solid #CCC;
+	background: #999;
+	
+	height: 12px;
+	padding: 8px;
+	line-height: 12px;
+	
+	font-size: 11px;
+	font-weight: bold;
+	
+}
+
+.controls {
+	position: absolute;
+	left: 360px;
+	top: 30px;
+}

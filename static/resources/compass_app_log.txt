@@ -1,0 +1,162 @@
+2011-11-29 19:49:19 overwrite stylesheets/screen.css 
+2011-11-29 19:49:23 identical stylesheets/screen.css 
+2011-11-29 19:49:52     error sass/screen.scss (Line 7: File to import not found or unreadable: leaflet/leaflet.
+Load paths:
+  /Users/jschaffer/Documents/baltimorevacants/static/sass/sass
+  /Applications/compass.app/Contents/Resources/ruby/compass_0.11/compass-0.11.5/frameworks/blueprint/stylesheets
+  /Applications/compass.app/Contents/Resources/ruby/compass_0.11/compass-0.11.5/frameworks/compass/stylesheets
+  /Applications/compass.app/Contents/Resources/ruby/compass_extensions/compass-960-plugin-f4bfe8555a7d2cae09bc/stylesheets
+  /Applications/compass.app/Contents/Resources/ruby/compass_0.11/html5-boilerplate-1.0.0/stylesheets
+  Compass::SpriteImporter)
+2011-11-29 19:49:52 overwrite stylesheets/screen.css 
+2011-11-29 19:49:52     error sass/screen.scss (Line 7: File to import not found or unreadable: leaflet/leaflet.
+Load paths:
+  /Users/jschaffer/Documents/baltimorevacants/static/sass/sass
+  /Applications/compass.app/Contents/Resources/ruby/compass_0.11/compass-0.11.5/frameworks/blueprint/stylesheets
+  /Applications/compass.app/Contents/Resources/ruby/compass_0.11/compass-0.11.5/frameworks/compass/stylesheets
+  /Applications/compass.app/Contents/Resources/ruby/compass_extensions/compass-960-plugin-f4bfe8555a7d2cae09bc/stylesheets
+  /Applications/compass.app/Contents/Resources/ruby/compass_0.11/html5-boilerplate-1.0.0/stylesheets
+  Compass::SpriteImporter)
+2011-11-29 19:49:52 overwrite stylesheets/screen.css 
+2011-11-29 19:50:01 overwrite stylesheets/screen.css 
+2011-11-29 19:51:34 overwrite stylesheets/screen.css 
+2011-11-29 19:52:13 overwrite stylesheets/screen.css 
+2011-11-29 20:06:03 identical stylesheets/ie.css 
+2011-11-29 20:06:03 identical stylesheets/print.css 
+2011-11-29 20:06:03 identical stylesheets/screen.css 
+2011-11-29 20:08:36     error sass/screen.scss (Line 324: Invalid CSS after "z-index:": expected pseudoclass or pseudoelement, was " 9999;")
+2011-11-29 20:08:36 overwrite stylesheets/screen.css 
+2011-11-29 20:09:13 overwrite stylesheets/screen.css 
+2011-11-29 20:10:07 overwrite stylesheets/screen.css 
+2011-11-29 20:10:15 overwrite stylesheets/screen.css 
+2011-11-29 20:11:41 overwrite stylesheets/screen.css 
+2011-11-29 20:11:50 overwrite stylesheets/screen.css 
+2011-11-29 20:12:51 overwrite stylesheets/screen.css 
+2011-11-29 20:13:17 overwrite stylesheets/screen.css 
+2011-11-29 20:16:52 overwrite stylesheets/screen.css 
+2011-11-29 20:17:54 overwrite stylesheets/screen.css 
+2011-11-29 20:21:30 overwrite stylesheets/screen.css 
+2011-11-29 20:22:21 overwrite stylesheets/screen.css 
+2011-11-29 20:22:36 overwrite stylesheets/screen.css 
+2011-11-29 20:23:28 overwrite stylesheets/screen.css 
+2011-11-29 20:24:51 overwrite stylesheets/screen.css 
+2011-11-29 20:25:06 overwrite stylesheets/screen.css 
+2011-11-29 20:25:34 overwrite stylesheets/screen.css 
+2011-11-29 20:25:46 overwrite stylesheets/screen.css 
+2011-11-29 20:26:54 overwrite stylesheets/screen.css 
+2011-11-29 20:27:17 overwrite stylesheets/screen.css 
+2011-11-29 20:27:34 overwrite stylesheets/screen.css 
+2011-11-29 20:28:04 overwrite stylesheets/screen.css 
+2011-11-29 20:29:47 overwrite stylesheets/screen.css 
+2011-11-29 20:29:50 identical stylesheets/screen.css 
+2011-11-29 20:30:13 overwrite stylesheets/screen.css 
+2011-11-29 20:30:44 overwrite stylesheets/screen.css 
+2011-11-29 20:31:43 overwrite stylesheets/screen.css 
+2011-11-29 20:34:26 overwrite stylesheets/screen.css 
+2011-11-29 20:35:29 overwrite stylesheets/screen.css 
+2011-11-29 20:36:10 overwrite stylesheets/screen.css 
+2011-11-29 20:36:17 overwrite stylesheets/screen.css 
+2011-11-29 20:37:24 overwrite stylesheets/screen.css 
+2011-11-29 20:39:36 overwrite stylesheets/screen.css 
+2011-11-29 20:41:54 overwrite stylesheets/screen.css 
+2011-11-29 20:42:08 overwrite stylesheets/screen.css 
+2011-11-29 20:42:37 overwrite stylesheets/screen.css 
+2011-11-29 20:42:58 overwrite stylesheets/screen.css 
+2011-11-29 20:43:31 overwrite stylesheets/screen.css 
+2011-11-29 20:43:35 overwrite stylesheets/screen.css 
+2011-11-29 20:44:19 overwrite stylesheets/screen.css 
+2011-11-29 20:44:33 overwrite stylesheets/screen.css 
+2011-11-29 20:45:38     error sass/screen.scss (Line 77: Invalid CSS after "display: block": expected ";", was ":")
+2011-11-29 20:45:38 overwrite stylesheets/screen.css 
+2011-11-29 20:45:43     error sass/screen.scss (Line 77: Invalid CSS after "display: block": expected ";", was ":")
+2011-11-29 20:45:43 identical stylesheets/screen.css 
+2011-11-29 20:45:51     error sass/screen.scss (Line 77: Invalid CSS after "display: block": expected ";", was ":")
+2011-11-29 20:45:51 identical stylesheets/screen.css 
+2011-11-29 20:46:01 overwrite stylesheets/screen.css 
+2011-11-29 20:46:41 overwrite stylesheets/screen.css 
+2011-11-29 20:47:07 overwrite stylesheets/screen.css 
+2011-11-29 20:47:23 overwrite stylesheets/screen.css 
+2011-11-29 20:56:06 overwrite stylesheets/screen.css 
+2011-11-29 20:56:21 overwrite stylesheets/screen.css 
+2011-11-29 20:56:48 overwrite stylesheets/screen.css 
+2011-11-29 20:57:18 overwrite stylesheets/screen.css 
+2011-11-29 20:57:50 overwrite stylesheets/screen.css 
+2011-11-29 20:58:29 overwrite stylesheets/screen.css 
+2011-11-29 20:58:54 overwrite stylesheets/screen.css 
+2011-11-29 21:00:05 overwrite stylesheets/screen.css 
+2011-11-29 21:00:08 overwrite stylesheets/screen.css 
+2011-11-29 21:00:47 overwrite stylesheets/screen.css 
+2011-11-29 21:01:55 overwrite stylesheets/screen.css 
+2011-11-29 21:02:17 overwrite stylesheets/screen.css 
+2011-11-29 21:02:38 overwrite stylesheets/screen.css 
+2011-11-29 21:02:39 overwrite stylesheets/screen.css 
+2011-11-29 21:03:46 overwrite stylesheets/screen.css 
+2011-11-29 21:03:55 overwrite stylesheets/screen.css 
+2011-11-29 21:03:59 overwrite stylesheets/screen.css 
+2011-11-29 21:04:17 overwrite stylesheets/screen.css 
+2011-11-29 21:05:50 overwrite stylesheets/screen.css 
+2011-11-29 21:07:20 overwrite stylesheets/screen.css 
+2011-11-29 21:07:28 overwrite stylesheets/screen.css 
+2011-11-29 21:07:44 overwrite stylesheets/screen.css 
+2011-11-29 21:08:27 overwrite stylesheets/screen.css 
+2011-11-29 21:09:03 overwrite stylesheets/screen.css 
+2011-11-29 21:11:04 overwrite stylesheets/screen.css 
+2011-11-29 21:11:35 overwrite stylesheets/screen.css 
+2011-11-29 21:11:52     error sass/screen.scss (Line 55: Invalid CSS after "... 1px solid #FFF": expected ";", was ":")
+2011-11-29 21:11:52 overwrite stylesheets/screen.css 
+2011-11-29 21:12:08 overwrite stylesheets/screen.css 
+2011-11-29 21:13:50 overwrite stylesheets/screen.css 
+2011-11-29 21:13:59 overwrite stylesheets/screen.css 
+2011-11-29 21:14:21 overwrite stylesheets/screen.css 
+2011-11-29 21:14:32 overwrite stylesheets/screen.css 
+2011-11-29 21:14:39 overwrite stylesheets/screen.css 
+2011-11-29 21:15:12 overwrite stylesheets/screen.css 
+2011-11-29 21:15:22 overwrite stylesheets/screen.css 
+2011-11-29 21:15:40 overwrite stylesheets/screen.css 
+2011-11-29 21:16:09 overwrite stylesheets/screen.css 
+2011-11-29 21:20:03 overwrite stylesheets/screen.css 
+2011-11-29 21:20:17 overwrite stylesheets/screen.css 
+2011-11-29 21:21:01 overwrite stylesheets/screen.css 
+2011-11-29 21:21:12 overwrite stylesheets/screen.css 
+2011-11-29 21:29:14 overwrite stylesheets/screen.css 
+2011-11-29 21:29:26 overwrite stylesheets/screen.css 
+2011-11-29 21:30:04 overwrite stylesheets/screen.css 
+2011-11-29 21:30:24 overwrite stylesheets/screen.css 
+2011-11-29 21:31:06 overwrite stylesheets/screen.css 
+2011-11-29 21:31:24 overwrite stylesheets/screen.css 
+2011-11-29 21:31:31 overwrite stylesheets/screen.css 
+2011-11-29 21:31:35 overwrite stylesheets/screen.css 
+2011-11-29 21:31:45 overwrite stylesheets/screen.css 
+2011-11-29 21:31:50 overwrite stylesheets/screen.css 
+2011-11-29 21:33:07 overwrite stylesheets/screen.css 
+2011-11-29 21:43:46 overwrite stylesheets/screen.css 
+2011-11-29 21:43:54 overwrite stylesheets/screen.css 
+2011-11-29 21:46:08 overwrite stylesheets/screen.css 
+2011-11-29 21:49:35 overwrite stylesheets/screen.css 
+2011-11-29 21:54:03 overwrite stylesheets/screen.css 
+2011-11-29 21:54:36 overwrite stylesheets/screen.css 
+2011-11-29 21:54:46 overwrite stylesheets/screen.css 
+2011-11-29 21:55:19 overwrite stylesheets/screen.css 
+2011-11-29 21:55:23 overwrite stylesheets/screen.css 
+2011-11-29 21:55:41     error sass/screen.scss (Line 33: Invalid CSS after "	h1": expected "{", was "}")
+2011-11-29 21:55:41 overwrite stylesheets/screen.css 
+2011-11-29 21:55:57 overwrite stylesheets/screen.css 
+2011-11-29 21:55:59 identical stylesheets/screen.css 
+2011-11-29 21:56:06 overwrite stylesheets/screen.css 
+2011-11-29 21:56:13 overwrite stylesheets/screen.css 
+2011-11-29 21:56:19 overwrite stylesheets/screen.css 
+2011-11-29 21:56:27 overwrite stylesheets/screen.css 
+2011-11-29 21:58:41 overwrite stylesheets/screen.css 
+2011-11-29 21:59:26 overwrite stylesheets/screen.css 
+2011-11-29 21:59:58 overwrite stylesheets/screen.css 
+2011-11-29 22:00:08 overwrite stylesheets/screen.css 
+2011-11-29 22:00:10 identical stylesheets/screen.css 
+2011-11-29 22:00:22 overwrite stylesheets/screen.css 
+2011-11-29 22:00:35 overwrite stylesheets/screen.css 
+2011-11-29 22:00:47 overwrite stylesheets/screen.css 
+2011-11-29 22:00:55 overwrite stylesheets/screen.css 
+2011-11-29 22:01:02 overwrite stylesheets/screen.css 
+2011-11-29 22:02:00 overwrite stylesheets/screen.css 
+2011-11-29 22:11:14 overwrite stylesheets/screen.css 
+2011-11-29 22:11:21 overwrite stylesheets/screen.css 
+2011-11-29 22:11:32 overwrite stylesheets/screen.css 
