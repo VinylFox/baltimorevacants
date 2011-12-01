@@ -558,7 +558,7 @@ a.leaflet-active {
   background: white url(../images/popup-close.png);
 }
 
-/* line 11, ../sass/screen.scss */
+/* line 22, ../sass/screen.scss */
 html, body {
   padding: 0;
   margin: 0;
@@ -568,28 +568,29 @@ html, body {
   overflow: hidden;
 }
 
-/* line 20, ../sass/screen.scss */
+/* line 31, ../sass/screen.scss */
 h1 {
   font-size: 32px;
   font-weight: 100;
 }
 
-/* line 25, ../sass/screen.scss */
+/* line 36, ../sass/screen.scss */
 .header {
   height: 80px;
   width: 100%;
   border-bottom: 1px solid #999;
   z-index: 2;
   position: relative;
+  background: transparent url("../images/whitey.png") repeat top right;
 }
-/* line 31, ../sass/screen.scss */
+/* line 43, ../sass/screen.scss */
 .header h1 {
   position: absolute;
   top: 24px;
   left: 20px;
 }
 
-/* line 39, ../sass/screen.scss */
+/* line 51, ../sass/screen.scss */
 #main {
   width: 100%;
   min-height: 100%;
@@ -598,22 +599,24 @@ h1 {
   position: relative;
   overflow: hidden;
 }
-/* line 46, ../sass/screen.scss */
+/* line 58, ../sass/screen.scss */
 #main .lmap-wrap {
   height: 100%;
   width: 100%;
   margin-left: -300px;
   overflow: hidden;
   float: left;
+  position: relative;
 }
-/* line 53, ../sass/screen.scss */
+/* line 66, ../sass/screen.scss */
 #main #lmapcontainer {
   height: 100%;
   width: 100%;
   margin-left: 300px;
 }
-/* line 58, ../sass/screen.scss */
+/* line 71, ../sass/screen.scss */
 #main .r-sidebar {
+  position: relative;
   width: 299px;
   min-height: 100%;
   height: 100%;
@@ -622,44 +625,44 @@ h1 {
   border-left: 1px solid #999;
 }
 
-/* line 68, ../sass/screen.scss */
+/* line 82, ../sass/screen.scss */
 .vacant-results {
-  background: #F2F2F2;
+  background: transparent url("../images/whitey.png") repeat top right;
   min-height: 100%;
   height: auto !important;
   padding-bottom: 20px;
 }
 
-/* line 75, ../sass/screen.scss */
+/* line 89, ../sass/screen.scss */
 .vacant-results-list {
   display: block;
   height: auto;
   overflow-y: scroll;
 }
-/* line 79, ../sass/screen.scss */
+/* line 93, ../sass/screen.scss */
 .vacant-results-list li {
   padding: 10px;
-  border-bottom: 1px solid #999;
-  border-top: 1px solid #FFF;
+  border-bottom: 1px solid white;
+  border-top: 1px solid #999999;
 }
-/* line 83, ../sass/screen.scss */
+/* line 97, ../sass/screen.scss */
 .vacant-results-list li span {
   display: block;
 }
 
-/* line 89, ../sass/screen.scss */
+/* line 103, ../sass/screen.scss */
 .search-msg-wrap {
   height: 40px;
   display: block;
 }
 
-/* line 94, ../sass/screen.scss */
+/* line 108, ../sass/screen.scss */
 #panoramacontainer {
   height: 220px;
   width: 100%;
 }
 
-/* line 99, ../sass/screen.scss */
+/* line 113, ../sass/screen.scss */
 .credits {
   height: 30px;
   position: absolute;
@@ -668,7 +671,7 @@ h1 {
   display: block;
 }
 
-/* line 107, ../sass/screen.scss */
+/* line 121, ../sass/screen.scss */
 .more-info {
   position: absolute;
   right: 4px;
@@ -682,9 +685,36 @@ h1 {
   font-weight: bold;
 }
 
-/* line 124, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 .controls {
   position: absolute;
   left: 360px;
   top: 30px;
+}
+
+/* line 143, ../sass/screen.scss */
+.vshadow-l {
+  background: transparent url("../images/vshadow-l.png") repeat-y top left;
+  height: 100%;
+  width: 6px;
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* line 154, ../sass/screen.scss */
+.hshadow-t {
+  background: transparent url("../images/hshadow-t.png") repeat-x top right;
+  width: 100%;
+  height: 6px;
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* line 165, ../sass/screen.scss */
+.search {
+  border: 1px solid #999999;
 }

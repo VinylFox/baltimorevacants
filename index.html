@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="static/resources/stylesheets/screen.css">
         <script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
         <script type="application/javascript" src="static/js/leaflet.js"></script>
+        <script type="application/javascript" src="static/js/jquery-ui-1.8.16.custom.min.js"></script>        
         <script type="application/javascript" src="static/js/site.js?ver=1"></script>
         <script type="application/javascript" src="http://platform.twitter.com/widgets.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
@@ -18,7 +19,9 @@
 	<div class="controls">
 		<form name="input" action="html_form_action.asp" method="get">
 			<div class="search">
-				<input type="text" name="firstname" class="search" /><input type="submit" value="Submit" />
+				<input type="text" name="firstname" class="search" />
+				<input type="submit" value="Submit" />
+				<input type="checkbox" id="check" /><label for="check">Crime</label>
 			</div>
 		</form>
 	</div>
@@ -28,13 +31,13 @@
 <div id="main">
 	
 	<div class="lmap-wrap">
-	<div class="v-shadow"></div>
-	<div class="h-shadow"></div>
+	<div class="hshadow-t"></div>
 		<div id="lmapcontainer"></div>
 	</div>
 	
 	<div class="r-sidebar">
-		<div id="panoramacontainer"></div>
+		<div class="vshadow-l"></div>
+		<!-- <div id="panoramacontainer"></div> -->
 		<div id="search-msg-wrap" class="search-msg-wrap">
 			<div id="search-msg"></div>
 		</div>
@@ -108,18 +111,28 @@
 </div>
 -->
 
+<script>
+	$(function() {
+		$( "#check" ).button();
+	});
+	$(function() {
+		$( "input:submit", ".search" ).button();
+	});
+</script>
+
+
 <!-- GOOGLE ANALYTICS -->
-      <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-26641992-1']);
-        _gaq.push(['_setDomainName', 'baltimorevacants.appspot.com']);
-        _gaq.push(['_setAllowLinker', true]);
-        _gaq.push(['_trackPageview']);
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-      </script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26641992-1']);
+    _gaq.push(['_setDomainName', 'baltimorevacants.appspot.com']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
     </body>
 </html>

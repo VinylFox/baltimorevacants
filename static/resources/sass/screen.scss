@@ -8,6 +8,17 @@
 @import "includes/reset";
 @import "includes/leaflet";
 
+$vshadow-r: transparent url('../images/vshadow-r.png') repeat-y top right; 
+$vshadow-l: transparent url('../images/vshadow-l.png') repeat-y top left;
+
+$hshadow-t: transparent url('../images/hshadow-t.png') repeat-x top right; 
+$hshadow-b: transparent url('../images/hshadow-b.png') repeat-x top right;
+
+$white-tile: transparent url('../images/whitey.png') repeat top right;
+
+$dark-border: 1px solid #999;
+$light-border: 1px solid #FFF;
+
 html, body {
 	padding: 0;
 	margin: 0;
@@ -28,6 +39,7 @@ h1 {
 	border-bottom: 1px solid #999;
 	z-index: 2;
 	position: relative;
+	background: $white-tile;
 	h1 {
 		position: absolute;
 		top: 24px;
@@ -48,7 +60,8 @@ h1 {
 		width: 100%;
 		margin-left: -300px; //need to fix this	
 		overflow: hidden;
-		float: left;			
+		float: left;
+		position: relative;			
 	}
 		#lmapcontainer {
 			height: 100%; 
@@ -56,6 +69,7 @@ h1 {
 			margin-left: 300px; 
 		}
 	.r-sidebar {
+		position: relative;
 		width: 299px;
 		min-height: 100%;
 		height: 100%;
@@ -66,7 +80,7 @@ h1 {
 }
 
 .vacant-results {
-	background: #F2F2F2;
+	background: $white-tile;
 	min-height: 100%;
 	height: auto !important;
 	padding-bottom: 20px;
@@ -78,8 +92,8 @@ h1 {
 	overflow-y: scroll;
 	li {
 		padding: 10px;
-		border-bottom: 1px solid #999;
-		border-top: 1px solid #FFF;
+		border-bottom: $light-border;
+		border-top: $dark-border;
 		span {
 			display: block;
 		}
@@ -117,12 +131,38 @@ h1 {
 	line-height: 12px;
 	
 	font-size: 11px;
-	font-weight: bold;
-	
+	font-weight: bold;	
 }
 
 .controls {
 	position: absolute;
 	left: 360px;
 	top: 30px;
+}
+
+.vshadow-l {
+	background: $vshadow-l;
+	height: 100%;
+	width: 6px;
+	z-index: 99999;
+
+	position: absolute;	
+	top: 0;
+	left: 0;
+}
+
+.hshadow-t {
+	background: $hshadow-t;
+	width: 100%;
+	height: 6px;
+	z-index: 99999;
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.search {
+	border: $dark-border;
+	
 }
