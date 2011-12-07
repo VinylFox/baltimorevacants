@@ -14,10 +14,19 @@ $vshadow-l: transparent url('../images/vshadow-l.png') repeat-y top left;
 $hshadow-t: transparent url('../images/hshadow-t.png') repeat-x top right; 
 $hshadow-b: transparent url('../images/hshadow-b.png') repeat-x top right;
 
-$white-tile: transparent url('../images/whitey.png') repeat top right;
+$box-shadow: (#999 0 0 2px);
+$border-radius: (2px) !important;
+
+$white-tile: transparent url('../images/whitey.png') repeat top left;
+$white-opac60: transparent url('../images/white60.png') repeat top left;
+$white-opac30: transparent url('../images/white30.png') repeat top left;
 
 $dark-border: 1px solid #999;
 $light-border: 1px solid #FFF;
+
+$sprite: url('../images/sprite.png') no-repeat top left; 
+
+$font-family: Helvetica, Arial, 'sans-serif';
 
 html, body {
 	padding: 0;
@@ -26,23 +35,32 @@ html, body {
 	width: 100%;
 	min-height: 100%;
 	overflow: hidden;
+	font-family: $font-family !important;
+	@include text-shadow(#FFF 1px 1px 0);
+}
+
+.clear {
+	clear: both;
 }
 
 h1 {
-	font-size: 32px;
-	font-weight: 100;
+	font-size: 34px;
+	font-weight: 700;
+	letter-spacing: -1px;
+	color: #444;
 }
 
 .header {
 	height: 80px;
 	width: 100%;
+	min-width: 960px;
 	border-bottom: 1px solid #999;
 	z-index: 2;
 	position: relative;
 	background: $white-tile;
 	h1 {
 		position: absolute;
-		top: 24px;
+		top: 22px;
 		left: 20px;
 	}
 	 
@@ -51,6 +69,7 @@ h1 {
 #main {
 	width: 100%;
 	min-height: 100%;
+	min-width: 960px;
 	height: 100%;
 	z-index: 1;
 	position: relative;
@@ -134,12 +153,6 @@ h1 {
 	font-weight: bold;	
 }
 
-.controls {
-	position: absolute;
-	left: 360px;
-	top: 30px;
-}
-
 .vshadow-l {
 	background: $vshadow-l;
 	height: 100%;
@@ -162,7 +175,104 @@ h1 {
 	left: 0;
 }
 
+.search-controls {
+	position: absolute;
+	left: 360px;
+	top: 18px;
+	background: $white-opac60;
+	
+	@include box-shadow($box-shadow); 
+	@include border-radius($border-radius);
+}
+
+.option-controls {
+	display: none; //temp, until we establish what sort of search functions will be available
+	position: absolute;
+	left: 840px;
+	top: 18px;
+	background: $white-opac60;
+	
+	@include box-shadow($box-shadow); 
+	@include border-radius($border-radius);
+	
+	.btn-check {
+		height: 32px;
+		display: block;
+		text-indent: -9999px;
+		width: 64px;
+		background: #fff;
+		border: #999;
+		float: left;
+		margin: 4px;
+		border: 1px solid #333;
+	}
+	.ui-helper-hidden-accessible {
+		position: absolute;
+		clip: rect(1px,1px,1px,1px); //removes the actual checkbox box
+		z-index: 1;
+	}
+}
+
 .search {
-	border: $dark-border;
+	.input-bg {
+		display: block;
+		float: left;
+		height: 32px; 
+		margin: 4px;
+		border: $dark-border;
+		width: 400px;
+		background-color: rgb(234,234,234); // Old browsers
+		
+		@include border-radius($border-radius);
+		@include filter-gradient(#eaeaea, #ffffff, vertical); // IE6-9
+		@include background-image(linear-gradient(top,  rgba(234,234,234,1) 0%,rgba(247,247,247,1) 31%,rgba(255,255,255,1) 100%));
+	}
+	input {
+		display: block;
+		float: left;
+		background: none;
+		border: none;
+	}
+	.search-input {
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		background: transparent;
+		border: none;
+		font-family: $font-family;
+		font-size: 20px;
+		line-height: 22px;
+		font-weight: 100;
+		margin: 3px;
+		width: 390px;
+		box-shadow: none;
+		&:focus {
+			border: none;
+			box-shadow: none;
+			outline: none;		
+		}
+	}
+	.btn-submit {
+		cursor: pointer;
+		height: 34px;
+		width: 34px;
+		display: block;
+		
+		background: #4162A7 $sprite;
+		border: 1px solid #073AA2;
+		margin: 4px 4px 0 0;
+		
+		text-indent: -9999px;
+		
+		@include border-radius($border-radius);
+		
+		&:hover {
+			background-position-y: -34px;
+			@include box-shadow($box-shadow); 
+		}
+		&.ui-state-active {
+			@include box-shadow(#333 0 1px 4px inset); 
+		}
+	}
 	
 }

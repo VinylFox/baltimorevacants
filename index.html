@@ -16,14 +16,19 @@
 
 <div class="header">
 	<h1>Baltimore Vacants</h1>
-	<div class="controls">
-		<form name="input" action="html_form_action.asp" method="get">
+	<div class="search-controls">
 			<div class="search">
-				<input type="text" name="firstname" class="search" />
-				<input type="submit" value="Submit" />
-				<input type="checkbox" id="check" /><label for="check">Crime</label>
+				<input type="text" name="address" class="search-input" />
+				<div class="input-bg"></div>
+				<input type="submit" value="Submit" class="btn-submit" />
+				<div class="clear"></div>
 			</div>
-		</form>
+	</div>
+	<div class="option-controls">
+			<div class="options">
+				<input type="checkbox" id="check" /><label class="btn-check" for="check">Crime</label>
+				<div class="clear"></div>
+			</div>
 	</div>
 <!-- <div class="more-info">More Info</div> -->
 </div>

@@ -187,3 +187,232 @@ Load paths:
 2011-11-30 22:41:11 overwrite stylesheets/screen.css 
 2011-11-30 22:59:08 overwrite stylesheets/screen.css 
 2011-11-30 22:59:50 identical stylesheets/screen.css 
+2011-12-05 21:45:02     error sass/screen.scss (Line 170: Invalid CSS after "	background:": expected expression (e.g. 1px, bold), was ".input-bg {")
+2011-12-05 21:45:02 overwrite stylesheets/screen.css 
+2011-12-05 21:46:50 overwrite stylesheets/screen.css 
+2011-12-05 21:47:23 overwrite stylesheets/screen.css 
+2011-12-05 21:48:18 overwrite stylesheets/screen.css 
+2011-12-05 21:48:44 overwrite stylesheets/screen.css 
+2011-12-05 21:49:31 overwrite stylesheets/screen.css 
+2011-12-05 21:50:03 overwrite stylesheets/screen.css 
+2011-12-05 21:50:26 overwrite stylesheets/screen.css 
+2011-12-05 21:51:14 overwrite stylesheets/screen.css 
+2011-12-05 21:51:57 overwrite stylesheets/screen.css 
+2011-12-05 21:52:32 overwrite stylesheets/screen.css 
+2011-12-05 21:52:52 overwrite stylesheets/screen.css 
+2011-12-05 21:53:08 overwrite stylesheets/screen.css 
+2011-12-05 21:53:49 overwrite stylesheets/screen.css 
+2011-12-05 21:54:45 overwrite stylesheets/screen.css 
+2011-12-05 21:56:15 overwrite stylesheets/screen.css 
+2011-12-05 21:57:52 overwrite stylesheets/screen.css 
+2011-12-05 21:58:21 overwrite stylesheets/screen.css 
+2011-12-05 21:59:05 overwrite stylesheets/screen.css 
+2011-12-05 21:59:29     error sass/screen.scss (Line 193: Invalid CSS after "		box-shadow": expected ";", was ": none;")
+2011-12-05 21:59:29 overwrite stylesheets/screen.css 
+2011-12-05 21:59:40 overwrite stylesheets/screen.css 
+2011-12-05 22:00:09 overwrite stylesheets/screen.css 
+2011-12-05 22:00:26 overwrite stylesheets/screen.css 
+2011-12-05 22:00:46 overwrite stylesheets/screen.css 
+2011-12-05 22:01:05 overwrite stylesheets/screen.css 
+2011-12-05 22:01:18 overwrite stylesheets/screen.css 
+2011-12-05 22:03:36 overwrite stylesheets/screen.css 
+2011-12-05 22:04:01 overwrite stylesheets/screen.css 
+2011-12-05 22:04:20 overwrite stylesheets/screen.css 
+2011-12-05 22:04:29 overwrite stylesheets/screen.css 
+2011-12-05 22:05:11     error sass/screen.scss (Line 181: Colors must have either three or six digits: '#FF')
+2011-12-05 22:05:11 overwrite stylesheets/screen.css 
+2011-12-05 22:05:13 overwrite stylesheets/screen.css 
+2011-12-05 22:06:50     error sass/screen.scss (Line 198: Invalid CSS after "		font-size": expected ";", was ": 20px;")
+2011-12-05 22:06:50 overwrite stylesheets/screen.css 
+2011-12-05 22:07:02 overwrite stylesheets/screen.css 
+2011-12-05 22:07:21 overwrite stylesheets/screen.css 
+2011-12-05 22:07:49 overwrite stylesheets/screen.css 
+2011-12-05 22:08:41 overwrite stylesheets/screen.css 
+2011-12-06 08:38:02 overwrite stylesheets/screen.css 
+2011-12-06 19:26:06 overwrite stylesheets/screen.css 
+2011-12-06 19:26:47 overwrite stylesheets/screen.css 
+2011-12-06 19:27:09     error sass/screen.scss (Line 218: Invalid CSS after "		z-index": expected ";", was ": 1;")
+2011-12-06 19:27:09 overwrite stylesheets/screen.css 
+2011-12-06 19:27:15 overwrite stylesheets/screen.css 
+2011-12-06 19:27:42 identical stylesheets/screen.css 
+2011-12-06 19:28:45 overwrite stylesheets/screen.css 
+2011-12-06 19:28:47 overwrite stylesheets/screen.css 
+2011-12-06 19:28:51 overwrite stylesheets/screen.css 
+2011-12-06 19:28:58 overwrite stylesheets/screen.css 
+2011-12-06 19:29:26 overwrite stylesheets/screen.css 
+2011-12-06 19:29:40 overwrite stylesheets/screen.css 
+2011-12-06 19:29:51 overwrite stylesheets/screen.css 
+2011-12-06 19:30:05 overwrite stylesheets/screen.css 
+2011-12-06 19:31:08 overwrite stylesheets/screen.css 
+2011-12-06 19:31:19 overwrite stylesheets/screen.css 
+2011-12-06 19:31:26 overwrite stylesheets/screen.css 
+2011-12-06 19:32:35 overwrite stylesheets/screen.css 
+2011-12-06 19:33:08 overwrite stylesheets/screen.css 
+2011-12-06 19:34:52 overwrite stylesheets/screen.css 
+2011-12-06 19:35:13 overwrite stylesheets/screen.css 
+2011-12-06 19:35:25 overwrite stylesheets/screen.css 
+2011-12-06 19:37:02 overwrite stylesheets/screen.css 
+2011-12-06 19:37:10 overwrite stylesheets/screen.css 
+2011-12-06 19:37:40 overwrite stylesheets/screen.css 
+2011-12-06 19:37:58 overwrite stylesheets/screen.css 
+2011-12-06 19:38:25 overwrite stylesheets/screen.css 
+2011-12-06 19:38:38 overwrite stylesheets/screen.css 
+2011-12-06 19:38:50 overwrite stylesheets/screen.css 
+2011-12-06 19:40:06 overwrite stylesheets/screen.css 
+2011-12-06 19:40:39 overwrite stylesheets/screen.css 
+2011-12-06 19:42:01 overwrite stylesheets/screen.css 
+2011-12-06 19:42:12 overwrite stylesheets/screen.css 
+2011-12-06 19:42:34 overwrite stylesheets/screen.css 
+2011-12-06 19:42:52 overwrite stylesheets/screen.css 
+2011-12-06 19:47:04     error sass/screen.scss (Line 247: Invalid CSS after "	}": expected selector or at-rule, was "}")
+2011-12-06 19:47:04 overwrite stylesheets/screen.css 
+2011-12-06 19:47:20     error sass/screen.scss (Line 247: Invalid CSS after "	}": expected selector or at-rule, was "}")
+2011-12-06 19:47:20 identical stylesheets/screen.css 
+2011-12-06 19:47:30 overwrite stylesheets/screen.css 
+2011-12-06 19:47:50 overwrite stylesheets/screen.css 
+2011-12-06 19:48:01 overwrite stylesheets/screen.css 
+2011-12-06 19:48:11 overwrite stylesheets/screen.css 
+2011-12-06 19:49:03     error sass/screen.scss (Line 188: Invalid CSS after "	@include ": expected identifier, was "$border-radius;")
+2011-12-06 19:49:03 overwrite stylesheets/screen.css 
+2011-12-06 19:49:34 overwrite stylesheets/screen.css 
+2011-12-06 19:49:41 overwrite stylesheets/screen.css 
+2011-12-06 19:49:55 overwrite stylesheets/screen.css 
+2011-12-06 19:50:16 overwrite stylesheets/screen.css 
+2011-12-06 19:50:22 overwrite stylesheets/screen.css 
+2011-12-06 19:53:16 overwrite stylesheets/screen.css 
+2011-12-06 19:54:15 overwrite stylesheets/screen.css 
+2011-12-06 19:54:34 overwrite stylesheets/screen.css 
+2011-12-06 19:55:32 overwrite stylesheets/screen.css 
+2011-12-06 19:55:40 overwrite stylesheets/screen.css 
+2011-12-06 19:55:53 overwrite stylesheets/screen.css 
+2011-12-06 19:56:00 overwrite stylesheets/screen.css 
+2011-12-06 19:56:07 overwrite stylesheets/screen.css 
+2011-12-06 19:56:49 overwrite stylesheets/screen.css 
+2011-12-06 19:58:05 overwrite stylesheets/screen.css 
+2011-12-06 19:59:47 overwrite stylesheets/screen.css 
+2011-12-06 20:00:45 overwrite stylesheets/screen.css 
+2011-12-06 20:01:45     error sass/screen.scss (Line 253: Invalid CSS after "	}": expected selector or at-rule, was "}")
+2011-12-06 20:01:45 overwrite stylesheets/screen.css 
+2011-12-06 20:02:09 overwrite stylesheets/screen.css 
+2011-12-06 20:03:28 overwrite stylesheets/screen.css 
+2011-12-06 20:03:43 overwrite stylesheets/screen.css 
+2011-12-06 20:05:07 overwrite stylesheets/screen.css 
+2011-12-06 20:06:07 overwrite stylesheets/screen.css 
+2011-12-06 20:06:53 overwrite stylesheets/screen.css 
+2011-12-06 20:07:04 overwrite stylesheets/screen.css 
+2011-12-06 20:07:12 overwrite stylesheets/screen.css 
+2011-12-06 20:08:06 overwrite stylesheets/screen.css 
+2011-12-06 20:20:25 overwrite stylesheets/screen.css 
+2011-12-06 20:20:36 overwrite stylesheets/screen.css 
+2011-12-06 20:23:20 overwrite stylesheets/screen.css 
+2011-12-06 20:23:33 overwrite stylesheets/screen.css 
+2011-12-06 20:23:47 overwrite stylesheets/screen.css 
+2011-12-06 20:24:17 overwrite stylesheets/screen.css 
+2011-12-06 20:25:16 overwrite stylesheets/screen.css 
+2011-12-06 20:25:46 overwrite stylesheets/screen.css 
+2011-12-06 20:26:01 overwrite stylesheets/screen.css 
+2011-12-06 20:27:04 overwrite stylesheets/screen.css 
+2011-12-06 20:28:17 overwrite stylesheets/screen.css 
+2011-12-06 20:28:32 overwrite stylesheets/screen.css 
+2011-12-06 20:29:13 overwrite stylesheets/screen.css 
+2011-12-06 20:29:56 identical stylesheets/screen.css 
+2011-12-06 20:30:05 overwrite stylesheets/screen.css 
+2011-12-06 20:30:08 identical stylesheets/screen.css 
+2011-12-06 20:31:02 overwrite stylesheets/screen.css 
+2011-12-06 20:31:16 overwrite stylesheets/screen.css 
+2011-12-06 20:31:27 overwrite stylesheets/screen.css 
+2011-12-06 20:31:29 identical stylesheets/screen.css 
+2011-12-06 20:31:52 overwrite stylesheets/screen.css 
+2011-12-06 20:32:19 overwrite stylesheets/screen.css 
+2011-12-06 20:32:54 overwrite stylesheets/screen.css 
+2011-12-06 20:38:02 overwrite stylesheets/screen.css 
+2011-12-06 20:38:13 overwrite stylesheets/screen.css 
+2011-12-06 20:38:26 overwrite stylesheets/screen.css 
+2011-12-06 20:38:54 overwrite stylesheets/screen.css 
+2011-12-06 20:39:16 overwrite stylesheets/screen.css 
+2011-12-06 20:39:52 overwrite stylesheets/screen.css 
+2011-12-06 20:41:11 overwrite stylesheets/screen.css 
+2011-12-06 20:41:43 overwrite stylesheets/screen.css 
+2011-12-06 20:42:07 overwrite stylesheets/screen.css 
+2011-12-06 20:42:18 identical stylesheets/screen.css 
+2011-12-06 20:42:34     error sass/screen.scss (Line 257: Invalid CSS after "		text-indent": expected "{", was "; -9999px;")
+2011-12-06 20:42:34 overwrite stylesheets/screen.css 
+2011-12-06 20:43:09     error sass/screen.scss (Line 257: Invalid CSS after "		text-indent": expected "{", was "; -9999px;")
+2011-12-06 20:43:09 identical stylesheets/screen.css 
+2011-12-06 20:43:19 overwrite stylesheets/screen.css 
+2011-12-06 21:20:22 overwrite stylesheets/screen.css 
+2011-12-06 21:20:33 overwrite stylesheets/screen.css 
+2011-12-06 21:20:52 overwrite stylesheets/screen.css 
+2011-12-06 21:21:26 identical stylesheets/screen.css 
+2011-12-06 21:24:25 overwrite stylesheets/screen.css 
+2011-12-06 21:24:36 overwrite stylesheets/screen.css 
+2011-12-06 21:30:42 overwrite stylesheets/screen.css 
+2011-12-06 21:31:01 overwrite stylesheets/screen.css 
+2011-12-06 21:31:16 overwrite stylesheets/screen.css 
+2011-12-06 21:31:25 overwrite stylesheets/screen.css 
+2011-12-06 21:33:19 overwrite stylesheets/screen.css 
+2011-12-06 21:33:35 overwrite stylesheets/screen.css 
+2011-12-06 21:33:57 identical stylesheets/screen.css 
+2011-12-06 21:35:10 overwrite stylesheets/screen.css 
+2011-12-06 21:39:50 identical stylesheets/screen.css 
+2011-12-06 21:41:01 overwrite stylesheets/screen.css 
+2011-12-06 21:41:25 overwrite stylesheets/screen.css 
+2011-12-06 21:41:46 overwrite stylesheets/screen.css 
+2011-12-06 21:42:03 overwrite stylesheets/screen.css 
+2011-12-06 21:42:42 overwrite stylesheets/screen.css 
+2011-12-06 21:43:04 overwrite stylesheets/screen.css 
+2011-12-06 21:43:26 overwrite stylesheets/screen.css 
+2011-12-06 21:43:36 overwrite stylesheets/screen.css 
+2011-12-06 22:00:32 overwrite stylesheets/screen.css 
+2011-12-06 22:00:46 overwrite stylesheets/screen.css 
+2011-12-06 22:01:09 overwrite stylesheets/screen.css 
+2011-12-06 22:01:50 overwrite stylesheets/screen.css 
+2011-12-06 22:02:10 overwrite stylesheets/screen.css 
+2011-12-06 22:02:20 overwrite stylesheets/screen.css 
+2011-12-06 22:02:22 overwrite stylesheets/screen.css 
+2011-12-06 22:02:29 overwrite stylesheets/screen.css 
+2011-12-06 22:02:34 overwrite stylesheets/screen.css 
+2011-12-06 22:02:57 overwrite stylesheets/screen.css 
+2011-12-06 22:04:02 overwrite stylesheets/screen.css 
+2011-12-06 22:05:42 overwrite stylesheets/screen.css 
+2011-12-06 22:06:41     error sass/screen.scss (Line 41: Invalid CSS after "...de text-shadow ": expected "}", was "$graybg-textsha...")
+2011-12-06 22:06:41 overwrite stylesheets/screen.css 
+2011-12-06 22:07:42     error sass/screen.scss (Line 41: Invalid CSS after "...de text-shadow ": expected "}", was "$graybg-textsha...")
+2011-12-06 22:07:42 identical stylesheets/screen.css 
+2011-12-06 22:07:49     error sass/screen.scss (Line 41: Invalid CSS after "...ude text-shadow": expected "}", was "$graybg-textsha...")
+2011-12-06 22:07:49 overwrite stylesheets/screen.css 
+2011-12-06 22:08:03     error sass/screen.scss (Line 40: Invalid CSS after "...t-shadow(#FFF) ": expected "}", was "1px 1px 0;")
+2011-12-06 22:08:04 overwrite stylesheets/screen.css 
+2011-12-06 22:08:16     error sass/screen.scss (Line 40: Invalid CSS after "...de text-shadow ": expected "}", was "#FFF 1px 1px 0;")
+2011-12-06 22:08:16 overwrite stylesheets/screen.css 
+2011-12-06 22:08:38     error sass/screen.scss (Line 31: Invalid CSS after "...bg-textshadow: ": expected expression (e.g. 1px, bold), was "@include text-s...")
+2011-12-06 22:08:38 overwrite stylesheets/screen.css 
+2011-12-06 22:08:57     error sass/screen.scss (Line 31: Invalid CSS after "...bg-textshadow: ": expected expression (e.g. 1px, bold), was "@include text-s...")
+2011-12-06 22:08:57 identical stylesheets/screen.css 
+2011-12-06 22:09:33 overwrite stylesheets/screen.css 
+2011-12-06 22:09:46 overwrite stylesheets/screen.css 
+2011-12-06 22:10:26     error sass/screen.scss (Line 33: Invalid CSS after "html, body ": expected selector or at-rule, was "{")
+2011-12-06 22:10:26 overwrite stylesheets/screen.css 
+2011-12-06 22:10:39     error sass/screen.scss (Line 33: Invalid CSS after "html, body ": expected selector or at-rule, was "{")
+2011-12-06 22:10:39 identical stylesheets/screen.css 
+2011-12-06 22:10:42     error sass/screen.scss (Line 33: Invalid CSS after "html, body ": expected selector or at-rule, was "{")
+2011-12-06 22:10:42 identical stylesheets/screen.css 
+2011-12-06 22:10:48     error sass/screen.scss (Line 33: Invalid CSS after "html, body ": expected selector or at-rule, was "{")
+2011-12-06 22:10:48 identical stylesheets/screen.css 
+2011-12-06 22:11:04     error sass/screen.scss (Line 41: Invalid CSS after "...ude text-shadow": expected "}", was "$graybg-textsha...")
+2011-12-06 22:11:04 overwrite stylesheets/screen.css 
+2011-12-06 22:11:18     error sass/screen.scss (Line 41: Invalid CSS after "...ude text-shadow": expected "}", was "$graybg-textsha...")
+2011-12-06 22:11:18 identical stylesheets/screen.css 
+2011-12-06 22:11:42 overwrite stylesheets/screen.css 
+2011-12-06 22:14:02 identical stylesheets/screen.css 
+2011-12-06 22:14:25 overwrite stylesheets/screen.css 
+2011-12-06 22:14:38 overwrite stylesheets/screen.css 
+2011-12-06 22:19:11     error sass/screen.scss (Line 49: Undefined variable: "$google-font".)
+2011-12-06 22:19:11 overwrite stylesheets/screen.css 
+2011-12-06 22:19:27     error sass/screen.scss (Line 49: Undefined variable: "$google-font".)
+2011-12-06 22:19:27 identical stylesheets/screen.css 
+2011-12-06 22:19:45 overwrite stylesheets/screen.css 
+2011-12-06 22:20:22 overwrite stylesheets/screen.css 
+2011-12-06 22:23:27 overwrite stylesheets/screen.css 
+2011-12-06 22:24:13 overwrite stylesheets/screen.css 
+2011-12-06 22:24:19 overwrite stylesheets/screen.css 

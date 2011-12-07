@@ -558,7 +558,7 @@ a.leaflet-active {
   background: white url(../images/popup-close.png);
 }
 
-/* line 22, ../sass/screen.scss */
+/* line 31, ../sass/screen.scss */
 html, body {
   padding: 0;
   margin: 0;
@@ -566,40 +566,51 @@ html, body {
   width: 100%;
   min-height: 100%;
   overflow: hidden;
+  font-family: Helvetica, Arial, "sans-serif" !important;
+  text-shadow: white 1px 1px 0;
 }
 
-/* line 31, ../sass/screen.scss */
+/* line 42, ../sass/screen.scss */
+.clear {
+  clear: both;
+}
+
+/* line 46, ../sass/screen.scss */
 h1 {
-  font-size: 32px;
-  font-weight: 100;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #444;
 }
 
-/* line 36, ../sass/screen.scss */
+/* line 53, ../sass/screen.scss */
 .header {
   height: 80px;
   width: 100%;
+  min-width: 960px;
   border-bottom: 1px solid #999;
   z-index: 2;
   position: relative;
-  background: transparent url("../images/whitey.png") repeat top right;
+  background: transparent url("../images/whitey.png") repeat top left;
 }
-/* line 43, ../sass/screen.scss */
+/* line 61, ../sass/screen.scss */
 .header h1 {
   position: absolute;
-  top: 24px;
+  top: 22px;
   left: 20px;
 }
 
-/* line 51, ../sass/screen.scss */
+/* line 69, ../sass/screen.scss */
 #main {
   width: 100%;
   min-height: 100%;
+  min-width: 960px;
   height: 100%;
   z-index: 1;
   position: relative;
   overflow: hidden;
 }
-/* line 58, ../sass/screen.scss */
+/* line 77, ../sass/screen.scss */
 #main .lmap-wrap {
   height: 100%;
   width: 100%;
@@ -608,13 +619,13 @@ h1 {
   float: left;
   position: relative;
 }
-/* line 66, ../sass/screen.scss */
+/* line 85, ../sass/screen.scss */
 #main #lmapcontainer {
   height: 100%;
   width: 100%;
   margin-left: 300px;
 }
-/* line 71, ../sass/screen.scss */
+/* line 90, ../sass/screen.scss */
 #main .r-sidebar {
   position: relative;
   width: 299px;
@@ -625,44 +636,44 @@ h1 {
   border-left: 1px solid #999;
 }
 
-/* line 82, ../sass/screen.scss */
+/* line 101, ../sass/screen.scss */
 .vacant-results {
-  background: transparent url("../images/whitey.png") repeat top right;
+  background: transparent url("../images/whitey.png") repeat top left;
   min-height: 100%;
   height: auto !important;
   padding-bottom: 20px;
 }
 
-/* line 89, ../sass/screen.scss */
+/* line 108, ../sass/screen.scss */
 .vacant-results-list {
   display: block;
   height: auto;
   overflow-y: scroll;
 }
-/* line 93, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
 .vacant-results-list li {
   padding: 10px;
   border-bottom: 1px solid white;
   border-top: 1px solid #999999;
 }
-/* line 97, ../sass/screen.scss */
+/* line 116, ../sass/screen.scss */
 .vacant-results-list li span {
   display: block;
 }
 
-/* line 103, ../sass/screen.scss */
+/* line 122, ../sass/screen.scss */
 .search-msg-wrap {
   height: 40px;
   display: block;
 }
 
-/* line 108, ../sass/screen.scss */
+/* line 127, ../sass/screen.scss */
 #panoramacontainer {
   height: 220px;
   width: 100%;
 }
 
-/* line 113, ../sass/screen.scss */
+/* line 132, ../sass/screen.scss */
 .credits {
   height: 30px;
   position: absolute;
@@ -671,7 +682,7 @@ h1 {
   display: block;
 }
 
-/* line 121, ../sass/screen.scss */
+/* line 140, ../sass/screen.scss */
 .more-info {
   position: absolute;
   right: 4px;
@@ -685,14 +696,7 @@ h1 {
   font-weight: bold;
 }
 
-/* line 137, ../sass/screen.scss */
-.controls {
-  position: absolute;
-  left: 360px;
-  top: 30px;
-}
-
-/* line 143, ../sass/screen.scss */
+/* line 156, ../sass/screen.scss */
 .vshadow-l {
   background: transparent url("../images/vshadow-l.png") repeat-y top left;
   height: 100%;
@@ -703,7 +707,7 @@ h1 {
   left: 0;
 }
 
-/* line 154, ../sass/screen.scss */
+/* line 167, ../sass/screen.scss */
 .hshadow-t {
   background: transparent url("../images/hshadow-t.png") repeat-x top right;
   width: 100%;
@@ -714,7 +718,142 @@ h1 {
   left: 0;
 }
 
-/* line 165, ../sass/screen.scss */
-.search {
+/* line 178, ../sass/screen.scss */
+.search-controls {
+  position: absolute;
+  left: 360px;
+  top: 18px;
+  background: transparent url("../images/white60.png") repeat top left;
+  -moz-box-shadow: #999999 0 0 2px;
+  -webkit-box-shadow: #999999 0 0 2px;
+  -o-box-shadow: #999999 0 0 2px;
+  box-shadow: #999999 0 0 2px;
+  -moz-border-radius: 2px !important;
+  -webkit-border-radius: 2px !important;
+  -o-border-radius: 2px !important;
+  -ms-border-radius: 2px !important;
+  -khtml-border-radius: 2px !important;
+  border-radius: 2px !important;
+}
+
+/* line 188, ../sass/screen.scss */
+.option-controls {
+  display: none;
+  position: absolute;
+  left: 840px;
+  top: 18px;
+  background: transparent url("../images/white60.png") repeat top left;
+  -moz-box-shadow: #999999 0 0 2px;
+  -webkit-box-shadow: #999999 0 0 2px;
+  -o-box-shadow: #999999 0 0 2px;
+  box-shadow: #999999 0 0 2px;
+  -moz-border-radius: 2px !important;
+  -webkit-border-radius: 2px !important;
+  -o-border-radius: 2px !important;
+  -ms-border-radius: 2px !important;
+  -khtml-border-radius: 2px !important;
+  border-radius: 2px !important;
+}
+/* line 198, ../sass/screen.scss */
+.option-controls .btn-check {
+  height: 32px;
+  display: block;
+  text-indent: -9999px;
+  width: 64px;
+  background: #fff;
+  border: #999;
+  float: left;
+  margin: 4px;
+  border: 1px solid #333;
+}
+/* line 209, ../sass/screen.scss */
+.option-controls .ui-helper-hidden-accessible {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  z-index: 1;
+}
+
+/* line 217, ../sass/screen.scss */
+.search .input-bg {
+  display: block;
+  float: left;
+  height: 32px;
+  margin: 4px;
   border: 1px solid #999999;
+  width: 400px;
+  background-color: #eaeaea;
+  -moz-border-radius: 2px !important;
+  -webkit-border-radius: 2px !important;
+  -o-border-radius: 2px !important;
+  -ms-border-radius: 2px !important;
+  -khtml-border-radius: 2px !important;
+  border-radius: 2px !important;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFEAEAEA', endColorstr='#FFFFFFFF');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaeaea), color-stop(31%, #f7f7f7), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #eaeaea 0%, #f7f7f7 31%, #ffffff 100%);
+  background-image: -moz-linear-gradient(top, #eaeaea 0%, #f7f7f7 31%, #ffffff 100%);
+  background-image: -o-linear-gradient(top, #eaeaea 0%, #f7f7f7 31%, #ffffff 100%);
+  background-image: -ms-linear-gradient(top, #eaeaea 0%, #f7f7f7 31%, #ffffff 100%);
+  background-image: linear-gradient(top, #eaeaea 0%, #f7f7f7 31%, #ffffff 100%);
+}
+/* line 230, ../sass/screen.scss */
+.search input {
+  display: block;
+  float: left;
+  background: none;
+  border: none;
+}
+/* line 236, ../sass/screen.scss */
+.search .search-input {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: transparent;
+  border: none;
+  font-family: Helvetica, Arial, "sans-serif";
+  font-size: 20px;
+  line-height: 22px;
+  font-weight: 100;
+  margin: 3px;
+  width: 390px;
+  box-shadow: none;
+}
+/* line 249, ../sass/screen.scss */
+.search .search-input:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+/* line 255, ../sass/screen.scss */
+.search .btn-submit {
+  cursor: pointer;
+  height: 34px;
+  width: 34px;
+  display: block;
+  background: #4162a7 url("../images/sprite.png") no-repeat top left;
+  border: 1px solid #073AA2;
+  margin: 4px 4px 0 0;
+  text-indent: -9999px;
+  -moz-border-radius: 2px !important;
+  -webkit-border-radius: 2px !important;
+  -o-border-radius: 2px !important;
+  -ms-border-radius: 2px !important;
+  -khtml-border-radius: 2px !important;
+  border-radius: 2px !important;
+}
+/* line 269, ../sass/screen.scss */
+.search .btn-submit:hover {
+  background-position-y: -34px;
+  -moz-box-shadow: #999999 0 0 2px;
+  -webkit-box-shadow: #999999 0 0 2px;
+  -o-box-shadow: #999999 0 0 2px;
+  box-shadow: #999999 0 0 2px;
+}
+/* line 273, ../sass/screen.scss */
+.search .btn-submit.ui-state-active {
+  -moz-box-shadow: #333333 0 1px 4px inset;
+  -webkit-box-shadow: #333333 0 1px 4px inset;
+  -o-box-shadow: #333333 0 1px 4px inset;
+  box-shadow: #333333 0 1px 4px inset;
 }
