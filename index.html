@@ -4,47 +4,140 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Baltimore Vacants</title>
         <meta name="author" content="Shea Frederick">
-        <link rel="stylesheet" href="static/css/leaflet.css">
-        <link rel="stylesheet" href="static/css/site.css">
-        <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=IMPT+Sans' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="static/resources/stylesheets/screen.css">
         <script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
         <script type="application/javascript" src="static/js/leaflet.js"></script>
+        <script type="application/javascript" src="static/js/jquery-ui-1.8.16.custom.min.js"></script>        
         <script type="application/javascript" src="static/js/site.js?ver=1"></script>
         <script type="application/javascript" src="http://platform.twitter.com/widgets.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     </head>
-    <body>
-      <p class="important-note">November 2011: The actual data for vacant properties is not available yet, so in the meantime this map is fed by One Day Liquor License data. We will swap over to vacant housing data when it becomes available.</p>
-      <div id="main">
-        <h1>Baltimore Vacants</h1>
-        <h2 class="subtitle">Browse this map to see vacant properties in Baltimore City.</h2>
-        <div id="lmapcontainer" style="width:800px;height:600px;"></div>
-        <div id="search-msg-wrap">
-            <div id="search-msg"></div>
-        </div>
-        <div id="panoramacontainer" style="width:800px;height:400px;"></div>
-        <p>We use Baltimore City's own open data to get the list of currently vacant properties, and since the data is pulled directly from Baltimore's data feed, it is up to date as soon as the City updates it.</p>
-        <div id="footer">
-          <p>Made in Baltimore by
-          <a href="http://vinylfox.com/">Shea Frederick</a>, with assistance from
-          <a href="http://jonathanjulian.com/">Jonathan Julian</a>
-          </p>
-          <p>Want to help out? <a href="https://github.com/VinylFox/baltimorevacants">Fork this project on github</a> and contribute!</p>
-        </div>
-      </div>
+<body>
 
-      <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-26641992-1']);
-        _gaq.push(['_setDomainName', 'baltimorevacants.appspot.com']);
-        _gaq.push(['_setAllowLinker', true]);
-        _gaq.push(['_trackPageview']);
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-      </script>
+<div class="header">
+	<h1>Baltimore Vacants</h1>
+	<div class="search-controls">
+			<div class="search">
+				<input type="text" name="address" class="search-input" />
+				<div class="input-bg"></div>
+				<input type="submit" value="Submit" class="btn-submit" />
+				<div class="clear"></div>
+			</div>
+	</div>
+	<div class="option-controls">
+			<div class="options">
+				<input type="checkbox" id="check" /><label class="btn-check" for="check">Crime</label>
+				<div class="clear"></div>
+			</div>
+	</div>
+<!-- <div class="more-info">More Info</div> -->
+</div>
+      
+<div id="main">
+	
+	<div class="lmap-wrap">
+	<div class="hshadow-t"></div>
+		<div id="lmapcontainer"></div>
+	</div>
+	
+	<div class="r-sidebar">
+		<div class="vshadow-l"></div>
+		<!-- <div id="panoramacontainer"></div> -->
+		<div id="search-msg-wrap" class="search-msg-wrap">
+			<div id="search-msg"></div>
+		</div>
+		<div class="vacant-results">
+			<ul class="vacant-results-list">
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+				<li>
+					<span class="address">Street Address</span>
+					<span class="address">1248 sq/ft</span>
+					<span class="type">Residental</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- Put this content in a lightbox that is triggered by button in header -->
+<!--
+<div class="credits">
+			<p>Made by	<a href="http://vinylfox.com/">Shea Frederick</a>, with assistance from <a href="http://jonathanjulian.com/">Jonathan Julian</a> and <a href="http://jamesschaffer.com/">James Schaffer</a></p>
+			<p><a href="https://github.com/VinylFox/baltimorevacants">Fork on github</a> and contribute!</p>
+</div>
+-->
+
+<script>
+	$(function() {
+		$( "#check" ).button();
+	});
+	$(function() {
+		$( "input:submit", ".search" ).button();
+	});
+</script>
+
+
+<!-- GOOGLE ANALYTICS -->
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26641992-1']);
+    _gaq.push(['_setDomainName', 'baltimorevacants.appspot.com']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
     </body>
 </html>
