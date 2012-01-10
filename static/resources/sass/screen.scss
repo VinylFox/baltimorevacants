@@ -8,271 +8,543 @@
 @import "includes/reset";
 @import "includes/leaflet";
 
-$vshadow-r: transparent url('../images/vshadow-r.png') repeat-y top right; 
-$vshadow-l: transparent url('../images/vshadow-l.png') repeat-y top left;
+/* Font */
+$typekit: "adelle", serif;
+$tshad-darkbg-lighttext: #000 0px -1px 0px;
+$tshad-lightbg-darktext: #666666 0px 1px 0px;
 
-$hshadow-t: transparent url('../images/hshadow-t.png') repeat-x top right; 
-$hshadow-b: transparent url('../images/hshadow-b.png') repeat-x top right;
+/* Backgrounds */
+$black60: url('/static/resources/images/black60.png') repeat 0 0;
+$black10: url('/static/resources/images/black10.png') repeat 0 0;
+$black03: url('/static/resources/images/black03.png') repeat 0 0;
+$green80: url('/static/resources/images/green80.png') repeat 0 0;
+$tilebg: url('/static/resources/images/black-tile-bg.png') repeat 0 0;
 
-$box-shadow: (#999 0 0 2px);
-$border-radius: (2px) !important;
+/* Sprite */
+$vacant-sprite: url('/static/resources/images/vacant-sprites.png') no-repeat 0 0;
 
-$white-tile: transparent url('../images/whitey.png') repeat top left;
-$white-opac60: transparent url('../images/white60.png') repeat top left;
-$white-opac30: transparent url('../images/white30.png') repeat top left;
+/* Mixin */
+@mixin tshadow-blur {
+	text-shadow: 0px 0px 4px #202020;
+	filter: dropshadow(color=#202020, offx=0, offy=0);
+}
 
-$dark-border: 1px solid #999;
-$light-border: 1px solid #FFF;
+/* Link Styles */
+a {
+	color: #65B8FF;
+	&:link {color: #65B8FF;}
+	&:hover {color: #B4EAFF;}
+	&:visited {color: #65B8FF;}
+	&:active {color: #65B8FF;}
+}
 
-$sprite: url('../images/sprite.png') no-repeat top left; 
-
-$font-family: Helvetica, Arial, 'sans-serif';
-
-html, body {
-	padding: 0;
-	margin: 0;
-	height: 100%;
-	width: 100%;
-	min-height: 100%;
-	overflow: hidden;
-	font-family: $font-family !important;
-	@include text-shadow(#FFF 1px 1px 0);
+.strong {
+	font-weight: bold;
 }
 
 .clear {
 	clear: both;
 }
 
-h1 {
-	font-size: 34px;
-	font-weight: 700;
-	letter-spacing: -1px;
-	color: #444;
+input, label {
+	font-family: 'Helvetica', 'Verdana', sans-serif;	
+	float: left;
 }
 
-.header {
-	height: 80px;
+body {
+	height: 100%;
+	min-height: 100%;
 	width: 100%;
-	min-width: 960px;
-	border-bottom: 1px solid #999;
-	z-index: 2;
-	position: relative;
-	background: $white-tile;
-	h1 {
-		position: absolute;
-		top: 22px;
-		left: 20px;
-	}
-	 
+	overflow: hidden;
+	font-family: 'Helvetica', 'Verdana', sans-serif;
 }
 
 #main {
-	width: 100%;
-	min-height: 100%;
-	min-width: 960px;
 	height: 100%;
-	z-index: 1;
-	position: relative;
-	overflow: hidden;
-	.lmap-wrap {
-		height: 100%; 
-		width: 100%;
-		margin-left: -300px; //need to fix this	
-		overflow: hidden;
-		float: left;
-		position: relative;			
-	}
-		#lmapcontainer {
-			height: 100%; 
-			width: 100%;
-			margin-left: 300px; 
-		}
-	.r-sidebar {
-		position: relative;
-		width: 299px;
-		min-height: 100%;
-		height: 100%;
-		background: #CCC;
-		float: right;
-		border-left: 1px solid #999;
-	}
-}
-
-.vacant-results {
-	background: $white-tile;
 	min-height: 100%;
-	height: auto !important;
-	padding-bottom: 20px;
+	width: 100%;
+	display: block;
 }
 
-.vacant-results-list {
+.map-contain {
+	height: 100%;
+	min-height: 100%;
 	display: block;
-	height: auto;
-	overflow-y: scroll;
-	li {
-		padding: 10px;
-		border-bottom: $light-border;
-		border-top: $dark-border;
-		span {
-			display: block;
+	float: left;
+	position: relative;
+}
+	
+.lmap-wrap {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	#lmapcontainer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+	}
+}
+
+#sb-contain {	
+	width: 260px;
+	position: relative;
+	background: #FEFEFE url('/static/resources/images/groovepaper.png') repeat 0 0;
+	float: right;
+	color: #444;
+	font-size: 14px;
+	text-shadow: 0px 1px 0px #FFFFFF !important;
+	filter: dropshadow(color=#FFFFFF, offx=0, offy=1) !important;
+	#sb-contents {
+		overflow-y: scroll;
+	}
+}
+
+.header {
+	width: 100%;
+	height: 50px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	background: $tilebg;
+	.title-contain {
+		display: block;
+		float: left;
+		height: 50px;
+		width: 300px;
+		h1 {
+			font: bold 28px/28px $typekit;
+			color: #FFF;
+			margin: 12px 0 0 12px;
+			@include tshadow-blur;
+		}
+	}
+	.search-controls {
+		height: 50px;
+		float: right;
+		background-color: #1a1a1a; // Old browsers
+		@include filter-gradient(#1a1a1a, #333333, vertical); // IE6-9
+		@include background-image(linear-gradient(top, #1a1a1a 0%,#333333 100%));
+		padding: 0 10px;
+		.search {
+			float: left;
+			margin-top: 9px;
+			margin-right: 9px;
 		}
 	}
 }
 
-.search-msg-wrap {
-	height: 40px;
+#search-box {
+	background-color: #c9c9c9; // Old browsers
+	@include filter-gradient(#c9c9c9, #ffffff, vertical); // IE6-9
+	@include background-image(linear-gradient(top,  #c9c9c9 0%,#ffffff 12%));
+
+	height: 30px;
+	width: 300px;
 	display: block;
+	float: left;
+	border: 1px solid #000;
+	position: relative;
+	.search-input {
+		font-family: $typekit;
+		border: none;
+		background: none;
+		height: 24px;
+		line-height: 30px;
+		margin-top: 2px;
+		margin-left: 4px;
+		width: 260px;
+		display: block;
+		font-size: 18px;
+		position: relative;
+		&:focus {
+			outline: none;
+		}
+	}
+	input[type="submit"] {
+		border: none;
+		background: $vacant-sprite;
+		background-position: -86px -1px;
+		height: 24px;
+		width: 24px;
+		text-indent: -9999px;
+		position: absolute;
+		right: 3px;
+		top: 3px;
+		cursor: pointer;
+		&.ui-state-active {
+			top: 4px;
+		}
+	}
 }
 
-#panoramacontainer {
-	height: 220px;
+
+.option-controls {
+	margin-top: 9px;
+	text-shadow: $tshad-darkbg-lighttext;
+	color: #FFF;
+	float: left;
+	input[type="checkbox"] {
+		position: absolute !important;
+		clip: rect(1px,1px,1px,1px);
+	}
+	.section-label {
+		margin-top: 10px;
+		margin-right: 4px;
+		font-weight: bold;
+		color: #CCCCCC;
+	}
+	.btn {
+		float: left;
+		& label {
+		float: left;
+		text-indent: -9999px;
+		}
+	}
+	.btn.last {
+		margin-right: 8px;
+	}
+}
+
+label.btn {
+	display: block;
+	border: 1px solid #000000;	
+    @include box-shadow(#666666 0px 1px 0px, inset #666666 0px 1px 0px);
+	border-radius: 4px;
+	cursor: pointer !important;
+	padding: 6px;
+	height: 18px;
+	width: 18px;
+	display: block;
+	cursor: pointer !important;
+	text-indent: -9999px;
+	&:hover {
+		@include box-shadow(#666666 0px 1px 0px, inset #000 0px 1px 3px);
+	}
+}
+
+label.btn.ui-state-active {
+	background-color: #336633;
+    @include box-shadow(#666666 0px 1px 0px, inset #000 0px 1px 3px);
+}
+
+.btn-house, .btn-lot, .btn-crime {
+	background: $vacant-sprite;
+}
+
+.btn-house {
+	background-position: 2px -24px;
+	&:hover {
+		background-position: 2px 4px;
+	}
+	&.ui-state-active {
+		background-position: 2px 4px;
+	}
+}
+
+.btn-lot {
+	background-position: -24px -23px;
+	&:hover {
+		background-position: -24px 4px;
+	}
+	&.ui-state-active {
+		background-position: -24px 4px;
+		background-color: #336633;
+	}
+}
+
+.btn-crime {
+	background-position: -51px -23px ;
+	&:hover {
+		background-position: -49px 3px ;
+	}
+	&.ui-state-active {
+		background-position: -49px 3px ;
+		background-color: #336633;
+	}
+}
+
+.btn.group.first {
+	border-right: 1px solid #000;;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.btn.group.last {
+	border-left: none;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.footer {
 	width: 100%;
-}
-
-.credits {
+	color: #FFF;
+	font-weight: normal;
 	height: 30px;
 	position: absolute;
 	bottom: 0;
-	width: auto;
+	left: 0;
 	display: block;
+	background: $tilebg;
+	z-index: 1;
+	font-family: $typekit;
 }
 
-.more-info {
-	position: absolute;
-	right: 4px;
-	top: 4px;
-	
-	border: 1px solid #CCC;
-	background: #999;
-	
-	height: 12px;
-	padding: 8px;
-	line-height: 12px;
-	
-	font-size: 11px;
-	font-weight: bold;	
+.footer-credit {
+	float: left;
+	padding-top: 10px;
+	padding-left: 10px;
 }
 
-.vshadow-l {
-	background: $vshadow-l;
-	height: 100%;
-	width: 6px;
-	z-index: 99999;
-
-	position: absolute;	
-	top: 0;
-	left: 0;
+.footer-social {
+	float: right;
+	padding-top: 6px;
+	p, span, iframe {
+		display: inline-block;
+	}
+	p {
+		vertical-align: top;
+		padding-top: 4px;
+		padding-right: 8px;
+	}
 }
 
-.hshadow-t {
-	background: $hshadow-t;
-	width: 100%;
-	height: 6px;
-	z-index: 99999;
-	
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-.search-controls {
-	position: absolute;
-	left: 360px;
-	top: 18px;
-	background: $white-opac60;
-	
-	@include box-shadow($box-shadow); 
-	@include border-radius($border-radius);
-}
-
-.option-controls {
-	display: none; //temp, until we establish what sort of search functions will be available
-	position: absolute;
-	left: 840px;
-	top: 18px;
-	background: $white-opac60;
-	
-	@include box-shadow($box-shadow); 
-	@include border-radius($border-radius);
-	
-	.btn-check {
-		height: 32px;
+.search-result {
+	height: 50px;
+	background: $black10;
+	text-align: center;
+	.result-value {
+		font-size: 28px;
+		padding: 3px 0;
 		display: block;
-		text-indent: -9999px;
-		width: 64px;
-		background: #fff;
-		border: #999;
-		float: left;
-		margin: 4px;
-		border: 1px solid #333;
 	}
-	.ui-helper-hidden-accessible {
-		position: absolute;
-		clip: rect(1px,1px,1px,1px); //removes the actual checkbox box
-		z-index: 1;
+	.result-label {
+		font-size: 11px;
+		display: block;
+		font-weight: bold;
 	}
 }
 
-.search {
-	.input-bg {
-		display: block;
-		float: left;
-		height: 32px; 
-		margin: 4px;
-		border: $dark-border;
-		width: 400px;
-		background-color: rgb(234,234,234); // Old browsers
-		
-		@include border-radius($border-radius);
-		@include filter-gradient(#eaeaea, #ffffff, vertical); // IE6-9
-		@include background-image(linear-gradient(top,  rgba(234,234,234,1) 0%,rgba(247,247,247,1) 31%,rgba(255,255,255,1) 100%));
-	}
-	input {
-		display: block;
-		float: left;
-		background: none;
-		border: none;
-	}
-	.search-input {
-		position: absolute;
-		top: 6px;
-		left: 6px;
-		background: transparent;
-		border: none;
-		font-family: $font-family;
-		font-size: 20px;
-		line-height: 22px;
-		font-weight: 100;
-		margin: 3px;
-		width: 390px;
-		box-shadow: none;
-		&:focus {
-			border: none;
-			box-shadow: none;
-			outline: none;		
+ul#results-list {
+	z-index: 2;
+	li {
+		border-top: 1px solid #FFF;
+		border-bottom: 1px solid #E1E1E1;
+		position: relative;
+		.street-view {
+			height: 0;
+			width: 220px;
+			display: block;
 		}
-	}
-	.btn-submit {
-		cursor: pointer;
-		height: 34px;
-		width: 34px;
-		display: block;
-		
-		background: #4162A7 $sprite;
-		border: 1px solid #073AA2;
-		margin: 4px 4px 0 0;
-		
-		text-indent: -9999px;
-		
-		@include border-radius($border-radius);
-		
+		.expand {
+			display: block;
+			height: 80px;
+			background: #f2f2f2;
+		}
+		.listing {
+			padding: 4px 0 4px 60px;
+			position: relative;
+		}
+		span {
+			display: block;
+			padding: 2px 0;
+		}
+		span.icon {
+			height: 18px;
+			width: 18px;
+			display: block;
+			position: absolute;
+			top: 22px;
+			margin: 0;
+			padding: 0;
+			left: 18px;
+			background: $vacant-sprite;
+		}
 		&:hover {
-			background-position-y: -34px;
-			@include box-shadow($box-shadow); 
-		}
-		&.ui-state-active {
-			@include box-shadow(#333 0 1px 4px inset); 
+			background: $black03;
+			cursor: pointer;
 		}
 	}
+}
+
+.lot .icon {
+	background-position: -28px -2px !important;
+}
+
+.house .icon {
+	background-position: -4px -2px !important;	
+}
+
+.too-many {
+	display: none; //Turn off once UI is setup
 	
+	line-height: 18px;
+	position: absolute;
+	width: 140px;
+	top: 30%;
+	left: 50%;
+	z-index: 2;
+	margin-left: -70px;
+	text-align: center; 
+	.exclaim {
+		font-size: 100px;
+		font-weight: bolder;
+		line-height: 100px;
+		display: block;
+		height: 100px;
+	}
+	.lrg-text {
+		font-size: 24px;
+		margin-bottom: 18px;
+		line-height: 24px;
+	}
+}
+
+.loading {
+	display: none; //Turn off once UI is setup
+	
+	height: 60px;
+	width: 60px;
+	background: url('/static/resources/images/spinner.gif') repeat 0 0;
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	z-index: 1;
+	margin-left: -30px;
+}
+
+.left-v-shadow {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 20px;
+	height: 100%;
+	background: transparent url('/static/resources/images/vshadow-l.png') repeat-y 0 0;
+	z-index: 3;
+}
+
+.leaflet-top {
+	top: 50px;
+}
+
+#credit-text {
+	padding: 10px 20px;
+	width: 700px;
+	color: #444;
+	background: #F4F4F4;
+	text-shadow: 0px 1px 0px #FFFFFF !important;
+	filter: dropshadow(color=#FFFFFF, offx=0, offy=1) !important;
+	h2 {
+		font-size: 28px;
+		font-family: $typekit;
+		text-align: center;
+		margin-bottom: 14px;
+		padding-top: 10px;
+	}
+	.spread-word {
+		display: block;
+		font-family: $typekit;
+		font-weight: bold;
+		text-align: center;
+		margin-bottom: 10px;
+		line-height: 24px;
+	}
+	p {
+		vertical-align: top;
+		margin-bottom: 20px;
+		line-height: 18px;
+	}
+	.name {
+		width: 170px;
+		float: left;
+		display: block;
+		p {
+			margin-bottom: 4px;
+		}
+	}
+}
+
+.text-btn {
+	display: block;
+	text-align: center;
+	a {
+		margin: 6px 0;
+		padding: 10px;
+		border: 1px solid #CCC;
+		display: inline-block;
+		width: auto;
+		border-radius: 8px;
+		text-decoration: none;
+		font-weight: bold;
+		color: #444;
+		&:hover {
+			color: #222;
+			border-color: #999;
+			cursor: pointer;
+			background: $black10;
+		    @include box-shadow( inset #999 0px 1px 3px 0px);
+		}
+	}
+	a.ui-state-active {
+		margin-top: 7px;
+	}
+}
+
+.too-many-circle {
+	background: $green80;
+	display: block;
+	text-align: center;
+	position: absolute;
+	z-index: 5;
+	&.lrg {
+		top: 300px; 
+		left: 200px; 
+		height: 100px; 
+		width: 100px; 
+		border-radius: 50px;
+		.result-number {
+			font-size: 32px;
+			padding-top: 28px;
+		}
+	}
+	&.med {
+		top: 450px; 
+		left: 545px;
+		height: 80px; 
+		width: 80px; 
+		border-radius: 50px;
+		.result-number {
+			font-size: 24px;
+			padding-top: 22px;
+		}
+	}
+	&.sm {
+		top: 120px; 
+		left: 300px;
+		height: 60px; 
+		width: 60px; 
+		border-radius: 30px;
+		.result-number {
+			padding-top: 14px;
+		}
+	}
+	.result-number, .label-number {
+		color: #FFF;
+		z-index: 6;
+		display: block; 
+	}
+	.result-number {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	
+}
+
+#fancybox-content div {
+	overflow: hidden !important; 
 }
