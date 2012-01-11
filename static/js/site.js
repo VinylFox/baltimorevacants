@@ -88,8 +88,17 @@ var strings = {
         lmap.addLayer(this.cache.cluster);
     },
     mapUpdateView: function(e){
+        if ((strings.bmoreCtrLat == e.lat && strings.bmoreCtrLng == e.lng) || !e.lat){
+            return '';
+        }
         fn.showWaitMessage(strings.geowait)
-        var ctr = lmap.getCenter();
+        var ctr, total_cnt = 0;
+        if (e && e.lat){
+            ctr = new L.LatLng(e.lat, e.lng);
+            lmap.panTo(ctr);
+        }else{
+            ctr = lmap.getCenter();
+        }
         var bounds = lmap.getBounds();
         
         slat = ctr.lat;
@@ -103,23 +112,97 @@ var strings = {
         var x = (slon-lon1) * Math.cos((lat1+slat)/2);
         var y = (slat-lat1);
         var d = Math.sqrt(x*x + y*y) * R;
+        var allProps = [], r = Math.floor((d*10)*3);
+        
+        $('#loading').fadeIn('slow');
+        $('#results-list').fadeOut('slow');
         
         $.ajax({
-            url: '/data/'+slat+'/'+slon+'/'+Math.floor((d*10)*3),
+            url: '/data/qqcv-ihn5/location_1/'+slat+'/'+slon+'/'+r,
             dataType: 'json',
             success: function(data) {
                 if (data.data && data.data.length > 0){
                     var d = data.data;
                     if (d.length > 0){
-                        fn.vacantMarkers = [];
-                        jQuery.each(d, function(i,e){
-                            var marker = new L.LatLng(e[20][1],e[20][2])
-                            marker.desc = '$'+e[12]+'<br/>'+e[13]+'<br/>'+e[14]+'<br/>'+e[17]+'<br/>'+e[18];
-                            fn.vacantMarkers.push(marker);
+                        vacantMarkers = [];
+                        var icon = L.Icon.extend({
+                            iconUrl : 'static/resources/images/marker-house.png',
+                            shadowUrl : 'static/resources/images/marker-shadow.png',
+                            iconSize : new L.Point(25, 41),
+                            shadowSize : new L.Point(41, 41),
+                            iconAnchor : new L.Point(20, 20)
                         });
-                        fn.placeMarkers(fn.vacantMarkers, true);
+                        jQuery.each(d, function(i,e){
+                            var marker = new L.LatLng(e[13][1],e[13][2])
+                            marker.desc = 'Property: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                            vacantMarkers.push(marker);
+                            allProps.push({
+                                address : e[9],
+                                neighborhood : e[10],
+                                block : e[8],
+                                type: 'house',
+                                lat: e[13][1],
+                                lon: e[13][2]
+                            });
+                        });
+                        fn.placeMarkers(vacantMarkers, true, icon, 'house');
                     }
-                    fn.showMessage('Found '+data.data.length+' properties.');
+                    $.ajax({
+                        url: '/data/gf6h-35ki/location_1/'+slat+'/'+slon+'/'+r,
+                        dataType: 'json',
+                        success: function(data2) {
+                            if (data2.data && data2.data.length > 0){
+                                var d = data2.data;
+                                if (d.length > 0){
+                                    vacantMarkers = [];
+                                    var icon = L.Icon.extend({
+                                        iconUrl : 'static/resources/images/marker-lot.png',
+                                        shadowUrl : 'static/resources/images/marker-shadow.png',
+                                        iconSize : new L.Point(25, 41),
+                                        shadowSize : new L.Point(41, 41),
+                                        iconAnchor : new L.Point(20, 20)
+                                    });
+                                    jQuery.each(d, function(i,e){
+                                        var marker = new L.LatLng(e[13][1],e[13][2])
+                                        marker.desc = 'Lot: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                                        vacantMarkers.push(marker);
+                                        allProps.push({
+                                            address : e[9],
+                                            neighborhood : e[10],
+                                            block : e[8],
+                                            type: 'lot',
+                                            lat: e[13][1],
+                                            lon: e[13][2]
+                                        });
+                                    });
+                                    fn.placeMarkers(vacantMarkers, false, icon, 'lot');
+                                }
+                            }
+                            var addrList = $('#results-list');
+                            addrList.empty();
+                            $.each(allProps,function(i, prop){
+                                var x = (ctr.lng-parseFloat(prop.lon)) * Math.cos((parseFloat(prop.lat)+ctr.lat)/2);
+                                var y = (ctr.lat-parseFloat(prop.lat));
+                                var d = Math.sqrt(x*x + y*y) * R;
+                                prop.distance = d;
+                            });
+                            allProps.sort(function(a,b){
+                                return b.distance - a.distance;
+                            });
+                            $.each(allProps,function(i, prop){
+                                addrList.append('<li class="'+prop.type+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+prop.address+'</span><span class="address">'+prop.neighborhood+'</span><span class="block">'+prop.block+'-'+prop.distance+'</span></div></li>');
+                            });
+                            $('#results-list').fadeIn('slow');
+                            $('#result-value').html(data.data.length+data2.data.length);
+                            $('#loading').fadeOut('slow');
+                        },
+                        failure: function(){
+                            fn.showErrorMessage(strings.geofailure)
+                        },
+                        error: function(){
+                            fn.showErrorMessage(strings.geofailure);
+                        }
+                    });
                 }else{
                     fn.showErrorMessage(strings.geonoresults);
                 }
@@ -134,7 +217,7 @@ var strings = {
         
     },
     updatePano: function(e){
-        if (e){
+        /*if (e){
             var loc = new google.maps.LatLng(e.target._latlng.lat,e.target._latlng.lng);
         }else{
             var loc = new google.maps.LatLng(strings.bmoreCtrLat, strings.bmoreCtrLng);
@@ -150,26 +233,45 @@ var strings = {
                 zoom: 1
               }
             });
-        }
+        }*/
     }
 }, lmap, tileLayer, slat, slon, panorama;
 
 $(document).ready(function(){
-    
+    $('#result-list').hide();
+    $('#loading').hide();
     tileLayer = new L.TileLayer('http://{s}.tile.cloudmade.com/'+strings.cmkey+'/997/256/{z}/{x}/{y}.png', {
         maxZoom : 18
     });
     lmap = new L.Map('lmapcontainer',{
         layers : [tileLayer],
-        zoom : 17,
+        zoom : 12,
         maxZoom : 18,
         zoomControl : true,
         attributionControl : false,
         center : new L.LatLng(strings.bmoreCtrLat, strings.bmoreCtrLng)
     });
     lmap.addLayer(tileLayer);
-    fn.mapUpdateView();
-    fn.updatePano();
     
     lmap.on('moveend', fn.mapUpdateView);
+    
+    $('#btn-submit').click(function(){
+        var address = $('#address').val() + ",Baltimore,MD,USA";
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode(
+          {address: address},
+          function(result) {
+              var dialog, len, point;
+              if (result.length > 1) {
+                alert("Multiple matches were found.  Please provide a more specific address. ie: '3600 Roland Ave'");
+              } else {
+                fn.mapUpdateView({
+                  lat: result[0].geometry.location.lat(),
+                  lng: result[0].geometry.location.lng()
+                });
+              }
+          }
+        );
+    });
+    
 });

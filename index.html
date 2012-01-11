@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="http://use.typekit.com/yvl5vnf.js"></script>
 	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
-	<script type="text/javascript" src="static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<script type="text/javascript" src="static/js/fancybox/jquery.fancybox-1.3.4.js"></script>
 	<script type="text/javascript" src="static/js/fancybox/jquery.easing-1.3.pack.js"></script>
 	<link rel="stylesheet" href="static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 	
@@ -35,8 +35,8 @@
 				<div class="search-contain">
 					<div class="search">
 						<div id="search-box">
-							<input type="text" name="address" class="search-input" placeholder="Enter Baltimore city address" />
-							<input type="submit" value="Submit" class="btn-submit" />
+							<input type="text" id="address" name="address" class="search-input" placeholder="Enter Baltimore city address" />
+							<input type="submit" id="btn-submit" value="Submit" class="btn-submit" />
 						</div>
 
 					</div>
@@ -79,164 +79,23 @@
 		<div class="left-v-shadow"></div>
 		<div id="sb-contents">
 			<div class="search-result">
-				<span class="result-value">1034</span>
+				<span id="result-value" class="result-value">...</span>
 				<span class="result-label">Matching results</span>
 			</div>
-			<ul id="results-list">
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-				<li class="house">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="block">345 66</span>
-					</div>
-				</li>
-				<li class="lot">
-					<div class="street-view"></div>
-					<div class="listing">
-						<span class="icon"></span>
-						<span class="address">Street Address</span>
-						<span class="address">1248 sq/ft</span>
-						<span class="type">Residental</span>
-					</div>
-				</li>
-			</ul>
+			<ul id="results-list"></ul>
 			<div class="text-btn"><a href="#">Next 25</a></div>
 			
-			<div class="too-many">
+			<div id="too-many" class="too-many">
 				<span class="exclaim">!</span>
 				<p class="lrg-text">Too many results to list.</p>
 				<p>Enter a Baltimore City address or zoom in closer.</p>
 			</div>
 		
-			<div class="loading">
+		    <div id="initial" class="initial">
+		        <p>Enter a Baltimore City address</p>
+		    </div>
+		
+			<div id="loading" class="loading">
 			</div>
 		</div>
 	</div>
@@ -290,12 +149,13 @@
 	    $('.map-contain').css({'width':(($(window).width())-260)+'px'});
 		$('.map-contain').css({'height':(($(window).height()))+'px'});
 		$('#sb-contents').css({'height':(($(window).height()))+'px'});
-
+        lmap.invalidateSize();
 
 	    $(window).resize(function(){
 		    $('.map-contain').css({'width':(($(window).width())-260)+'px'});
 		    $('.map-contain').css({'height':(($(window).height()))+'px'});
 		    $('#sb-contents').css({'height':(($(window).height()))+'px'});
+		    lmap.invalidateSize();
 	    });	
 	
 	});

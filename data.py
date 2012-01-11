@@ -12,18 +12,19 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 class Data(webapp.RequestHandler):
     def get(self):
         domain = "data.baltimorecity.gov"
-        uid = "bcxw-m234"
         url = "https://" + domain + "/api/views/INLINE/rows.json?method=index"
         token = 'GSoNHBCEoKECW0LC5vClT3pkb'
-        column_name = 'location_1'
         
         urlparts = self.request.uri.split("/")
         urllen = len(urlparts)
-        param1 = urlparts[urllen-3]
-        param2 = urlparts[urllen-2]
-        param3 = urlparts[urllen-1]
         
-        mcs = 'source-'+param1+'-'+param2+'-'+param3
+        uid = urlparts[urllen-5]
+        column_name = urlparts[urllen-4]
+        lat = urlparts[urllen-3]
+        lon = urlparts[urllen-2]
+        radius = urlparts[urllen-1]
+        
+        mcs = 'source-'+uid+'-'+str(lat)+'-'+str(lon)+'-'+str(radius)
 
         in_cache = memcache.get(mcs)
 
@@ -68,18 +69,17 @@ class Data(webapp.RequestHandler):
                             "type": "operator",
                             "value": "WITHIN_CIRCLE",
                             "children": [{
-                                "columnId": columnId, #3054285, #2957860, #2886635, #2869987, #citation date
-                                #"columnId": 2856765, #import date
+                                "columnId": columnId,
                                 "type": "column"
                             }, {
                                 "type": "literal",
-                                "value": param1
+                                "value": lat
                             }, {
                                 "type": "literal",
-                                "value": param2
+                                "value": lon
                             }, {
                                 "type": "literal",
-                                "value": int(param3)
+                                "value": int(radius)
                             }]
                         }]
                     }
