@@ -26,7 +26,9 @@ class Data(webapp.RequestHandler):
         
         mcs = 'source-'+uid+'-'+str(lat)+'-'+str(lon)+'-'+str(radius)
 
-        in_cache = memcache.get(mcs)
+        logging.info(mcs)
+
+        in_cache = None #memcache.get(mcs)
 
         if in_cache is not None:
             content = in_cache
@@ -49,6 +51,8 @@ class Data(webapp.RequestHandler):
                 
             col_content = col_result.content
             
+            logging.info(col_content)
+            
             if col_content.startswith('['):
                 columns_array = simplejson.loads(col_content)
                 for column in columns_array:
@@ -57,6 +61,8 @@ class Data(webapp.RequestHandler):
                         columnId = column.get('id')
             else:
                 columnId = 0
+            
+            logging.info(columnId)
             
             form_fields = {
                 "originalViewId": uid,

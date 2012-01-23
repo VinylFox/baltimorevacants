@@ -1,4 +1,4 @@
-var strings = {
+var allProps = [], strings = {
     geowait: "Loading properties...",
     geofailure: "Failed to load data.",
     geonoresults: "No properties to map in this area",
@@ -22,10 +22,28 @@ var strings = {
         $('#lmapcontainer').css({opacity:0.3});
         $('#search-msg').html(msg);
     },
+    hideWaitMessage: function(){
+        $('#lmapcontainer').css({opacity:1.0});
+        $('#search-msg').html('');
+    },
     showErrorMessage: function(msg){
         $('#search-msg').html(msg);
         $('#lmapcontainer').css({opacity:1});
         $('#search-msg-wrap').addClass('invalid-wrap');
+    },
+    resizePage: function(){
+        $('.map-contain').css({
+            'width' : (($(window).width()) - 260) + 'px',
+            'height' : (($(window).height())) + 'px'
+        });
+        $('#lmapcontainer').css({
+            'width' : (($(window).width()) - 260) + 'px',
+            'height' : (($(window).height())) + 'px'
+        });
+        lmap.invalidateSize();
+        $('#sb-contents').css({
+            'height' : (($(window).height())) + 'px'
+        });
     },
     placeMarkers: function(points, clearPrevious){
         var me = this;
@@ -37,41 +55,55 @@ var strings = {
                 lmap.removeLayer(mkr);
             });
         }
-        this.cache.cluster = new L.LayerGroup();
+        this.cache.cluster = new L.FeatureGroup();
         this.markerCluster = {};
-        $.each(points, function(i, point) {
-            var curPnt = me.markerCluster['pnt' + point.lat + point.lng];
-            if(!curPnt) {
-                me.markerCluster['pnt' + point.lat + point.lng] = {
+        if (lmap.getZoom() > 17){
+            $.each(points, function(i, point) {
+                var curPnt = me.markerCluster['pnt' + point.lat + point.lng] = {
                     lat : point.lat,
                     lng : point.lng,
                     points : [point],
                     desc : point.desc
-                };
-            } else {
-                me.markerCluster['pnt'+point.lat+point.lng].points.push(point);
-            }
-        });
+                }
+            });
+        }else{
+            $.each(points, function(i, point) {
+                var curPnt = me.markerCluster['pnt' + point.block];
+                if(!curPnt) {
+                    me.markerCluster['pnt' + point.block] = {
+                        lat : point.lat,
+                        lng : point.lng,
+                        points : [point],
+                        desc : point.shortdesc
+                    };
+                } else {
+                    me.markerCluster['pnt'+point.block].points.push(point);
+                    me.markerCluster['pnt'+point.block].desc += point.shortdesc;
+                }
+            });
+        }
         $.each(this.markerCluster, function(key, point) {
-            var x = 0, len = point.points.length;
+            var x = 'm0', len = point.points.length, s = 's.gif', ix = 41, iy = 40, sx = 1, sy = 1;
             me.i++;
             if(len > 10) {
-                x++;
-            } else if(len > 50) {
-                x = 2;
-            } else if(len > 100) {
-                x = 3;
-            } else if(len > 150) {
-                x = 4;
-            } else if(len > 250) {
-                x = 5;
+                x = 'm3';
+            } else if(len > 4) {
+                x = 'm2';
+            }
+            if (lmap.getZoom() > 17){
+                x = 'marker';
+                s = 'marker-shadow.png';
+                ix = 25;
+                iy = 41;
+                sx = 41;
+                sy = 41;
             }
             if(!me.clusterIcons[x]) {
                 me.clusterIcons[x] = L.Icon.extend({
-                    iconUrl : 'static/images/m' + x + '.png',
-                    shadowUrl : 'static/images/s.gif',
-                    iconSize : new L.Point(41, 40),
-                    shadowSize : new L.Point(1, 1),
+                    iconUrl : 'static/resources/images/' + x + '.png',
+                    shadowUrl : 'static/resources/images/'+s,
+                    iconSize : new L.Point(ix, iy),
+                    shadowSize : new L.Point(sx, sy),
                     iconAnchor : new L.Point(20, 20)
                 });
             }
@@ -87,33 +119,31 @@ var strings = {
         });
         lmap.addLayer(this.cache.cluster);
     },
-    mapUpdateView: function(e){
-        if ((strings.bmoreCtrLat == e.lat && strings.bmoreCtrLng == e.lng) || !e.lat){
-            return '';
-        }
-        fn.showWaitMessage(strings.geowait)
+    mapUpdateView: function(){
+        console.log('mapUpdateView');
+        var setViewOnZoom = false, R = 6371;
+        
         var ctr, total_cnt = 0;
-        if (e && e.lat){
-            ctr = new L.LatLng(e.lat, e.lng);
-            lmap.panTo(ctr);
-        }else{
-            ctr = lmap.getCenter();
-        }
-        var bounds = lmap.getBounds();
+        ctr = lmap.getCenter();
         
         slat = ctr.lat;
         slon = ctr.lng;
         
+        var bounds = lmap.getBounds();
+        
         var lon1 = bounds._northEast.lng;
         var lat1 = bounds._northEast.lat
-        
-        var R = 6371; // km
         
         var x = (slon-lon1) * Math.cos((lat1+slat)/2);
         var y = (slat-lat1);
         var d = Math.sqrt(x*x + y*y) * R;
-        var allProps = [], r = Math.floor((d*10)*3);
+        var r = Math.floor((d*10)*3);
         
+        if (r > 2000){
+            return '';
+        }
+        
+        fn.showWaitMessage(strings.geowait)
         $('#loading').fadeIn('slow');
         $('#results-list').fadeOut('slow');
         
@@ -125,16 +155,11 @@ var strings = {
                     var d = data.data;
                     if (d.length > 0){
                         vacantMarkers = [];
-                        var icon = L.Icon.extend({
-                            iconUrl : 'static/resources/images/marker-house.png',
-                            shadowUrl : 'static/resources/images/marker-shadow.png',
-                            iconSize : new L.Point(25, 41),
-                            shadowSize : new L.Point(41, 41),
-                            iconAnchor : new L.Point(20, 20)
-                        });
                         jQuery.each(d, function(i,e){
                             var marker = new L.LatLng(e[13][1],e[13][2])
-                            marker.desc = 'Property: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                            marker.desc = 'House: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                            marker.shortdesc = 'House: '+e[9]+'<br/>';
+                            marker.block = e[8].substr(0,4);
                             vacantMarkers.push(marker);
                             allProps.push({
                                 address : e[9],
@@ -145,7 +170,7 @@ var strings = {
                                 lon: e[13][2]
                             });
                         });
-                        fn.placeMarkers(vacantMarkers, true, icon, 'house');
+                        fn.placeMarkers(vacantMarkers, true);
                     }
                     $.ajax({
                         url: '/data/gf6h-35ki/location_1/'+slat+'/'+slon+'/'+r,
@@ -155,16 +180,11 @@ var strings = {
                                 var d = data2.data;
                                 if (d.length > 0){
                                     vacantMarkers = [];
-                                    var icon = L.Icon.extend({
-                                        iconUrl : 'static/resources/images/marker-lot.png',
-                                        shadowUrl : 'static/resources/images/marker-shadow.png',
-                                        iconSize : new L.Point(25, 41),
-                                        shadowSize : new L.Point(41, 41),
-                                        iconAnchor : new L.Point(20, 20)
-                                    });
                                     jQuery.each(d, function(i,e){
                                         var marker = new L.LatLng(e[13][1],e[13][2])
-                                        marker.desc = 'Lot: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                                        marker.desc = 'Land: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                                        marker.shortdesc = 'Land: '+e[9]+'<br/>';
+                                        marker.block = e[8].substr(0,4);
                                         vacantMarkers.push(marker);
                                         allProps.push({
                                             address : e[9],
@@ -175,7 +195,7 @@ var strings = {
                                             lon: e[13][2]
                                         });
                                     });
-                                    fn.placeMarkers(vacantMarkers, false, icon, 'lot');
+                                    fn.placeMarkers(vacantMarkers, false);
                                 }
                             }
                             var addrList = $('#results-list');
@@ -187,14 +207,17 @@ var strings = {
                                 prop.distance = d;
                             });
                             allProps.sort(function(a,b){
-                                return b.distance - a.distance;
+                                return a.distance - b.distance;
                             });
                             $.each(allProps,function(i, prop){
-                                addrList.append('<li class="'+prop.type+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+prop.address+'</span><span class="address">'+prop.neighborhood+'</span><span class="block">'+prop.block+'-'+prop.distance+'</span></div></li>');
+                                if (i < 26){
+                                    addrList.append('<li class="'+prop.type+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+prop.address+'</span><span class="address">'+prop.neighborhood+'</span><span class="block">'+prop.block+' ('+Math.round(prop.distance)+'m)</span></div></li>');
+                                }
                             });
                             $('#results-list').fadeIn('slow');
                             $('#result-value').html(data.data.length+data2.data.length);
                             $('#loading').fadeOut('slow');
+                            fn.hideWaitMessage();
                         },
                         failure: function(){
                             fn.showErrorMessage(strings.geofailure)
@@ -238,8 +261,26 @@ var strings = {
 }, lmap, tileLayer, slat, slon, panorama;
 
 $(document).ready(function(){
+    
+    $(window).resize(fn.resizePage);
+
+    $( ".options" ).buttonset().click(function(){
+        console.log(arguments);
+    });
+    $( "a", ".text-btn" ).button();
+    $( "a", ".text-btn" ).click(function() { return false; });
+
+    $("a#credits").fancybox({
+        'autoDimensions' : true
+    });
+    
+    $( "#search-box" ).click(function() {
+        $( "#search-box" ).toggleClass( "active-search");
+    });
+    
     $('#result-list').hide();
     $('#loading').hide();
+    
     tileLayer = new L.TileLayer('http://{s}.tile.cloudmade.com/'+strings.cmkey+'/997/256/{z}/{x}/{y}.png', {
         maxZoom : 18
     });
@@ -263,15 +304,15 @@ $(document).ready(function(){
           function(result) {
               var dialog, len, point;
               if (result.length > 1) {
-                alert("Multiple matches were found.  Please provide a more specific address. ie: '3600 Roland Ave'");
+                  alert("Multiple matches were found.  Please provide a more specific address. ie: '3600 Roland Ave'");
               } else {
-                fn.mapUpdateView({
-                  lat: result[0].geometry.location.lat(),
-                  lng: result[0].geometry.location.lng()
-                });
+                  ctr = new L.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
+                  lmap.setView(ctr,17);
               }
           }
         );
     });
+    
+    fn.resizePage();
     
 });

@@ -629,7 +629,7 @@ body {
 /* line 77, ../sass/screen.scss */
 .lmap-wrap {
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   top: 0;
   left: 0;
   height: 100%;
@@ -669,6 +669,7 @@ body {
   left: 0;
   display: block;
   background: url("/static/resources/images/black-tile-bg.png") repeat 0 0;
+  z-index: 2
 }
 /* line 115, ../sass/screen.scss */
 .header .title-contain {
