@@ -20,8 +20,6 @@ http://baltimorevacants.appspot.com
 
 Note that it's permanent home will eventually be www.baltimorevacants.org.
 
-The actual data for vacant properties is not available yet, so in the meantime the map on the site is fed by One Day Liquor License data, which should be very similar and simple to swap over to vacant housing data when that data becomes available.
-
 == Developing
 
 This site is deployed on Google App Engine, so to get it running locally you will need the Google App Engine SDK for Python (http://code.google.com/appengine/downloads.html) as well as Python installed on your development machine.
