@@ -83,7 +83,13 @@ var allProps = [], strings = {
             });
         }
         $.each(this.markerCluster, function(key, point) {
-            var x = 'm0', len = point.points.length, s = 's.gif', ix = 41, iy = 40, sx = 1, sy = 1;
+            var x = 'm0', 
+                len = point.points.length, 
+                s = 's.gif', 
+                ix = 41, 
+                iy = 40, 
+                sx = 1, 
+                sy = 1;
             me.i++;
             if(len > 10) {
                 x = 'm3';
@@ -107,11 +113,11 @@ var allProps = [], strings = {
                     iconAnchor : new L.Point(20, 20)
                 });
             }
-            var latlng = new L.LatLng(point.lat, point.lng);
-            var mkr = new L.Marker(latlng, {
-                icon : new me.clusterIcons[x]()
-            });
-            var popupContent = point.desc;
+            var latlng = new L.LatLng(point.lat, point.lng),
+                mkr = new L.Marker(latlng, {
+                    icon : new me.clusterIcons[x]()
+                }),
+                popupContent = point.desc;
             mkr.on('click',fn.updatePano);
             mkr.bindPopup(popupContent);
             me.cache.markers.push(mkr);
@@ -120,24 +126,24 @@ var allProps = [], strings = {
         lmap.addLayer(this.cache.cluster);
     },
     mapUpdateView: function(){
-        console.log('mapUpdateView');
-        var setViewOnZoom = false, R = 6371;
-        
-        var ctr, total_cnt = 0;
+        //console.log('mapUpdateView');
+        var setViewOnZoom = false, 
+            R = 6371,
+            ctr, 
+            total_cnt = 0;
+
         ctr = lmap.getCenter();
         
         slat = ctr.lat;
         slon = ctr.lng;
         
-        var bounds = lmap.getBounds();
-        
-        var lon1 = bounds._northEast.lng;
-        var lat1 = bounds._northEast.lat
-        
-        var x = (slon-lon1) * Math.cos((lat1+slat)/2);
-        var y = (slat-lat1);
-        var d = Math.sqrt(x*x + y*y) * R;
-        var r = Math.floor((d*10)*3);
+        var bounds = lmap.getBounds(),
+            lon1 = bounds._northEast.lng,
+            lat1 = bounds._northEast.lat,
+            x = (slon-lon1) * Math.cos((lat1+slat)/2),
+            y = (slat-lat1),
+            d = Math.sqrt(x*x + y*y) * R,
+            r = Math.floor((d*10)*3);
         
         if (r > 2000){
             return '';
@@ -297,8 +303,8 @@ $(document).ready(function(){
     lmap.on('moveend', fn.mapUpdateView);
     
     $('#btn-submit').click(function(){
-        var address = $('#address').val() + ",Baltimore,MD,USA";
-        var geocoder = new google.maps.Geocoder();
+        var address = $('#address').val() + ",Baltimore,MD,USA",
+            geocoder = new google.maps.Geocoder();
         geocoder.geocode(
           {address: address},
           function(result) {
