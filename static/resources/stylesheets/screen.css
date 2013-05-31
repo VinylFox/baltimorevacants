@@ -99,7 +99,7 @@ footer, header, hgroup, menu, nav, section {
 /* line 26, ../sass/includes/_reset.scss */
 body {
   line-height: 1;
-  font-family: Helvetica, Arial, 'sans-serif';
+  font-family: 'Roboto Slab', serif;
   font-size: 12px;
 }
 
@@ -596,7 +596,7 @@ a:active {
 
 /* line 49, ../sass/screen.scss */
 input, label {
-  font-family: 'Helvetica', 'Verdana', sans-serif;
+  font-family: 'Roboto Slab', serif;
   float: left;
 }
 
@@ -606,7 +606,7 @@ body {
   min-height: 100%;
   width: 100%;
   overflow: hidden;
-  font-family: 'Helvetica', 'Verdana', sans-serif;
+  font-family: 'Roboto Slab', serif;
 }
 
 /* line 62, ../sass/screen.scss */
@@ -728,7 +728,7 @@ body {
 }
 /* line 153, ../sass/screen.scss */
 #search-box .search-input {
-  font-family: "adelle", serif;
+  font-family: 'Roboto Slab', serif;
   border: none;
   background: none;
   height: 24px;
@@ -901,7 +901,7 @@ label.btn.ui-state-active {
   display: block;
   background: url("/static/resources/images/black-tile-bg.png") repeat 0 0;
   z-index: 1;
-  font-family: "adelle", serif;
+  font-family: 'Roboto Slab', serif;
 }
 
 /* line 298, ../sass/screen.scss */
@@ -984,7 +984,7 @@ ul#results-list li span.icon {
   width: 18px;
   display: block;
   position: absolute;
-  top: 22px;
+  top: 11px;
   margin: 0;
   padding: 0;
   left: 18px;
@@ -996,6 +996,11 @@ ul#results-list li:hover {
   cursor: pointer;
 }
 
+ul#results-list li.active {
+  background: url("/static/resources/images/black10.png") repeat 0 0;
+  cursor: pointer;
+}
+
 /* line 375, ../sass/screen.scss */
 .lot .icon {
   background-position: -28px -2px !important;
@@ -1004,6 +1009,10 @@ ul#results-list li:hover {
 /* line 379, ../sass/screen.scss */
 .house .icon {
   background-position: -4px -2px !important;
+}
+
+.camera .icon {
+  background-position: -90px -32px !important;
 }
 
 /* line 383, ../sass/screen.scss */
@@ -1062,6 +1071,33 @@ ul#results-list li:hover {
   top: 50px;
 }
 
+#initial-view-info {
+  padding: 10px 20px;
+  width: 700px;
+  color: #444;
+  background: #F4F4F4;
+  text-shadow: 0px 1px 0px #FFFFFF !important;
+  filter: dropshadow(color=white, offx=0, offy=1) !important;
+}
+/* line 442, ../sass/screen.scss */
+#initial-view-info h2 {
+  font-size: 28px;
+  font-family: 'Roboto Slab', serif;
+  text-align: center;
+  margin-bottom: 14px;
+  padding-top: 10px;
+}
+/* line 457, ../sass/screen.scss */
+#initial-view-info p {
+  vertical-align: top;
+  margin-bottom: 20px;
+  line-height: 18px;
+}
+
+#initial-view-info p b {
+  font-weight: bold;
+}
+
 /* line 435, ../sass/screen.scss */
 #credit-text {
   padding: 10px 20px;
@@ -1074,7 +1110,7 @@ ul#results-list li:hover {
 /* line 442, ../sass/screen.scss */
 #credit-text h2 {
   font-size: 28px;
-  font-family: "adelle", serif;
+  font-family: 'Roboto Slab', serif;
   text-align: center;
   margin-bottom: 14px;
   padding-top: 10px;
@@ -1082,7 +1118,7 @@ ul#results-list li:hover {
 /* line 449, ../sass/screen.scss */
 #credit-text .spread-word {
   display: block;
-  font-family: "adelle", serif;
+  font-family: 'Roboto Slab', serif;
   font-weight: bold;
   text-align: center;
   margin-bottom: 10px;
@@ -1199,4 +1235,35 @@ ul#results-list li:hover {
 /* line 548, ../sass/screen.scss */
 #fancybox-content div {
   overflow: hidden !important;
+}
+
+.detail-box {
+  height: 300px;
+  width: 260px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: url("/static/resources/images/black10.png") repeat 0 0;
+}
+
+.detail-property {
+  width: 130px;
+  margin: 10px 2px 5px 5px;
+  float: left;
+  text-align: right;
+  font-weight: bold;
+  text-shadow: 0px 1px 0px #FFFFFF !important;
+  color: #444;
+  font-size: 11px;
+}
+
+.detail-value {
+  width: 110px;
+  margin: 10px 10px 5px 2px;
+  float: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-shadow: 0px 1px 0px #FFFFFF !important;
+  color: #444;
+  font-size: 11px;
 }

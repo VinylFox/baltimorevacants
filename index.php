@@ -4,24 +4,26 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Baltimore Vacants</title>
         <meta name="author" content="Shea Frederick">
-        <link rel="stylesheet" href="static/resources/stylesheets/screen.css">
-        <link rel="stylesheet" href="static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/static/resources/stylesheets/screen.css">
+        <link rel="stylesheet" href="/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
         <script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
-        <script type="application/javascript" src="static/js/leaflet.js"></script>
-        <script type="application/javascript" src="static/js/jquery-ui-1.8.16.custom.min.js"></script>
-        <script type="application/javascript" src="static/js/site.js?ver=1"></script>
+        <script type="application/javascript" src="/static/js/leaflet.js"></script>
+        <script type="application/javascript" src="/static/js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script>var STARTLOC = '<?php if(isset($_GET['loc'])){ print $_GET['loc']; } ?>';</script>
+        <script type="application/javascript" src="/static/js/site.js?ver=1"></script>
         <script type="application/javascript" src="http://platform.twitter.com/widgets.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-        <script type="text/javascript" src="http://use.typekit.com/yvl5vnf.js"></script>
-        <script type="text/javascript">
-            try {Typekit.load();} catch(e) {}
-        </script>
-        <script type="text/javascript" src="static/js/fancybox/jquery.fancybox-1.3.4.js"></script>
-        <script type="text/javascript" src="static/js/fancybox/jquery.easing-1.3.pack.js"></script>
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="/static/js/fancybox/jquery.fancybox-1.3.4.js"></script>
+        <script type="text/javascript" src="/static/js/fancybox/jquery.easing-1.3.pack.js"></script>
     </head>
     <body>
+        <a id="initialinfo" href="#initial-view-info" style="display:none">&nbsp;</a>
         <form id="home-search" onsubmit="$('#btn-submit').click();return false;">
         <div id="main">
+            <div class="detail-box" id="detail-box">
+                <span>Select a property</span>
+            </div>
             <div class="map-contain">
                 <div class="header">
                     <div class="title-contain">
@@ -38,7 +40,7 @@
                             <div class="option-controls">
                                 <div class="options">
                                     <label class="section-label">Type:</label>
-                                    <input type="checkbox" id="check1" />
+                                    <input type="checkbox" id="check1" checked />
                                     <label for="check1" class="btn btn-house group first">House</label>
                                     <input type="checkbox" id="check2" />
                                     <label for="check2" class="btn-lot btn group last">Lot</label>
@@ -68,13 +70,13 @@
             </div>
             <div id="sb-contain">
                 <div class="left-v-shadow"></div>
+                <div class="search-result">
+                    <span id="result-value" class="result-value">...</span>
+                    <span class="result-label">Matching results</span>
+                </div>
                 <div id="sb-contents">
-                    <div class="search-result">
-                        <span id="result-value" class="result-value">...</span>
-                        <span class="result-label">Matching results</span>
-                    </div>
                     <ul id="results-list"></ul>
-                    <div class="text-btn">
+                    <div class="text-btn next" id="btn-next">
                         <a href="#">Next 25</a>
                     </div>
                     <div id="too-many" class="too-many">
@@ -96,6 +98,12 @@
             </div>
         </div>
         <div style="display:none">
+            <div id="initial-view-info">
+                <h2>Welcome to Baltimore Vacants</h2>
+                <p>Please keep in mind that this web site is still in the beta phase and may contain errors. You should verify all informaiton found here with a third party.</p>
+                <p>To view vacants in an area, you can <b>zoom into a neighborhood</b> or type an <b>address in the search box</b> at the top of this page.</p>
+                <p>The toggle buttons in the upper right corner of this site allow you to turn on or off viewing of <b>Vacant houses</b>, <b>Vacant land</b> and <b>Police monitored (blue light) cameras</b>.</p>
+            </div>
             <div id="credit-text">
                 <h2>Developed with care and a passion for Baltimore</h2>
                 <p class="spread-word">
@@ -162,7 +170,7 @@
         <script type="text/javascript">
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-26641992-1']);
-            _gaq.push(['_setDomainName', 'baltimorevacants.appspot.com']);
+            _gaq.push(['_setDomainName', 'baltimorevacants.org']);
             _gaq.push(['_setAllowLinker', true]);
             _gaq.push(['_trackPageview']); (function() {
                 var ga = document.createElement('script');

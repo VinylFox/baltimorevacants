@@ -1,17 +1,41 @@
-var allProps = [], strings = {
+var allProps = [], ctr, R = 6371, strings = {
     geowait: "Loading properties...",
     geofailure: "Failed to load data.",
     geonoresults: "No properties to map in this area",
     bmoreCtrLat: 39.290555,
     bmoreCtrLng: -76.609604,
-    cmkey: '15e536b2a81349ea8e08f9a90800dd71'
+    cmkey: '15e536b2a81349ea8e08f9a90800dd71',
+    address: 'Address',
+    neighborhood: 'Neighborhood',
+    block: 'Block & Lot',
+    type: 'Property Type',
+    lat: 'Lattitude',
+    lon: 'Longitude',
+    distance: 'Dist. From Ctr (meters)'
 }, fn = {
+    dataSets: {
+        'qqcv-ihn5': true,
+        'gf6h-35ki': false,
+        'hdyb-27ak': false
+    },
+    dataSetsLoaded: {
+        'qqcv-ihn5': false,
+        'gf6h-35ki': false,
+        'hdyb-27ak': false
+    },
     cache: {
         markers : [],
         layers : [],
         clusters : []
     },
     clusterIcons : [],
+    activeIcon : L.Icon.extend({
+        iconUrl : '/static/resources/images/marker.png',
+        shadowUrl : '/static/resources/images/marker-shadow.png',
+        iconSize : new L.Point(25, 41),
+        shadowSize : new L.Point(41, 41),
+        iconAnchor : new L.Point(20, 20)
+    }),
     showMessage: function(msg){
         $('#search-msg-wrap').removeClass('invalid-wrap');
         $('#search-msg').html(msg);
@@ -42,20 +66,24 @@ var allProps = [], strings = {
         });
         lmap.invalidateSize();
         $('#sb-contents').css({
-            'height' : (($(window).height())) + 'px'
+            'height' : (($(window).height()) - 350) + 'px'
         });
     },
-    placeMarkers: function(points, clearPrevious){
-        var me = this;
-        this.i = 0;
-        if(clearPrevious === true && this.cache.cluster) {
+    clearMarkers: function(){
+        if(this.cache.cluster) {
             this.cache.cluster.clearLayers();
             lmap.removeLayer(this.cache.cluster);
             $.each(this.cache.markers, function(i,mkr){
                 lmap.removeLayer(mkr);
             });
         }
+        this.markerCluster = {};
         this.cache.cluster = new L.FeatureGroup();
+        allProps = [];
+    },
+    placeMarkers: function(points){
+        var me = this;
+        this.i = 0;
         this.markerCluster = {};
         if (lmap.getZoom() > 17){
             $.each(points, function(i, point) {
@@ -63,6 +91,7 @@ var allProps = [], strings = {
                     lat : point.lat,
                     lng : point.lng,
                     points : [point],
+                    type: point.type,
                     desc : point.desc
                 }
             });
@@ -74,6 +103,7 @@ var allProps = [], strings = {
                         lat : point.lat,
                         lng : point.lng,
                         points : [point],
+                        type: point.type,
                         desc : point.shortdesc
                     };
                 } else {
@@ -104,10 +134,17 @@ var allProps = [], strings = {
                 sx = 41;
                 sy = 41;
             }
+            if (point.type == 'camera'){
+                x = 'camera';
+                ix = 150;
+                iy = 150;
+                sx = 150;
+                sy = 150;   
+            }
             if(!me.clusterIcons[x]) {
                 me.clusterIcons[x] = L.Icon.extend({
-                    iconUrl : 'static/resources/images/' + x + '.png',
-                    shadowUrl : 'static/resources/images/'+s,
+                    iconUrl : '/static/resources/images/' + x + '.png',
+                    shadowUrl : '/static/resources/images/'+s,
                     iconSize : new L.Point(ix, iy),
                     shadowSize : new L.Point(sx, sy),
                     iconAnchor : new L.Point(20, 20)
@@ -128,9 +165,8 @@ var allProps = [], strings = {
     mapUpdateView: function(){
         //console.log('mapUpdateView');
         var setViewOnZoom = false, 
-            R = 6371,
-            ctr, 
-            total_cnt = 0;
+            total_cnt = 0,
+            addrList = $('#results-list');
 
         ctr = lmap.getCenter();
         
@@ -149,89 +185,94 @@ var allProps = [], strings = {
             return '';
         }
         
+        document.location.hash = "zll/"+lmap.getZoom()+"/"+slat+"/"+slon;
+
         fn.showWaitMessage(strings.geowait)
         $('#loading').fadeIn('slow');
-        $('#results-list').fadeOut('slow');
+        addrList.fadeOut('slow');
+
+        addrList.empty();
+        fn.resetAllDone();
+        fn.clearMarkers();
+
+        if ($('#check1').attr('checked')){
+            fn.fetchData('qqcv-ihn5', ctr, slat, slon, r, function(i,e){
+                var marker = new L.LatLng(e[13][1],e[13][2])
+                marker.desc = 'House: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                marker.shortdesc = 'House: '+e[9]+'<br/>';
+                marker.block = e[8].substr(0,4);
+                markers.push(marker);
+                allProps.push({
+                    address : e[9],
+                    neighborhood : e[10],
+                    block : e[8],
+                    type: 'house',
+                    lat: e[13][1],
+                    lon: e[13][2]
+                });
+            });
+        }else{
+            fn.dataSetsLoaded['qqcv-ihn5'] = true;
+        }
+
+        if ($('#check2').attr('checked')){
+            fn.fetchData('gf6h-35ki', ctr, slat, slon, r, function(i,e){
+                var marker = new L.LatLng(e[13][1],e[13][2])
+                marker.desc = 'Land: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
+                marker.shortdesc = 'Land: '+e[9]+'<br/>';
+                marker.block = e[8].substr(0,4);
+                markers.push(marker);
+                allProps.push({
+                    address : e[9],
+                    neighborhood : e[10],
+                    block : e[8],
+                    type: 'lot',
+                    lat: e[13][1],
+                    lon: e[13][2]
+                });
+            });
+        }else{
+            fn.dataSetsLoaded['gf6h-35ki'] = true;
+        }
         
+        if ($('#check3').attr('checked')){
+            fn.fetchData('hdyb-27ak', ctr, slat, slon, r, function(i,e){
+                var marker = new L.LatLng(e[12][1],e[12][2])
+                marker.desc = 'Camera: '+e[8]+'<br/>'+e[10]+'<br/>'+e[11];
+                marker.shortdesc = 'Camera: '+e[8]+'<br/>';
+                marker.block = e[8].substr(0,4);
+                marker.type = 'camera';
+                markers.push(marker);
+                allProps.push({
+                    address : e[8],
+                    neighborhood : e[10],
+                    block : e[0],
+                    type: 'camera',
+                    lat: e[12][1],
+                    lon: e[12][2]
+                });
+            });
+        }else{
+            fn.dataSetsLoaded['hdyb-27ak'] = true;
+        }
+    },
+
+    fetchData: function(datasetId,ctr,slat,slon,r,processMarkerFn){
         $.ajax({
-            url: '/data/qqcv-ihn5/location_1/'+slat+'/'+slon+'/'+r,
+            url: '/api/data/'+datasetId+'/location_1/'+slat+'/'+slon+'/'+r,
             dataType: 'json',
             success: function(data) {
+                fn.dataSetsLoaded[datasetId] = true;
                 if (data.data && data.data.length > 0){
                     var d = data.data;
                     if (d.length > 0){
-                        vacantMarkers = [];
-                        jQuery.each(d, function(i,e){
-                            var marker = new L.LatLng(e[13][1],e[13][2])
-                            marker.desc = 'House: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
-                            marker.shortdesc = 'House: '+e[9]+'<br/>';
-                            marker.block = e[8].substr(0,4);
-                            vacantMarkers.push(marker);
-                            allProps.push({
-                                address : e[9],
-                                neighborhood : e[10],
-                                block : e[8],
-                                type: 'house',
-                                lat: e[13][1],
-                                lon: e[13][2]
-                            });
-                        });
-                        fn.placeMarkers(vacantMarkers, true);
+                        markers = [];
+                        jQuery.each(d, processMarkerFn);
+                        fn.placeMarkers(markers);
+
+                        fn.isAllDone();
+
                     }
-                    $.ajax({
-                        url: '/data/gf6h-35ki/location_1/'+slat+'/'+slon+'/'+r,
-                        dataType: 'json',
-                        success: function(data2) {
-                            if (data2.data && data2.data.length > 0){
-                                var d = data2.data;
-                                if (d.length > 0){
-                                    vacantMarkers = [];
-                                    jQuery.each(d, function(i,e){
-                                        var marker = new L.LatLng(e[13][1],e[13][2])
-                                        marker.desc = 'Land: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
-                                        marker.shortdesc = 'Land: '+e[9]+'<br/>';
-                                        marker.block = e[8].substr(0,4);
-                                        vacantMarkers.push(marker);
-                                        allProps.push({
-                                            address : e[9],
-                                            neighborhood : e[10],
-                                            block : e[8],
-                                            type: 'lot',
-                                            lat: e[13][1],
-                                            lon: e[13][2]
-                                        });
-                                    });
-                                    fn.placeMarkers(vacantMarkers, false);
-                                }
-                            }
-                            var addrList = $('#results-list');
-                            addrList.empty();
-                            $.each(allProps,function(i, prop){
-                                var x = (ctr.lng-parseFloat(prop.lon)) * Math.cos((parseFloat(prop.lat)+ctr.lat)/2);
-                                var y = (ctr.lat-parseFloat(prop.lat));
-                                var d = Math.sqrt(x*x + y*y) * R;
-                                prop.distance = d;
-                            });
-                            allProps.sort(function(a,b){
-                                return a.distance - b.distance;
-                            });
-                            $.each(allProps,function(i, prop){
-                                if (i < 26){
-                                    addrList.append('<li class="'+prop.type+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+prop.address+'</span><span class="address">'+prop.neighborhood+'</span><span class="block">'+prop.block+' ('+Math.round(prop.distance)+'m)</span></div></li>');
-                                }
-                            });
-                            $('#results-list').fadeIn('slow');
-                            $('#result-value').html(data.data.length+data2.data.length);
-                            $('#loading').fadeOut('slow');
-                            fn.hideWaitMessage();
-                        },
-                        failure: function(){
-                            fn.showErrorMessage(strings.geofailure)
-                        },
-                        error: function(){
-                            fn.showErrorMessage(strings.geofailure);
-                        }
-                    });
                 }else{
                     fn.showErrorMessage(strings.geonoresults);
                 }
@@ -243,8 +284,78 @@ var allProps = [], strings = {
                 fn.showErrorMessage(strings.geofailure);
             }
         });
-        
     },
+
+    isAllDone: function(){
+        
+        if (fn.dataSetsLoaded['qqcv-ihn5'] && fn.dataSetsLoaded['gf6h-35ki'] && fn.dataSetsLoaded['hdyb-27ak']){
+            $.each(allProps,function(i, prop){
+                var x = (ctr.lng-parseFloat(prop.lon)) * Math.cos((parseFloat(prop.lat)+ctr.lat)/2);
+                var y = (ctr.lat-parseFloat(prop.lat));
+                var d = Math.sqrt(x*x + y*y) * R;
+                prop.distance = d;
+            });
+            allProps.sort(function(a,b){
+                return a.distance - b.distance;
+            });
+            fn.renderResults(0,25);
+            $('#results-list').fadeIn('slow');
+            $('#result-value').html(allProps.length);
+            $('#loading').fadeOut('slow');
+            fn.hideWaitMessage();
+            $('#initial').hide();
+            if (allProps.length > 25){
+                $('#btn-next').show();
+            }else{
+                $('#btn-next').hide();
+            }
+        }
+
+    },
+
+    renderResults: function(start, end){
+        var addrList = $('#results-list');
+        $.each(allProps,function(i, prop){
+            if (i >= start && i <= end){
+                addrList.append('<li class="'+prop.type+'" data-idx="'+i+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+prop.address+'</span><span class="address">'+prop.neighborhood+'</span></div></li>');
+            }
+        });
+    },
+
+    resetAllDone: function(){
+        fn.dataSetsLoaded = {
+            'qqcv-ihn5': false,
+            'gf6h-35ki': false,
+            'hdyb-27ak': false
+        }
+    },
+
+    onListClick: function(ev){
+        $('#results-list').find('li').removeClass('active');
+        $(ev.currentTarget).addClass('active');
+        fn.showPropDetails(allProps[parseInt(ev.currentTarget.getAttribute('data-idx'),10)])
+    },
+
+    showPropDetails: function(prop){
+        if (this.cache.active){
+            this.cache.active.clearLayers();
+            lmap.removeLayer(this.cache.active);
+        }
+        this.cache.active = new L.FeatureGroup();
+        var dtBox = $('#detail-box'),
+            list = '';
+        $.each(prop, function( key, value ) {
+            list += '<div class="detail-property">'+strings[key]+':</div><div class="detail-value">'+value+'</div>'
+        });
+        dtBox.replaceWith('<div class="detail-box" id="detail-box">'+list+'</div>');
+        var latlng = new L.LatLng(prop.lat, prop.lon),
+            mkr = new L.Marker(latlng, {
+                icon : new this.activeIcon()
+            });
+            this.cache.active.addLayer(mkr);
+        lmap.addLayer(this.cache.active);
+    },
+
     updatePano: function(e){
         /*if (e){
             var loc = new google.maps.LatLng(e.target._latlng.lat,e.target._latlng.lng);
@@ -264,39 +375,51 @@ var allProps = [], strings = {
             });
         }*/
     }
-}, lmap, tileLayer, slat, slon, panorama;
+}, lmap, tileLayer, slat = strings.bmoreCtrLat, slon = strings.bmoreCtrLng, panorama, curZoom = 12;
 
 $(document).ready(function(){
     
     $(window).resize(fn.resizePage);
 
     $( ".options" ).buttonset().click(function(){
-        console.log(arguments);
+        fn.mapUpdateView();
     });
-    $( "a", ".text-btn" ).button();
-    $( "a", ".text-btn" ).click(function() { return false; });
+    $('#btn-next').button();
+    $('#btn-next').click(function() { return false; });
 
-    $("a#credits").fancybox({
+    $("#credits").fancybox({
         'autoDimensions' : true
     });
     
-    $( "#search-box" ).click(function() {
-        $( "#search-box" ).toggleClass( "active-search");
+    $("#search-box").click(function() {
+        $("#search-box").toggleClass("active-search");
     });
     
     $('#result-list').hide();
     $('#loading').hide();
+    $('#btn-next').hide();
     
-    tileLayer = new L.TileLayer('http://{s}.tile.cloudmade.com/'+strings.cmkey+'/997/256/{z}/{x}/{y}.png', {
+    $('#results-list').delegate('li', 'click', fn.onListClick);
+
+    if (document.location.hash !== ''){
+        var hashParts = document.location.hash.replace('#','').split('/');
+        if (hashParts[0] == 'zll'){
+            curZoom = hashParts[1];
+            slat = hashParts[2];
+            slon = hashParts[3];
+        }
+    }
+
+    tileLayer = new L.TileLayer('http://{s}.tile.cloudmade.com/'+strings.cmkey+'/59617/256/{z}/{x}/{y}.png', {
         maxZoom : 18
     });
     lmap = new L.Map('lmapcontainer',{
         layers : [tileLayer],
-        zoom : 12,
+        zoom : curZoom,
         maxZoom : 18,
         zoomControl : true,
         attributionControl : false,
-        center : new L.LatLng(strings.bmoreCtrLat, strings.bmoreCtrLng)
+        center : new L.LatLng(slat, slon)
     });
     lmap.addLayer(tileLayer);
     
@@ -321,4 +444,17 @@ $(document).ready(function(){
     
     fn.resizePage();
     
+    function initialinfo() {
+        if (STARTLOC == ''){
+            $("a#initialinfo").fancybox({
+                'autoDimensions' : true
+            }).click();
+        }else{
+            $('#address').val(STARTLOC);
+            $('#btn-submit').click();
+        }
+    }
+
+    setTimeout(initialinfo,2000);
+
 });
