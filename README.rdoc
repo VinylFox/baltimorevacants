@@ -9,20 +9,30 @@ The site (in it's current state) displays a map with markers pulled from locatio
 This site is meant to be free and open so that anyone can commit to the source code and in turn add to the value of the site. *What this means is that you should fork this code and make the changes you want to see, then submit a pull request when ready.*
 
 The following is a list of what this site needs done:
-* just use raw Python in data.py, so it can be run locally under Apache (split data fetch from App Engine features)
 * A beautiful design
 * Make your own suggestion!
 
 == The Site
 
 The site can be found at:
-http://baltimorevacants.appspot.com
-
-Note that it's permanent home will eventually be www.baltimorevacants.org.
+http://www.baltimorevacants.org
 
 == Developing
 
-This site is deployed on Google App Engine, so to get it running locally you will need the Google App Engine SDK for Python (http://code.google.com/appengine/downloads.html) as well as Python installed on your development machine.
+This site is developed on a typical LAMP setup, using mod_rewrite to handle the "rest" interface.
+
+You will need to create a db.php file in the root that creates a connection to your local mysql database, it should look something like this:
+
+<?php
+
+mysql_connect("localhost", "baltimorevacants", "mypassword");
+mysql_select_db("baltimorevacants");
+
+?>
+
+The database itself is really up in the air right now, it's not used for anything to do with displaying vacant properties, however the plan is to store home ownership data in it along with whatever else we decide would be useful.
+
+Create your local database using the db.sql file.
 
 == License
 
