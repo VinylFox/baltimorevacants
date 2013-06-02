@@ -2,9 +2,9 @@ Baltimore Vacants is a web site that will let you browse and see details about v
 
 The site uses Baltimore City's own open data to get the list of currently vacant properties, and since the data is pulled directly from Baltimore's Open Data, the data is up to date as soon as Baltimore City updates it.
 
-The site (in it's current state) displays a map with markers pulled from locations in Baltimore's Open Data. By default it starts in the geographic center of Baltimore City - panning or zooming the map will re-query Baltimore's Open Data for new locations within the new bounds.
+The site (in its current state) displays a map with markers pulled from locations in Baltimore's Open Data. By default it starts in the geographic center of Baltimore City - panning or zooming the map will re-query Baltimore's Open Data for new locations within the new bounds.
 
-== Community Driven
+== Community 
 
 This site is meant to be free and open so that anyone can commit to the source code and in turn add to the value of the site. *What this means is that you should fork this code and make the changes you want to see, then submit a pull request when ready.*
 
