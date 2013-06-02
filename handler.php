@@ -45,103 +45,162 @@ if ($param1 == 'data') {
     $uid = $param2;
     $column_name = $param3;
 
-    $col_url = "http://".$domain."/api/views/".$uid."/columns.json";
-    //echo "url:".$col_url."|";
-    $col_file = file_get_contents($col_url);
-    //echo "resp:".$col_file;
-    $col_data = json_decode($col_file);
-    //$col_data = $col_obj;
-    //echo "data:".$col_data[0]->fieldName;
-    //echo "length:".count($col_data);
-
-    for ($i = 0; $i < count($col_data); $i++) {
-        $column = $col_data[$i];
-        //echo "field name:".$column->fieldName;
-        if ($column->fieldName == $column_name){
-            $columnId = $column->id;
-        }
-    }
-
-    //echo "columnId:".$columnId."|";
-
     $lon = round($param4,6);
     $lat = round($param5,6);
     $radius = intval($param6);
 
-    $postdata = json_encode(
-        array(
-            "originalViewId" => $uid,
-            "name" => "Inline View",
-            "query" => array(
-                "filterCondition" => array(
-                    "type" => "operator",
-                    "value" => "AND",
-                    "children" => array(
-                        0 => array(
-                            "type" => "operator",
-                            "value" => "WITHIN_CIRCLE",
-                            "children" => array(
-                                0 => array(
-                                    "columnId" => $columnId,
-                                    "type" => "column"
-                                ), 1 => array(
-                                    "type" => "literal",
-                                    "value" => $lon
-                                ), 2 => array(
-                                    "type" => "literal",
-                                    "value" => $lat
-                                ), 3 => array(
-                                    "type" => "literal",
-                                    "value" => $radius
+    $cachefile = './cache/vacant_prop_'.strval($lon).'_'.strval($lat).'_'.strval($radius).'.json';
+    if (file_exists($cachefile)){
+        $result = file_get_contents($cachefile);
+        $items = json_decode($result);
+        $datalen = count($items);
+        $json_data = Array();
+    }else{
+
+        $col_url = "http://".$domain."/api/views/".$uid."/columns.json";
+        //echo "url:".$col_url."|";
+        $col_file = file_get_contents($col_url);
+        //echo "resp:".$col_file;
+        $col_data = json_decode($col_file);
+        //$col_data = $col_obj;
+        //echo "data:".$col_data[0]->fieldName;
+        //echo "length:".count($col_data);
+
+        for ($i = 0; $i < count($col_data); $i++) {
+            $column = $col_data[$i];
+            //echo "field name:".$column->fieldName;
+            if ($column->fieldName == $column_name){
+                $columnId = $column->id;
+            }
+        }
+
+        $postdata = json_encode(
+            array(
+                "originalViewId" => $uid,
+                "name" => "Inline View",
+                "query" => array(
+                    "filterCondition" => array(
+                        "type" => "operator",
+                        "value" => "AND",
+                        "children" => array(
+                            0 => array(
+                                "type" => "operator",
+                                "value" => "WITHIN_CIRCLE",
+                                "children" => array(
+                                    0 => array(
+                                        "columnId" => $columnId,
+                                        "type" => "column"
+                                    ), 1 => array(
+                                        "type" => "literal",
+                                        "value" => $lon
+                                    ), 2 => array(
+                                        "type" => "literal",
+                                        "value" => $lat
+                                    ), 3 => array(
+                                        "type" => "literal",
+                                        "value" => $radius
+                                    )
                                 )
                             )
                         )
                     )
                 )
             )
-        )
-    );
+        );
 
-    //6hXvZJ8M
+        //6hXvZJ8M
 
-    $data_len = strlen($postdata);
+        $data_len = strlen($postdata);
+        
+        //echo json_encode($postdata);
+
+        //echo $data;
+
+        $fp = fsockopen($domain, 80, $undefined, $undefined, 120);
+
+        fputs($fp, "POST $path HTTP/1.0\r\n");
+        fputs($fp, "Host: $domain\r\n");
+        fputs($fp, "Content-type: application/xml\r\n");
+        fputs($fp, "Content-length: " . $data_len . "\r\n");
+        fputs($fp, "X-App-Token: " . $token . "\r\n");
+        fputs($fp, "Connection: keep-alive\r\n\r\n");
+        fputs($fp, $postdata);
+
+        $result = ''; 
+        $i = 0;
+        $capture = false;
+        while(!feof($fp)) {
+            $line = trim(strval(fgets($fp, 128)));
+            if ($line == "{"){
+                $capture = true;
+            }
+            if ($capture && $line != '' && $line != '0'){
+                //echo $i . " : " . $line . "\r\n";
+                $result .= preg_replace('/[^(\x20-\x7F)]*/','', $line);
+            }
+            $i++;
+        }
+
+        fclose($fp);
+
+        //echo $result;
+
+        $json_data = json_decode($result);
+
+        $items = Array();
+        for ($i=0;$i<count($json_data->data);$i++){
+            $items[] = Array(
+                $json_data->data[$i][8],
+                $json_data->data[$i][9],
+                $json_data->data[$i][10],
+                $json_data->data[$i][11],
+                $json_data->data[$i][12],
+                Array(
+                    $json_data->data[$i][13][1],
+                    $json_data->data[$i][13][2]
+                )
+            );
+        }
+
+        $datalen = count($items);
     
-    //echo json_encode($postdata);
-
-    //echo $data;
-
-    $fp = fsockopen($domain, 80, $undefined, $undefined, 120);
-
-    fputs($fp, "POST $path HTTP/1.0\r\n");
-    fputs($fp, "Host: $domain\r\n");
-    fputs($fp, "Content-type: application/xml\r\n");
-    fputs($fp, "Content-length: " . $data_len . "\r\n");
-    fputs($fp, "X-App-Token: " . $token . "\r\n");
-    fputs($fp, "Connection: keep-alive\r\n\r\n");
-    fputs($fp, $postdata);
-
-    $result = ''; 
-    $i = 0;
-    $capture = false;
-    while(!feof($fp)) {
-        $line = trim(strval(fgets($fp, 128)));
-        if ($line == "{"){
-            $capture = true;
-        }
-        if ($capture && $line != '' && $line != '0'){
-            //echo $i . " : " . $line . "\r\n";
-            $result .= preg_replace('/[^(\x20-\x7F)]*/','', $line);
-        }
-        $i++;
+        $fp = fopen($cachefile, 'w');
+        fwrite($fp, json_encode($items)); 
+        fclose($fp);
     }
 
-    fclose($fp);
-
-    //echo $result;
-
-    $json_data = json_decode($result);
-
-    //echo $json_data->data;
+    if ($uid = 'qqcv-ihn5'){
+        $neighborhoods = Array();
+        for ($i=0;$i<$datalen;$i++){
+            if (!in_array($items[$i][2], $neighborhoods)){
+                $neighborhoods[] = $items[$i][2];
+            }
+        }
+        $resp['summary']['neighborhoods'] = $neighborhoods;
+        for ($i=0;$i<count($neighborhoods);$i++){
+            $base_sql = "SELECT * FROM csa_to_nsa WHERE nsa_name = '" . strval($neighborhoods[$i]) . "'";
+            $base_query = mysql_query($base_sql);
+            while($row = mysql_fetch_array($base_query)) {
+                $cachefile = './cache/bnia_'.preg_replace("/[^A-Za-z0-9 ]/Usi",'_',str_replace(' ', '_', $row['csa_name'])).'.json';
+                if (file_exists($cachefile)){
+                    $bnia_resp = file_get_contents($cachefile);
+                }else{
+                    $bnia_resp = file_get_contents('http://bniajfi.org/VS11/Indicators/2010?bound='.urlencode($row['csa_name']), true);
+                    $fp = fopen($cachefile, 'w');
+                    fwrite($fp, $bnia_resp); 
+                    fclose($fp);
+                }
+                $bnia_data = json_decode($bnia_resp, true);
+                $bnia_object = Array();
+                for ($k=0;$k<count($bnia_data);$k++){
+                    if (isset($bnia_data[$k]['Data'][0]['Result']) && $bnia_data[$k]['Data'][0]['Result'] !== 'NA'){
+                        $bnia_object[$bnia_data[$k]['ShortName']] = $bnia_data[$k]['Data'][0]['Result'];
+                    }
+                }
+                $resp['summary']['bnia'][preg_replace("/[^A-Za-z0-9 ]/Usi",'_',str_replace(' ', '_', $neighborhoods[$i]))] = $bnia_object;
+            }
+        }
+    }
 
     if (property_exists($json_data, 'message')){
         $resp['error'] = $json_data->message;        
@@ -153,13 +212,15 @@ if ($param1 == 'data') {
         $resp['success'] = true;
     }
 
-    if (property_exists($json_data, 'data')){
-        $resp['results'] = count($json_data->data);
-        $resp['data'] = $json_data->data;
+    if (property_exists($json_data, 'data') || count($items) > 0){
+        $resp['results'] = count($items);
+        $resp['data'] = $items;
     }else{
         $resp['results'] = 0;
         $resp['data'] = Array();
     }
+
+
 
 } else if ($param1 == 'property') {
     if ($param2 == 'geo'){

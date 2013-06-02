@@ -24,6 +24,7 @@ var allProps = [], ctr, R = 6371, strings = {
         'hdyb-27ak': false
     },
     cache: {
+        data: {},
         markers : [],
         layers : [],
         clusters : []
@@ -36,6 +37,13 @@ var allProps = [], ctr, R = 6371, strings = {
         shadowSize : new L.Point(41, 41),
         iconAnchor : new L.Point(20, 20)
     }),
+    toTitleCase: function(str){
+        if (str && str.replace){
+            return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }else{
+            return str;
+        }
+    },
     showMessage: function(msg){
         $('#search-msg-wrap').removeClass('invalid-wrap');
         $('#search-msg').html(msg);
@@ -197,18 +205,18 @@ var allProps = [], ctr, R = 6371, strings = {
 
         if ($('#check1').attr('checked')){
             fn.fetchData('qqcv-ihn5', ctr, slat, slon, r, function(i,e){
-                var marker = new L.LatLng(e[13][1],e[13][2])
-                marker.desc = 'House: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
-                marker.shortdesc = 'House: '+e[9]+'<br/>';
-                marker.block = e[8].substr(0,4);
+                var marker = new L.LatLng(e[5][0],e[5][1])
+                marker.desc = 'House: '+e[1]+'<br/>'+e[2]+'<br/>'+e[0];
+                marker.shortdesc = 'House: '+e[1]+'<br/>';
+                marker.block = e[0].substr(0,4);
                 markers.push(marker);
                 allProps.push({
-                    address : e[9],
-                    neighborhood : e[10],
-                    block : e[8],
+                    address : e[1],
+                    neighborhood : e[2],
+                    block : e[0],
                     type: 'house',
-                    lat: e[13][1],
-                    lon: e[13][2]
+                    lat: e[5][0],
+                    lon: e[5][1]
                 });
             });
         }else{
@@ -217,7 +225,7 @@ var allProps = [], ctr, R = 6371, strings = {
 
         if ($('#check2').attr('checked')){
             fn.fetchData('gf6h-35ki', ctr, slat, slon, r, function(i,e){
-                var marker = new L.LatLng(e[13][1],e[13][2])
+                var marker = new L.LatLng(e[5][0],e[5][1])
                 marker.desc = 'Land: '+e[12]+'<br/>'+e[10]+'<br/>'+e[9]+'<br/>'+e[8];
                 marker.shortdesc = 'Land: '+e[9]+'<br/>';
                 marker.block = e[8].substr(0,4);
@@ -227,8 +235,8 @@ var allProps = [], ctr, R = 6371, strings = {
                     neighborhood : e[10],
                     block : e[8],
                     type: 'lot',
-                    lat: e[13][1],
-                    lon: e[13][2]
+                    lat: e[5][0],
+                    lon: e[5][1]
                 });
             });
         }else{
@@ -237,7 +245,7 @@ var allProps = [], ctr, R = 6371, strings = {
         
         if ($('#check3').attr('checked')){
             fn.fetchData('hdyb-27ak', ctr, slat, slon, r, function(i,e){
-                var marker = new L.LatLng(e[12][1],e[12][2])
+                var marker = new L.LatLng(e[5][0],e[5][1])
                 marker.desc = 'Camera: '+e[8]+'<br/>'+e[10]+'<br/>'+e[11];
                 marker.shortdesc = 'Camera: '+e[8]+'<br/>';
                 marker.block = e[8].substr(0,4);
@@ -248,8 +256,8 @@ var allProps = [], ctr, R = 6371, strings = {
                     neighborhood : e[10],
                     block : e[0],
                     type: 'camera',
-                    lat: e[12][1],
-                    lon: e[12][2]
+                    lat: e[5][0],
+                    lon: e[5][1]
                 });
             });
         }else{
@@ -269,9 +277,8 @@ var allProps = [], ctr, R = 6371, strings = {
                         markers = [];
                         jQuery.each(d, processMarkerFn);
                         fn.placeMarkers(markers);
-
+                        fn.cache.data[datasetId] = data;
                         fn.isAllDone();
-
                     }
                 }else{
                     fn.showErrorMessage(strings.geonoresults);
@@ -317,7 +324,7 @@ var allProps = [], ctr, R = 6371, strings = {
         var addrList = $('#results-list');
         $.each(allProps,function(i, prop){
             if (i >= start && i <= end){
-                addrList.append('<li class="'+prop.type+'" data-idx="'+i+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+prop.address+'</span><span class="address">'+prop.neighborhood+'</span></div></li>');
+                addrList.append('<li class="'+prop.type+'" data-idx="'+i+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+fn.toTitleCase(prop.address)+'</span><span class="address">'+fn.toTitleCase(prop.neighborhood)+'</span></div></li>');
             }
         });
     },
@@ -345,7 +352,7 @@ var allProps = [], ctr, R = 6371, strings = {
         var dtBox = $('#detail-box'),
             list = '';
         $.each(prop, function( key, value ) {
-            list += '<div class="detail-property">'+strings[key]+':</div><div class="detail-value">'+value+'</div>'
+            list += '<div class="detail-property">'+strings[key]+':</div><div class="detail-value">'+fn.toTitleCase(value)+'</div>'
         });
         dtBox.replaceWith('<div class="detail-box" id="detail-box">'+list+'</div>');
         var latlng = new L.LatLng(prop.lat, prop.lon),
@@ -354,6 +361,30 @@ var allProps = [], ctr, R = 6371, strings = {
             });
             this.cache.active.addLayer(mkr);
         lmap.addLayer(this.cache.active);
+        var values = [],
+        labels = [];
+        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].female10, 10));
+        labels.push("Female");
+        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].male10, 10));
+        labels.push("Male");
+        $("bnia-details").show();
+        $("#bnia-sex").find('svg').remove();
+        Raphael("bnia-sex", 220, 250).pieChart(130, 130, 80, values, labels, "#fff");
+        var values = [],
+        labels = [];
+        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].paa10, 10));
+        labels.push("African American");
+        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].pwhite10, 10));
+        labels.push("Caucasian");
+        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].pasi10, 10));
+        labels.push("Asian");
+        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].p2more10, 10));
+        labels.push("Two or More Races");
+        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].phisp10, 10));
+        labels.push("Hispanic");
+        $("bnia-details").show();
+        $("#bnia-race").find('svg').remove();
+        Raphael("bnia-race", 220, 250).pieChart(130, 130, 80, values, labels, "#fff");
     },
 
     updatePano: function(e){

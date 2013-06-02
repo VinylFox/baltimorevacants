@@ -16,8 +16,17 @@
         <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="/static/js/fancybox/jquery.fancybox-1.3.4.js"></script>
         <script type="text/javascript" src="/static/js/fancybox/jquery.easing-1.3.pack.js"></script>
+        <script type="text/javascript" src="/static/js/raphael-min.js"></script>
+        <script type="text/javascript" src="/static/js/pie.js"></script>
     </head>
     <body>
+        <div id="bnia-details">
+            <div class="bnia-area-title">Community Statistical Area</div>
+            <div class="bnia-stat-title">Gender</div>
+            <div id="bnia-sex"></div>
+            <div class="bnia-stat-title">Ethnicity</div>
+            <div id="bnia-race"></div>
+        </div>
         <a id="initialinfo" href="#initial-view-info" style="display:none">&nbsp;</a>
         <form id="home-search" onsubmit="$('#btn-submit').click();return false;">
         <div id="main">
