@@ -122,7 +122,7 @@
                     Blight is a major issue for many American cities, particularly those who have undergone major economic and cultural changes since the mid 20th centruy.
                 </p>
                 <p>
-                    The goal of this application is to shed light on the current situation in Baltimore. Far too many homes are unoccupied and as a result draining city resources, not providing annual tax revenue and presenting over health and safety issues for citizens.
+                    The goal of this application is to shed light on the current situation in Baltimore. Far too many homes are unoccupied and as a result draining city resources, not providing annual tax revenue and presenting other health and safety issues for citizens.
                 </p>
                 <p>
                     Help support Open Data and Baltimore by sharing this app with your friends, family and those willing to make an investment in this city.
