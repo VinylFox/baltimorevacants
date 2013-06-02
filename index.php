@@ -4,10 +4,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Baltimore Vacants</title>
         <meta name="author" content="Shea Frederick">
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css">
         <link rel="stylesheet" href="/static/resources/stylesheets/screen.css">
         <link rel="stylesheet" href="/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
         <script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
-        <script type="application/javascript" src="/static/js/leaflet.js"></script>
+        <script type="application/javascript" src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
         <script type="application/javascript" src="/static/js/jquery-ui-1.8.16.custom.min.js"></script>
         <script>var STARTLOC = '<?php if(isset($_GET['loc'])){ print $_GET['loc']; } ?>';</script>
         <script type="application/javascript" src="/static/js/site.js?ver=1"></script>
@@ -18,14 +19,37 @@
         <script type="text/javascript" src="/static/js/fancybox/jquery.easing-1.3.pack.js"></script>
         <script type="text/javascript" src="/static/js/raphael-min.js"></script>
         <script type="text/javascript" src="/static/js/pie.js"></script>
+        <script type="text/javascript" src="/static/js/csa_shapes.js"></script>
     </head>
     <body>
         <div id="bnia-details">
             <div class="bnia-area-title">Community Statistical Area</div>
-            <div class="bnia-stat-title">Gender</div>
-            <div id="bnia-sex"></div>
-            <div class="bnia-stat-title">Ethnicity</div>
-            <div id="bnia-race"></div>
+            <div class="bnia-stat-column">
+                <div class="bnia-stat-title">Gender</div>
+                <div class="bnia-stat-data" id="bnia-sex"></div>
+                <div class="bnia-stat-title">Ethnicity</div>
+                <div class="bnia-stat-data" id="bnia-race"></div>
+                <div class="bnia-stat-title">Age</div>
+                <div class="bnia-stat-data" id="bnia-age"></div>
+            </div>
+            <div class="bnia-stat-column">
+                Average Household Size: 
+                Median Household Income: 
+                Median Price of Homes Sold:
+                Median Number of Days on the Market:
+                Number of Homes Sold:
+                Percentage of Housing Units that are Owner-Occupied:
+                Percentage of Properties Under Mortgage Foreclosure:
+                Percentage of Residential Properties that are Vacant and Abandoned:
+                Percentage of Residential Properties with Housing Violations (Excluding Vacants):
+                Percentage of Properties with Rehabilitation Permits Exceeding $5,000:
+                Total Number of Residential Properties:
+                High School Completion Rate:
+                Liquor Outlet density (per 1,000 Residents):
+                Percent  Population 16-64 Employed:
+                Unemployment Rate:
+                Percent of Employed Residents who Work Outside the City:
+            </div>
         </div>
         <a id="initialinfo" href="#initial-view-info" style="display:none">&nbsp;</a>
         <form id="home-search" onsubmit="$('#btn-submit').click();return false;">

@@ -30,13 +30,13 @@ var allProps = [], ctr, R = 6371, strings = {
         clusters : []
     },
     clusterIcons : [],
-    activeIcon : L.Icon.extend({
+    activeIcon : {
         iconUrl : '/static/resources/images/marker.png',
         shadowUrl : '/static/resources/images/marker-shadow.png',
         iconSize : new L.Point(25, 41),
         shadowSize : new L.Point(41, 41),
         iconAnchor : new L.Point(20, 20)
-    }),
+    },
     toTitleCase: function(str){
         if (str && str.replace){
             return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -150,17 +150,17 @@ var allProps = [], ctr, R = 6371, strings = {
                 sy = 150;   
             }
             if(!me.clusterIcons[x]) {
-                me.clusterIcons[x] = L.Icon.extend({
+                me.clusterIcons[x] = {
                     iconUrl : '/static/resources/images/' + x + '.png',
                     shadowUrl : '/static/resources/images/'+s,
                     iconSize : new L.Point(ix, iy),
                     shadowSize : new L.Point(sx, sy),
                     iconAnchor : new L.Point(20, 20)
-                });
+                };
             }
             var latlng = new L.LatLng(point.lat, point.lng),
                 mkr = new L.Marker(latlng, {
-                    icon : new me.clusterIcons[x]()
+                    icon : L.icon(me.clusterIcons[x])
                 }),
                 popupContent = point.desc;
             mkr.on('click',fn.updatePano);
@@ -171,7 +171,6 @@ var allProps = [], ctr, R = 6371, strings = {
         lmap.addLayer(this.cache.cluster);
     },
     mapUpdateView: function(){
-        //console.log('mapUpdateView');
         var setViewOnZoom = false, 
             total_cnt = 0,
             addrList = $('#results-list');
@@ -321,12 +320,18 @@ var allProps = [], ctr, R = 6371, strings = {
     },
 
     renderResults: function(start, end){
+        fn.curStart = start;
+        fn.curEnd = end;
         var addrList = $('#results-list');
         $.each(allProps,function(i, prop){
             if (i >= start && i <= end){
                 addrList.append('<li class="'+prop.type+'" data-idx="'+i+'"><div class="street-view"></div><div class="listing"><span class="icon"></span><span class="address">'+fn.toTitleCase(prop.address)+'</span><span class="address">'+fn.toTitleCase(prop.neighborhood)+'</span></div></li>');
             }
         });
+    },
+
+    propertiesNextPage: function(){
+        fn.renderResults(fn.curStart+25, fn.curEnd+25);
     },
 
     resetAllDone: function(){
@@ -350,41 +355,81 @@ var allProps = [], ctr, R = 6371, strings = {
         }
         this.cache.active = new L.FeatureGroup();
         var dtBox = $('#detail-box'),
-            list = '';
+            list = '',
+            csa = fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[ -]/g,'_')].csa;
         $.each(prop, function( key, value ) {
             list += '<div class="detail-property">'+strings[key]+':</div><div class="detail-value">'+fn.toTitleCase(value)+'</div>'
+        });
+        if (fn.csa_polyline){
+            lmap.removeLayer(fn.csa_polyline);
+        }
+        $.each(csa_shapes.features, function(idx, itm){
+            if (itm.properties.name == csa){
+                var points = [],
+                    csa_points = itm.geometry.coordinates[0];
+                    $.each(csa_points, function(idx2, itm2){
+                        points[idx2] = [];
+                        $.each(itm2, function(idx3, itm3){
+                            if (itm3.length == 2){
+                                points[idx2].push([itm3[1],itm3[0]]);
+                            }
+                        });
+                    });
+                fn.csa_polyline = L.multiPolyline(points,{
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.5
+                }).addTo(lmap);
+            }
         });
         dtBox.replaceWith('<div class="detail-box" id="detail-box">'+list+'</div>');
         var latlng = new L.LatLng(prop.lat, prop.lon),
             mkr = new L.Marker(latlng, {
-                icon : new this.activeIcon()
+                icon : L.icon(this.activeIcon)
             });
             this.cache.active.addLayer(mkr);
         lmap.addLayer(this.cache.active);
+        var bniadata = fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[ -]/g,'_')];
         var values = [],
         labels = [];
-        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].female10, 10));
+        values.push(parseInt(bniadata.female10, 10));
         labels.push("Female");
-        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].male10, 10));
+        values.push(parseInt(bniadata.male10, 10));
         labels.push("Male");
-        $("bnia-details").show();
         $("#bnia-sex").find('svg').remove();
-        Raphael("bnia-sex", 220, 250).pieChart(130, 130, 80, values, labels, "#fff");
+        Raphael("bnia-sex", 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
         var values = [],
         labels = [];
-        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].paa10, 10));
+        values.push(parseInt(bniadata.paa10, 10));
         labels.push("African American");
-        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].pwhite10, 10));
+        values.push(parseInt(bniadata.pwhite10, 10));
         labels.push("Caucasian");
-        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].pasi10, 10));
+        values.push(parseInt(bniadata.pasi10, 10));
         labels.push("Asian");
-        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].p2more10, 10));
+        values.push(parseInt(bniadata.p2more10, 10));
         labels.push("Two or More Races");
-        values.push(parseInt(fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(' ','_')].phisp10, 10));
+        values.push(parseInt(bniadata.phisp10, 10));
         labels.push("Hispanic");
-        $("bnia-details").show();
+        values.push(parseInt(bniadata.ppac10, 10));
+        labels.push("Other");
         $("#bnia-race").find('svg').remove();
-        Raphael("bnia-race", 220, 250).pieChart(130, 130, 80, values, labels, "#fff");
+        Raphael("bnia-race", 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
+        var values = [],
+        labels = [];
+        values.push(parseInt(bniadata.age5_10, 10));
+        labels.push("0-5");
+        values.push(parseInt(bniadata.age18_10, 10));
+        labels.push("6-18");
+        values.push(parseInt(bniadata.age24_10, 10));
+        labels.push("19-24");
+        values.push(parseInt(bniadata.age64_10, 10));
+        labels.push("25-64");
+        values.push(parseInt(bniadata.age65_10, 10));
+        labels.push("65+");
+        $("#bnia-age").find('svg').remove();
+        Raphael("bnia-age", 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
+        $("#bnia-details").find('.bnia-area-title').text(prop.neighborhood);
+        $('#bnia-details').show();
     },
 
     updatePano: function(e){
@@ -410,13 +455,17 @@ var allProps = [], ctr, R = 6371, strings = {
 
 $(document).ready(function(){
     
+    $('#bnia-details').hide();
+
     $(window).resize(fn.resizePage);
 
     $( ".options" ).buttonset().click(function(){
         fn.mapUpdateView();
     });
     $('#btn-next').button();
-    $('#btn-next').click(function() { return false; });
+    $('#btn-next').click(function() {
+        fn.propertiesNextPage();
+    });
 
     $("#credits").fancybox({
         'autoDimensions' : true

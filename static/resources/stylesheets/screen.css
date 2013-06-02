@@ -1270,10 +1270,39 @@ ul#results-list li.active {
 }
 
 #bnia-details {
-  background: url("/static/resources/images/black10.png") repeat 0 0;
+  background: url("/static/resources/images/black-tile-bg.png") repeat 0 0;
   position: absolute;
-  top: 10px;
-  left: 30px;
+  top: 130px;
+  left: 15px;
   z-index: 2000;
+}
 
+.bnia-stat-data {
+  text-align: center;
+}
+
+.bnia-stat-title {
+  width: 100%;
+  color: #FFF;
+  font-weight: normal;
+  height: 10px;
+  font-size: 15px;
+  text-align: center;
+  margin: 0 10px 0 10px;
+  font-family: 'Roboto Slab', serif;
+}
+
+.bnia-area-title {
+  width: 100%;
+  color: #FFF;
+  font-weight: normal;
+  height: 30px;
+  font-size: 20px;
+  margin: 10px 10px 0 10px;
+  font-family: 'Roboto Slab', serif;
+}
+
+.bnia-stat-column {
+  float: left;
+  width: 200px;
 }

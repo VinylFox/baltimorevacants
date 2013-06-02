@@ -192,10 +192,15 @@ if ($param1 == 'data') {
                 }
                 $bnia_data = json_decode($bnia_resp, true);
                 $bnia_object = Array();
-                for ($k=0;$k<count($bnia_data);$k++){
-                    if (isset($bnia_data[$k]['Data'][0]['Result']) && $bnia_data[$k]['Data'][0]['Result'] !== 'NA'){
-                        $bnia_object[$bnia_data[$k]['ShortName']] = $bnia_data[$k]['Data'][0]['Result'];
+                if ($bnia_data[0]['Data'][0]['Boundary'] !== null){
+                    $bnia_object['csa'] = $bnia_data[0]['Data'][0]['Boundary'];
+                    for ($k=0;$k<count($bnia_data);$k++){
+                        if (isset($bnia_data[$k]['Data'][0]['Result']) && $bnia_data[$k]['Data'][0]['Result'] !== 'NA'){
+                            $bnia_object[$bnia_data[$k]['ShortName']] = $bnia_data[$k]['Data'][0]['Result'];
+                        }
                     }
+                }else{
+                    $bnia_object['csa'] = $row['csa_name'].' Not Found';
                 }
                 $resp['summary']['bnia'][preg_replace("/[^A-Za-z0-9 ]/Usi",'_',str_replace(' ', '_', $neighborhoods[$i]))] = $bnia_object;
             }
