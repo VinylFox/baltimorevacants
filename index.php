@@ -109,9 +109,9 @@
         <div style="display:none">
             <div id="initial-view-info">
                 <h2>Welcome to Baltimore Vacants</h2>
-                <p>Please keep in mind that this web site is still in the beta phase and may contain errors. You should verify all informaiton found here with a third party.</p>
+                <p>Please keep in mind that this web site is still in the beta phase and may contain errors. You should verify all information found here with a third party.</p>
                 <p>To view vacants in an area, you can <b>zoom into a neighborhood</b> or type an <b>address in the search box</b> at the top of this page.</p>
-                <p>The toggle buttons in the upper right corner of this site allow you to turn on or off viewing of <b>Vacant houses</b>, <b>Vacant land</b> and <b>Police monitored (blue light) cameras</b>.</p>
+                <p>The toggle buttons in the upper right corner of this site allow you to turn on or off viewing of <b>Vacant houses</b>, <b>Vacant land</b> and <b>Police-monitored (blue light) cameras</b>.</p>
             </div>
             <div id="credit-text">
                 <h2>Developed with care and a passion for Baltimore</h2>
