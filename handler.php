@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ERROR | E_PARSE);
+
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
@@ -202,6 +204,7 @@ if ($param1 == 'data') {
                 }else{
                     $bnia_object['csa'] = $row['csa_name'].' Not Found';
                 }
+
                 $resp['summary']['bnia'][preg_replace("/[^A-Za-z0-9 ]/Usi",'_',str_replace(' ', '_', $neighborhoods[$i]))] = $bnia_object;
             }
         }

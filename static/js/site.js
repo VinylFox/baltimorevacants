@@ -1,3 +1,28 @@
+var usMoney = function(n, c){
+    var c = isNaN(c = Math.abs(c)) ? 2 : c, d = ".", t = ",", s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+var wholeNumber = function(n){
+    if (!isFinite(n)) {
+        return n;
+    }
+
+    var s = ""+n, abs = Math.abs(n), _, i;
+
+    if (abs >= 1000) {
+        _  = (""+abs).split(/\./);
+        i  = _[0].length % 3 || 3;
+
+        _[0] = s.slice(0,i + (n < 0)) +
+               _[0].slice(i).replace(/(\d{3})/g,',$1');
+
+        s = _.join('.');
+    }
+
+    return s;
+};
+
 var allProps = [], ctr, R = 6371, strings = {
     geowait: "Loading properties...",
     geofailure: "Failed to load data.",
@@ -163,7 +188,10 @@ var allProps = [], ctr, R = 6371, strings = {
                     icon : L.icon(me.clusterIcons[x])
                 }),
                 popupContent = point.desc;
-            mkr.on('click',fn.updatePano);
+            if (lmap.getZoom() > 17){
+                mkr.propdata = {};
+                mkr.on('click',fn.showPropDetails);
+            }
             mkr.bindPopup(popupContent);
             me.cache.markers.push(mkr);
             me.cache.cluster.addLayer(mkr);
@@ -188,7 +216,7 @@ var allProps = [], ctr, R = 6371, strings = {
             d = Math.sqrt(x*x + y*y) * R,
             r = Math.floor((d*10)*3);
         
-        if (r > 2000){
+        if (r > 3000){
             return '';
         }
         
@@ -429,6 +457,22 @@ var allProps = [], ctr, R = 6371, strings = {
         $("#bnia-age").find('svg').remove();
         Raphael("bnia-age", 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
         $("#bnia-details").find('.bnia-area-title').text(prop.neighborhood);
+        $("#hhsize10").text(Math.floor(bniadata.hhsize10*10)/10);
+        $("#mhhi10").text("$"+usMoney(bniadata.mhhi10));
+        $("#salepr10").text("$"+usMoney(bniadata.salepr10));
+        $("#dom10").text((bniadata.dom10));
+        $("#shomes10").text((bniadata.shomes10));
+        $("#ownroc10").text("%"+(bniadata.ownroc10));
+        $("#fore10").text("%"+(bniadata.fore10));
+        $("#vacant10").text("%"+(bniadata.vacant10));
+        $("#vio10").text("%"+(bniadata.vio10));
+        $("#resrehab10").text("%"+(bniadata.resrehab10));
+        $("#totalres10").text((bniadata.totalres10));
+        $("#compl10").text("%"+Math.floor(bniadata.compl10));
+        $("#liquor10").text("%"+Math.floor(bniadata.liquor10));
+        $("#empl10").text((bniadata.empl10));
+        $("#unempr10").text("%"+Math.floor(bniadata.unempr10));
+        $("#perresout10").text("%"+(bniadata.perresout10));
         $('#bnia-details').show();
     },
 

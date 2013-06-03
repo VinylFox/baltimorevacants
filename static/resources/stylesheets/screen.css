@@ -1302,7 +1302,47 @@ ul#results-list li.active {
   font-family: 'Roboto Slab', serif;
 }
 
-.bnia-stat-column {
+.bnia-stat-column.left {
   float: left;
-  width: 200px;
+  width: 170px;
+}
+
+.bnia-stat-column.right {
+  float: left;
+  width: 240px;
+}
+
+.bnia-stat-label {
+  font-family: 'Roboto Slab', serif;
+  color: #FFF;
+  font-size: 14px;
+  float: left;
+  margin: 5px 3px 5px 10px;
+}
+
+.bnia-stat-value {
+  font-family: 'Roboto Slab', serif;
+  color: #E0941B;
+  font-size: 14px;
+  float: left;
+  margin: 5px 3px 5px 0;
+}
+
+.bnia-indicators {
+  font-family: 'Roboto Slab', serif;
+  color: #E0941B;
+  font-size: 16px;
+  width: 100%;  
+  margin-bottom: 20px;
+}
+
+.bnia-logo {
+  background-image: url('/static/resources/images/bnia-logo-transparent.png');
+  background-size: 196px;
+  width: 240px;
+  height: 90px;
+  float: left;
+  background-repeat: no-repeat;
+  margin: 20px 0 0 20px;
+  cursor: pointer;
 }
