@@ -34,7 +34,7 @@ var allProps = [], ctr, R = 6371, strings = {
     neighborhood: 'Neighborhood',
     block: 'Block & Lot',
     type: 'Property Type',
-    lat: 'Lattitude',
+    lat: 'Latitude',
     lon: 'Longitude',
     distance: 'Dist. From Ctr (meters)'
 }, fn = {
