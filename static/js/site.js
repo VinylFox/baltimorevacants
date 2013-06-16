@@ -462,17 +462,17 @@ var allProps = [], ctr, R = 6371, strings = {
         $("#salepr10").text("$"+usMoney(bniadata.salepr10));
         $("#dom10").text((bniadata.dom10));
         $("#shomes10").text((bniadata.shomes10));
-        $("#ownroc10").text("%"+(bniadata.ownroc10));
-        $("#fore10").text("%"+(bniadata.fore10));
-        $("#vacant10").text("%"+(bniadata.vacant10));
-        $("#vio10").text("%"+(bniadata.vio10));
-        $("#resrehab10").text("%"+(bniadata.resrehab10));
+        $("#ownroc10").text((bniadata.ownroc10)+"%");
+        $("#fore10").text((bniadata.fore10)+"%");
+        $("#vacant10").text((bniadata.vacant10)+"%");
+        $("#vio10").text((bniadata.vio10)+"%");
+        $("#resrehab10").text((bniadata.resrehab10)+"%");
         $("#totalres10").text((bniadata.totalres10));
-        $("#compl10").text("%"+Math.floor(bniadata.compl10));
-        $("#liquor10").text("%"+Math.floor(bniadata.liquor10));
+        $("#compl10").text(Math.floor(bniadata.compl10)+"%");
+        $("#liquor10").text(Math.floor(bniadata.liquor10)+"%");
         $("#empl10").text((bniadata.empl10));
-        $("#unempr10").text("%"+Math.floor(bniadata.unempr10));
-        $("#perresout10").text("%"+(bniadata.perresout10));
+        $("#unempr10").text(Math.floor(bniadata.unempr10)+"%");
+        $("#perresout10").text((bniadata.perresout10)+"%");
         $('#bnia-details').show();
     },
 
