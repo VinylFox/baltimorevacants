@@ -51,7 +51,7 @@ if ($param1 == 'data') {
     $lat = round($param5,6);
     $radius = intval($param6);
 
-    $cachefile = './cache/vacant_prop_'.strval($lon).'_'.strval($lat).'_'.strval($radius).'.json';
+    $cachefile = './cache/'.$uid.'_'.strval($lon).'_'.strval($lat).'_'.strval($radius).'.json';
     if (file_exists($cachefile)){
         $result = file_get_contents($cachefile);
         $items = json_decode($result);
@@ -187,7 +187,7 @@ if ($param1 == 'data') {
                 if (file_exists($cachefile)){
                     $bnia_resp = file_get_contents($cachefile);
                 }else{
-                    $bnia_resp = file_get_contents('http://bniajfi.org/VS11/Indicators/2010?bound='.urlencode($row['csa_name']), true);
+                    $bnia_resp = file_get_contents('http://bniajfi.org/VS11/Indicators/2011?bound='.urlencode($row['csa_name']), true);
                     $fp = fopen($cachefile, 'w');
                     fwrite($fp, $bnia_resp); 
                     fclose($fp);

@@ -98,8 +98,8 @@
                         <p>
                             Spread the word:
                         </p>
-                        <span><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.baltimorevacants.com/" data-via="bmorevacants" data-text="Search for vacant houses and lots through out the city of Baltimore" data-count="horizontal">Tweet</a></span>
-                        <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.baltimorevacants.com&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:20px;" allowTransparency="true"></iframe>
+                        <span><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.baltimorevacants.org/" data-via="bmorevacants" data-text="Search for vacant houses and lots through out the city of Baltimore" data-count="horizontal">Tweet</a></span>
+                        <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.baltimorevacants.org&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:20px;" allowTransparency="true"></iframe>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@
             <div id="credit-text">
                 <h2>Developed with care and a passion for Baltimore</h2>
                 <p class="spread-word">
-                    Spread the word: <span><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.baltimorevacants.com/" data-via="bmorevacants" data-text="Search for vacant houses and lots through out the city of Baltimore" data-count="horizontal">Tweet</a></span><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.baltimorevacants.com&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:20px;" allowTransparency="true"></iframe>
+                    Spread the word: <span><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.baltimorevacants.org/" data-via="bmorevacants" data-text="Search for vacant houses and lots through out the city of Baltimore" data-count="horizontal">Tweet</a></span><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.baltimorevacants.org&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:20px;" allowTransparency="true"></iframe>
                 </p>
                 <p>
                     Blight is a major issue for many American cities, particularly those who have undergone major economic and cultural changes since the mid 20th centruy.
