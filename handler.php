@@ -17,6 +17,8 @@ include('db.php');
 @$param5 = $_GET['var5'];
 @$param6 = $_GET['var6'];
 
+@$city = 'Baltimore';
+
 $RADIUS = 6378135;
 $MI2ME = 0.000621371192;
 
@@ -187,7 +189,7 @@ if ($param1 == 'data') {
                 if (file_exists($cachefile)){
                     $bnia_resp = file_get_contents($cachefile);
                 }else{
-                    $bnia_resp = file_get_contents('http://bniajfi.org/VS11/Indicators/2011?bound='.urlencode($row['csa_name']), true);
+                    $bnia_resp = file_get_contents('http://bniajfi.org/getIndicator.php?bound='.urlencode($row['csa_name']).'&iYear=2012', true);
                     $fp = fopen($cachefile, 'w');
                     fwrite($fp, $bnia_resp); 
                     fclose($fp);
@@ -286,6 +288,35 @@ if ($param1 == 'data') {
     }
 } else if ($param1 == 'owner') {
     
+} else if ($param1 == 'autocomplete') {
+
+    $geo_query = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&input=" . urlencode($param2) . "&key=AIzaSyCpq4isEKP2F86bk578zz8MS3V9Fo69Afk&location=39.331267,-76.632679&radius=200&type=street_address&components=country:us";
+    $file = file_get_contents($geo_query);
+    $addr = json_decode($file);
+    $m = count($addr->predictions);
+    //echo $addr;
+    $resp['error'] = $addr->predictions;
+    if ($addr->status == "OK" and count($addr->predictions) > 0){
+        $result = $addr->predictions;
+        for($k=0;$k<count($result);$k++){
+            $hasCity = false;
+            for($l=0;$l<count($result[$k]->terms);$l++){
+                if ($city == $result[$k]->terms[$l]->value){
+                    $hasCity = true;
+                }
+            }
+            if ($hasCity){
+                $resp['data'][] = array('uid' => $result[$k]->id, 'address' => $result[$k]->terms[0]->value, 'full_address' => $result[$k]->description);
+                $m++;
+            }
+        }
+        $resp['success'] = true;
+        $resp['results'] = $m;
+    }else{
+        $resp['success'] = false;
+        $resp['results'] = 0;
+    }
+
 }
 
 echo json_encode($resp);

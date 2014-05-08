@@ -47,9 +47,7 @@
                 <div class="bnia-stat-label">Residential Properties:</div><div class="bnia-stat-value" id="totalres10"></div>
                 <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10"></div>
                 <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10"></div>
-                <div class="bnia-stat-label">Population Employed:</div><div class="bnia-stat-value" id="empl10"></div>
                 <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10"></div>
-                <div class="bnia-stat-label">Work Outside the City:</div><div class="bnia-stat-value" id="perresout10"></div>
                 <a href="http://bniajfi.org/communities" target="_blank"><div class="bnia-logo"></div></a>
             </div>
         </div>
@@ -92,7 +90,7 @@
                 </div>
                 <div class="footer">
                     <div class="footer-credit">
-                        <a id="credits" href="#credit-text">Developer Credits</a> &nbsp;&nbsp;&nbsp;  |  &nbsp;&nbsp;&nbsp;  Baltimore vacants data provided through <a href="http://data.baltimorecity.gov/" target="parent">Open Baltimore</a>
+                        <a id="credits" href="#credit-text">Developer Credits</a> &nbsp;&nbsp;&nbsp;  |  &nbsp;&nbsp;&nbsp;  Data provided through <a href="http://data.baltimorecity.gov/" target="parent">Open Baltimore</a>  &nbsp;&nbsp;&nbsp; |  &nbsp;&nbsp;&nbsp;  Map by <a href="http://www.openstreetmap.org/copyright" target="parent">&copy; OpenStreetMap contributors</a>
                     </div>
                     <div class="footer-social">
                         <p>
