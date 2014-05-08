@@ -524,7 +524,6 @@ $(document).ready(function() {
             url: "/api/autocomplete/"+request.term,
             dataType: "json",
             success: function( data ) {
-                console.log(data);
                 var i = 0, resp = [];
                 for (;i < data.data.length; i++){
                     resp.push({
