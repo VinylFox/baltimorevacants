@@ -295,7 +295,7 @@ if ($param1 == 'data') {
     $addr = json_decode($file);
     $m = count($addr->predictions);
     //echo $addr;
-    $resp['error'] = $addr->predictions;
+    $resp['error'] = $param1 . '|' . $param2 . '|' . $param3 . '|' . $geo_query;
     if ($addr->status == "OK" and count($addr->predictions) > 0){
         $result = $addr->predictions;
         for($k=0;$k<count($result);$k++){

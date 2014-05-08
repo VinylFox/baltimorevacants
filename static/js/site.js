@@ -516,12 +516,46 @@ var allProps = [],
 $(document).ready(function() {
 
     $("#address").autocomplete({
-      source: "/api/autocomplete/",
-      minLength: 2,
+      source: function( request, response ) {
+        if ( this.xhr ) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax({
+            url: "/api/autocomplete/"+request.term,
+            dataType: "json",
+            success: function( data ) {
+                console.log(data);
+                var i = 0, resp = [];
+                for (;i < data.data.length; i++){
+                    resp.push({
+                        label: data.data[i].address,
+                        value: data.data[i].full_address
+                    });
+                }
+                response( resp );
+            },
+            error: function() {
+                response([]);
+            }
+        });
+      },
+      minLength: 3,
       select: function( event, ui ) {
-        console.log( ui.item ?
-          "Selected: " + ui.item.value + " aka " + ui.item.id :
-          "Nothing selected, input was " + this.value );
+        var address = ui.item ? ui.item.value : '',
+            geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+                address: address
+            },
+            function(result) {
+                var dialog, len, point;
+                if (result.length > 1) {
+                    alert("Multiple matches were found.  Please provide a more specific address. ie: '3600 Roland Ave'");
+                } else {
+                    ctr = new L.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
+                    lmap.setView(ctr, 17);
+                }
+            }
+        );
       }
     });
 

@@ -5,16 +5,19 @@
         <title>Baltimore Vacants</title>
         <meta name="author" content="Shea Frederick">
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css">
+        <link rel="stylesheet" href="/static/resources/stylesheets/jquery-ui-1.10.4.custom.min.css">
         <link rel="stylesheet" href="/static/resources/stylesheets/screen.css">
         <link rel="stylesheet" href="/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-        <script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+
+        <script type="application/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
         <script type="application/javascript" src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
-        <script type="application/javascript" src="/static/js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script type="application/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+
         <script>var STARTLOC = '<?php if(isset($_GET['loc'])){ print $_GET['loc']; } ?>';</script>
+        
         <script type="application/javascript" src="/static/js/site.js?ver=1"></script>
         <script type="application/javascript" src="http://platform.twitter.com/widgets.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-        <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="/static/js/fancybox/jquery.fancybox-1.3.4.js"></script>
         <script type="text/javascript" src="/static/js/fancybox/jquery.easing-1.3.pack.js"></script>
         <script type="text/javascript" src="/static/js/raphael-min.js"></script>
