@@ -400,14 +400,14 @@ var allProps = [],
             this.cache.active = new L.FeatureGroup();
             var dtBox = $('#detail-box'),
                 list = '',
-                csa = fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[ -]/g, '_')].csa;
+                csa = fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[\/ -]/g, '_')].csa;
             $.each(prop, function(key, value) {
                 list += '<div class="detail-property">' + strings[key] + ':</div><div class="detail-value">' + fn.toTitleCase(value) + '</div>'
             });
             if (fn.csa_polyline) {
                 lmap.removeLayer(fn.csa_polyline);
             }
-            fn.csa_polyline = L.multiPolyline([fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[ -]/g, '_')].coordinates], {
+            fn.csa_polyline = L.multiPolyline([fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[\/ -]/g, '_')].coordinates], {
                 color: '#000'
             }).addTo(lmap);
             dtBox.replaceWith('<div class="detail-box" id="detail-box">' + list + '</div>');
@@ -417,7 +417,7 @@ var allProps = [],
                 });
             this.cache.active.addLayer(mkr);
             lmap.addLayer(this.cache.active);
-            var bniadata = fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[ -]/g, '_')];
+            var bniadata = fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[\/ -]/g, '_')];
             var values = [],
                 labels = [];
             values.push(parseInt(bniadata.female12, 10));
