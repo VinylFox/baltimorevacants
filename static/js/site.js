@@ -407,25 +407,9 @@ var allProps = [],
             if (fn.csa_polyline) {
                 lmap.removeLayer(fn.csa_polyline);
             }
-            $.each(csa_shapes.features, function(idx, itm) {
-                if (itm.properties.name == csa) {
-                    var points = [],
-                        csa_points = itm.geometry.coordinates[0];
-                    $.each(csa_points, function(idx2, itm2) {
-                        points[idx2] = [];
-                        $.each(itm2, function(idx3, itm3) {
-                            if (itm3.length == 2) {
-                                points[idx2].push([itm3[1], itm3[0]]);
-                            }
-                        });
-                    });
-                    fn.csa_polyline = L.multiPolyline(points, {
-                        color: 'red',
-                        fillColor: '#f03',
-                        fillOpacity: 0.5
-                    }).addTo(lmap);
-                }
-            });
+            fn.csa_polyline = L.multiPolyline([fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[ -]/g, '_')].coordinates], {
+                color: '#000'
+            }).addTo(lmap);
             dtBox.replaceWith('<div class="detail-box" id="detail-box">' + list + '</div>');
             var latlng = new L.LatLng(prop.lat, prop.lon),
                 mkr = new L.Marker(latlng, {
@@ -629,11 +613,7 @@ $(document).ready(function() {
     fn.resizePage();
 
     function initialinfo() {
-        if (STARTLOC == '') {
-            $("a#initialinfo").fancybox({
-                'autoDimensions': true
-            }).click();
-        } else {
+        if (STARTLOC !== '') {
             $('#address').val(STARTLOC);
             $('#btn-submit').click();
         }

@@ -187,8 +187,10 @@ if ($param1 == 'data') {
             while($row = mysql_fetch_array($base_query)) {
                 $cachefile = './cache/bnia_'.preg_replace("/[^A-Za-z0-9 ]/Usi",'_',str_replace(' ', '_', $row['csa_name'])).'.json';
                 if (file_exists($cachefile)){
+                    $resp['summary']['bniacached'] = true;
                     $bnia_resp = file_get_contents($cachefile);
                 }else{
+                    $resp['summary']['bniacached'] = false;
                     $bnia_resp = file_get_contents('http://bniajfi.org/getIndicator.php?bound='.urlencode($row['csa_name']).'&iYear=2012', true);
                     $fp = fopen($cachefile, 'w');
                     fwrite($fp, $bnia_resp); 
@@ -207,6 +209,14 @@ if ($param1 == 'data') {
                     $bnia_object['csa'] = $row['csa_name'].' Not Found';
                 }
 
+                $coordinates = Array();
+                $base_sql_c = "SELECT f.name, p.lat, p.lon FROM geo_feature f LEFT JOIN geo_feature_point p ON f.id = p.geo_feature_id WHERE f.type = 'csa' AND f.name = '".$row['csa_name']."'";
+                $base_query_c = mysql_query($base_sql_c);
+                while($row_c = mysql_fetch_array($base_query_c)) {
+                    $coordinates[] = [floatval($row_c['lon']),floatval($row_c['lat'])];
+                }
+
+                $bnia_object['coordinates'] = $coordinates;
                 $resp['summary']['bnia'][preg_replace("/[^A-Za-z0-9 ]/Usi",'_',str_replace(' ', '_', $neighborhoods[$i]))] = $bnia_object;
             }
         }

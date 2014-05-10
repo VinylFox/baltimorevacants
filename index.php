@@ -4,13 +4,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Baltimore Vacants</title>
         <meta name="author" content="Shea Frederick">
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css">
+        <link rel="stylesheet" href="/static/resources/stylesheets/leaflet.css">
         <link rel="stylesheet" href="/static/resources/stylesheets/jquery-ui-1.10.4.custom.min.css">
         <link rel="stylesheet" href="/static/resources/stylesheets/screen.css">
         <link rel="stylesheet" href="/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
-        <script type="application/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-        <script type="application/javascript" src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+        <script type="application/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+        <script type="application/javascript" src="/static/js/leaflet-src.js"></script>
         <script type="application/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
 
         <script>var STARTLOC = '<?php if(isset($_GET['loc'])){ print $_GET['loc']; } ?>';</script>
@@ -22,7 +22,6 @@
         <script type="text/javascript" src="/static/js/fancybox/jquery.easing-1.3.pack.js"></script>
         <script type="text/javascript" src="/static/js/raphael-min.js"></script>
         <script type="text/javascript" src="/static/js/pie.js"></script>
-        <script type="text/javascript" src="/static/js/csa_shapes.js"></script>
     </head>
     <body>
         <div id="bnia-details">
@@ -54,7 +53,6 @@
                 <a href="http://bniajfi.org/communities" target="_blank"><div class="bnia-logo"></div></a>
             </div>
         </div>
-        <a id="initialinfo" href="#initial-view-info" style="display:none">&nbsp;</a>
         <form id="home-search" onsubmit="$('#btn-submit').click();return false;">
         <div id="main">
             <div class="detail-box" id="detail-box">
@@ -134,12 +132,6 @@
             </div>
         </div>
         <div style="display:none">
-            <div id="initial-view-info">
-                <h2>Welcome to Baltimore Vacants</h2>
-                <p>Please keep in mind that this web site is still in the beta phase and may contain errors. You should verify all information found here with a third party.</p>
-                <p>To view vacants in an area, you can <b>zoom into a neighborhood</b> or type an <b>address in the search box</b> at the top of this page.</p>
-                <p>The toggle buttons in the upper right corner of this site allow you to turn on or off viewing of <b>Vacant houses</b>, <b>Vacant land</b> and <b>Police-monitored (blue light) cameras</b>.</p>
-            </div>
             <div id="credit-text">
                 <h2>Developed with care and a passion for Baltimore</h2>
                 <p class="spread-word">
