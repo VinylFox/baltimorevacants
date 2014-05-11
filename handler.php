@@ -240,7 +240,29 @@ if ($param1 == 'data') {
         $resp['data'] = Array();
     }
 
+} else if ($param1 == 'csa') {
 
+    $data = array();
+    $coordinates = array();
+    $csa = '';
+
+    $base_sql_c = "SELECT f.name, p.lat, p.lon FROM geo_feature f LEFT JOIN geo_feature_point p ON f.id = p.geo_feature_id WHERE f.type = 'csa'";
+    $base_query_c = mysql_query($base_sql_c);
+    while($row_c = mysql_fetch_array($base_query_c)) {
+        if ($csa != '' && $csa !== $row_c['name']){
+            $data[] = array(
+                "name" => $csa,
+                "coordinates" => $coordinates
+            );
+            $coordinates = Array();
+            $coordinates[] = [floatval($row_c['lon']),floatval($row_c['lat'])];
+        } else {
+            $coordinates[] = [floatval($row_c['lon']),floatval($row_c['lat'])];
+        }
+        $csa = $row_c['name'];
+    }
+
+    $resp['data'] = $data;
 
 } else if ($param1 == 'property') {
     if ($param2 == 'geo'){

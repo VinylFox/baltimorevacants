@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
         <script type="application/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-        <script type="application/javascript" src="/static/js/leaflet-src.js"></script>
+        <script type="application/javascript" src="/static/js/leaflet.js"></script>
         <script type="application/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
 
         <script>var STARTLOC = '<?php if(isset($_GET['loc'])){ print $_GET['loc']; } ?>';</script>
