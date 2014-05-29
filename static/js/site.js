@@ -232,6 +232,8 @@ var allProps = [],
                 d = Math.sqrt(x * x + y * y) * R,
                 r = Math.floor((d * 10) * 3);
 
+            fn.drawNeighborhoods(bounds);
+
             if (r > 3000) {
                 return '';
             }
@@ -306,6 +308,81 @@ var allProps = [],
             } else {
                 fn.dataSetsLoaded['hdyb-27ak'] = true;
             }
+        },
+
+        projectPoint: function(x, y) {
+            var point = lmap.latLngToLayerPoint(new L.LatLng(y, x));
+            this.stream.point(point.x, point.y);
+        },
+
+        drawNeighborhoods: function(bounds){
+
+          d3.json('NeighborhoodCensus.geojson', function(data) {
+
+              var color = d3.scale.linear()
+                .domain([0, 100])
+                .range(["white", "red"]);
+
+            $('#mapsvg').remove();
+
+            var svg = d3.select(lmap.getPanes().overlayPane)
+                .append('svg')
+                .attr('width', window.screen.width)
+                .attr('height', window.screen.height)
+                .attr('id',"mapsvg");
+            var g = svg.append('g').attr('class', 'leaflet-zoom-hide');
+            var transform = d3.geo.transform({ 
+                    point: fn.projectPoint 
+                }),
+                path = d3.geo.path().projection(transform),
+                bounds = path.bounds(data);
+            console.log(bounds);
+            var topLeft = bounds[0],
+                bottomRight = bounds[1];
+
+            svg.attr('width', bottomRight[0] - topLeft[0])
+                .attr('height', bottomRight[1] - topLeft[1])
+                .style('left', topLeft[0] + 'px')
+                .style('top', topLeft[1] + 'px');
+
+            g.attr('transform', 'translate(' + -topLeft[0] + ',' + -topLeft[1] + ')');
+
+            var feature = g.selectAll('path')
+                .data(data.features)
+                .enter()
+                .append('path')
+                .attr("fill", function(d) {
+                    d.color = color((d.properties.Vacant == 0 || d.properties.Housing == 0) ? 0 : (d.properties.Vacant / d.properties.Housing * 100).toFixed());
+                    return d.color;
+                })
+                .attr("stroke", function(d) {
+                    return d3.rgb(d.color).darker(2);
+                })
+                .attr("stroke-width", 3)
+                .attr('d', path)
+                .style("fill-opacity", 0.6)
+                .append("title")
+                .text(function(d) { return d.properties.Name + ' (' + d.properties.Vacant + ' of ' + d.properties.Housing + ') ' + ((d.properties.Vacant == 0 || d.properties.Housing == 0) ? 0 : (d.properties.Vacant / d.properties.Housing * 100).toFixed()) + '%'; });
+
+            feature.on('mouseover', function(d) {
+                console.log(d.properties.Name);
+              //updateFlyout(d.properties, type);
+            });
+
+
+            feature.on('click', function(d) {
+                console.log(d);
+              //setPathOnclick(d.properties, type);
+            });
+
+            feature.on('mouseout', function(d) {
+              /*flyoutTimer = setTimeout(function() {
+                $('#flyout').fadeOut(50);
+              }, 50);*/
+            });
+
+          });
+
         },
 
         fetchData: function(datasetId, ctr, slat, slon, r, processMarkerFn) {
@@ -408,7 +485,7 @@ var allProps = [],
                 lmap.removeLayer(fn.csa_polyline);
             }
             fn.csa_polyline = L.multiPolyline([fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[\/ -]/g, '_')].coordinates], {
-                color: '#000'
+                color: '#00F'
             }).addTo(lmap);
             dtBox.replaceWith('<div class="detail-box" id="detail-box">' + list + '</div>');
             var latlng = new L.LatLng(prop.lat, prop.lon),
@@ -590,7 +667,11 @@ $(document).ready(function() {
     });
     lmap.addLayer(tileLayer);
 
+    lmap.on('zoomend', fn.mapUpdateView);
+    lmap.on('viewreset', fn.mapUpdateView)
     lmap.on('moveend', fn.mapUpdateView);
+
+    fn.drawNeighborhoods();
 
     $('#btn-submit').click(function() {
         var address = $('#address').val() + ",Baltimore,MD,USA",

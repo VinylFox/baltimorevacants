@@ -213,7 +213,7 @@ if ($param1 == 'data') {
                 $base_sql_c = "SELECT f.name, p.lat, p.lon FROM geo_feature f LEFT JOIN geo_feature_point p ON f.id = p.geo_feature_id WHERE f.type = 'csa' AND f.name = '".$row['csa_name']."'";
                 $base_query_c = mysql_query($base_sql_c);
                 while($row_c = mysql_fetch_array($base_query_c)) {
-                    $coordinates[] = [floatval($row_c['lon']),floatval($row_c['lat'])];
+                    $coordinates[] = array(floatval($row_c['lon']),floatval($row_c['lat']));
                 }
 
                 $bnia_object['coordinates'] = $coordinates;
@@ -254,10 +254,10 @@ if ($param1 == 'data') {
                 "name" => $csa,
                 "coordinates" => $coordinates
             );
-            $coordinates = Array();
-            $coordinates[] = [floatval($row_c['lon']),floatval($row_c['lat'])];
+            $coordinates = array();
+            $coordinates[] = array(floatval($row_c['lon']),floatval($row_c['lat']));
         } else {
-            $coordinates[] = [floatval($row_c['lon']),floatval($row_c['lat'])];
+            $coordinates[] = array(floatval($row_c['lon']),floatval($row_c['lat']));
         }
         $csa = $row_c['name'];
     }
@@ -318,8 +318,94 @@ if ($param1 == 'data') {
         $lng = $result->longitude;
         $resp['data'][0] = array('uid' => $result->woeid, 'address' => $param2, 'quality' => $result->quality, 'location_geo' => array('lat' => $lat, 'lon' => $lng));
     }
-} else if ($param1 == 'owner') {
+} else if ($param1 == 'owner_name') {
     
+    $collection = $db->property;
+    $query = array('$text' => array('$search' => strtoupper($param2)));
+    //$query = array('owner_occupied' => true);
+    $cursor = $collection->find($query);
+
+    $i = 0;
+
+    foreach ($cursor as $obj) {
+        if ($i < 50) {
+            $resp['data'][] = $obj;
+        }
+        $i++;
+    }
+
+    $resp['results'] = $cursor->count();
+    $resp['success'] = true;
+
+} else if ($param1 == 'summary') {
+    
+    $collection = $db->property;
+    $query = array(
+                array(
+                    '$match' => array(
+                        'owner_occupied' => false, 
+                        'city_owned' => false
+                    )
+                ),
+                array( 
+                    '$group' => array(
+                        '_id' => '$'.$param2,
+                        'totalSize' => array(
+                            '$sum' => 1
+                        )
+                    )
+                ),
+                array(
+                    '$sort' => array(
+                        'totalSize' => -1
+                    )
+                )
+            );
+    $query[0]['$match'][$param2] = array(
+        '$ne' => ''
+    );
+    $resp['error'] = $query;
+    $cursor = $collection->aggregate($query);
+
+    $resp['data'] = $cursor['result'];
+
+    $resp['results'] = count($resp['data']);
+    $resp['success'] = true;
+
+} else if ($param1 == 'owner_state') {
+    
+    $collection = $db->property;
+    $query = array(
+                array(
+                    '$match' => array(
+                        'owner_occupied' => false, 
+                        'city_owned' => false,
+                        'owner_state' => array(
+                            '$ne' => ''
+                        )
+                    )
+                ),
+                array( 
+                    '$group' => array(
+                        '_id' => '$owner_state',
+                        'totalSize' => array(
+                            '$sum' => 1
+                        )
+                    )
+                ),
+                array(
+                    '$sort' => array(
+                        'totalSize' => -1
+                    )
+                )
+            );
+    $cursor = $collection->aggregate($query);
+
+    $resp['data'] = $cursor['result'];
+
+    $resp['results'] = count($resp['data']);
+    $resp['success'] = true;
+
 } else if ($param1 == 'autocomplete') {
 
     $geo_query = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&input=" . urlencode($param2) . "&key=AIzaSyCpq4isEKP2F86bk578zz8MS3V9Fo69Afk&location=39.331267,-76.632679&radius=200&type=street_address&components=country:us";

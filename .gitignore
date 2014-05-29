@@ -1,1 +1,4 @@
 apache
+node_modules
+cache/*
+db.php

@@ -11,17 +11,16 @@
 
         <script type="application/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
         <script type="application/javascript" src="/static/js/leaflet.js"></script>
+        <script type="application/javascript" src="/static/js/d3.js"></script>
         <script type="application/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
-
         <script>var STARTLOC = '<?php if(isset($_GET['loc'])){ print $_GET['loc']; } ?>';</script>
-        
         <script type="application/javascript" src="/static/js/site.js?ver=1"></script>
         <script type="application/javascript" src="http://platform.twitter.com/widgets.js"></script>
-        <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-        <script type="text/javascript" src="/static/js/fancybox/jquery.fancybox-1.3.4.js"></script>
-        <script type="text/javascript" src="/static/js/fancybox/jquery.easing-1.3.pack.js"></script>
-        <script type="text/javascript" src="/static/js/raphael-min.js"></script>
-        <script type="text/javascript" src="/static/js/pie.js"></script>
+        <script type="application/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script type="application/javascript" src="/static/js/fancybox/jquery.fancybox-1.3.4.js"></script>
+        <script type="application/javascript" src="/static/js/fancybox/jquery.easing-1.3.pack.js"></script>
+        <script type="application/javascript" src="/static/js/raphael-min.js"></script>
+        <script type="application/javascript" src="/static/js/pie.min.js"></script>
     </head>
     <body>
         <div id="bnia-details">
