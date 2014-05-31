@@ -1269,12 +1269,28 @@ ul#results-list li.active {
   font-size: 11px;
 }
 
+.compare-left {
+  float: left;
+}
+
+.compare-right {
+  float: left;
+}
+
 #bnia-details {
   background: url("/static/resources/images/black-tile-bg.png") repeat 0 0;
   position: absolute;
   top: 130px;
   left: 15px;
-  z-index: 2000;
+  z-index: 99;
+}
+
+#bnia-details_left {
+  background: url("/static/resources/images/black-tile-bg.png") repeat 0 0;
+}
+
+#bnia-details_right {
+  background: url("/static/resources/images/black-tile-bg.png") repeat 0 0;
 }
 
 .bnia-stat-data {

@@ -240,6 +240,46 @@ if ($param1 == 'data') {
         $resp['data'] = Array();
     }
 
+} else if ($param1 == 'bnia') {
+
+    $base_sql = "SELECT * FROM csa_to_nsa WHERE nsa_name = '" . strval($param2) . "'";
+    $base_query = mysql_query($base_sql);
+    while($row = mysql_fetch_array($base_query)) {
+        $cachefile = './cache/bnia_'.preg_replace("/[^A-Za-z0-9 ]/Usi",'_',str_replace(' ', '_', $row['csa_name'])).'.json';
+        if (file_exists($cachefile)){
+            $resp['summary']['bniacached'] = true;
+            $bnia_resp = file_get_contents($cachefile);
+        }else{
+            $resp['summary']['bniacached'] = false;
+            $bnia_resp = file_get_contents('http://bniajfi.org/getIndicator.php?bound='.urlencode($row['csa_name']).'&iYear=2012', true);
+            $fp = fopen($cachefile, 'w');
+            fwrite($fp, $bnia_resp); 
+            fclose($fp);
+        }
+        $bnia_data = json_decode($bnia_resp, true);
+        $bnia_object = Array();
+        if ($bnia_data[0]['Data'][0]['Boundary'] !== null){
+            $bnia_object['csa'] = $bnia_data[0]['Data'][0]['Boundary'];
+            for ($k=0;$k<count($bnia_data);$k++){
+                if (isset($bnia_data[$k]['Data'][0]['Result']) && $bnia_data[$k]['Data'][0]['Result'] !== 'NA'){
+                    $bnia_object[$bnia_data[$k]['ShortName']] = $bnia_data[$k]['Data'][0]['Result'];
+                }
+            }
+        }else{
+            $bnia_object['csa'] = $row['csa_name'].' Not Found';
+        }
+
+        $coordinates = Array();
+        $base_sql_c = "SELECT f.name, p.lat, p.lon FROM geo_feature f LEFT JOIN geo_feature_point p ON f.id = p.geo_feature_id WHERE f.type = 'csa' AND f.name = '".$row['csa_name']."'";
+        $base_query_c = mysql_query($base_sql_c);
+        while($row_c = mysql_fetch_array($base_query_c)) {
+            $coordinates[] = array(floatval($row_c['lon']),floatval($row_c['lat']));
+        }
+
+        $bnia_object['coordinates'] = $coordinates;
+        $resp['data'][] = $bnia_object;
+    }
+
 } else if ($param1 == 'csa') {
 
     $data = array();
