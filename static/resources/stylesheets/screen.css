@@ -1277,6 +1277,14 @@ ul#results-list li.active {
   float: left;
 }
 
+.green {
+  color: #0F0 !important;
+}
+
+.blue {
+  color: #00F !important;
+}
+
 #bnia-details {
   background: url("/static/resources/images/black-tile-bg.png") repeat 0 0;
   position: absolute;

@@ -576,11 +576,28 @@ var allProps = [],
             if ($("#farms10"+el)){
                 $("#farms10"+el).text("%" + Math.floor(bniadata.farms12));
             }
-            if ($("#leadvio10"+el)){
-                $("#leadvio10"+el).text("%" + Math.floor(bniadata.leadvio12));
+            if ($("#leadviol10"+el)){
+                $("#leadviol10"+el).text("%" + Math.floor(bniadata.leadtest12));
             }
             //regvote12 / voted12
             
+        },
+
+        compareAndColorize: function(){
+            var els = ["hhsize10","mhhi10","salepr10","dom10","shomes10","ownroc10","fore10","vacant10","vio10","resrehab10","totalres10","compl10","liquor10","unempr10","weather10","hfai10","nomail10","novhcl10","totemp10","farms10","leadviol10"];
+            for (var i = 0; i < els.length; i++){
+                var val1 = parseFloat($('#'+els[i]+'_left').html().replace('$','').replace('%','')),
+                    val2 = parseFloat($('#'+els[i]+'_right').html().replace('$','').replace('%',''));
+                console.log(val1 + ' | ' + val2);
+                if (val1 > val2){
+                    $('#'+els[i]+'_left').addClass('green');
+                } else if (val1 < val2){
+                    $('#'+els[i]+'_right').addClass('green');
+                } else {
+                    $('#'+els[i]+'_left').addClass('blue');
+                    $('#'+els[i]+'_right').addClass('blue');
+                }
+            }
         },
 
         updatePano: function(e) {
@@ -697,6 +714,7 @@ $(document).ready(function() {
                                 $("#bniacompare").fancybox().trigger('click');
                                 fn.populateBNIAView('_left', fn.cache.data['qqcv-ihn5'].summary.bnia[fn.currentneighborhood.replace(/[\/ -]/g, '_')], fn.currentneighborhood);
                                 fn.populateBNIAView('_right', d[0], result[0].address_components[2].long_name);
+                                fn.compareAndColorize();
                             } else {
                                 fn.showErrorMessage(strings.geonoresults);
                             }
