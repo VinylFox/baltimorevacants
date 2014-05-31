@@ -1320,6 +1320,13 @@ ul#results-list li.active {
   margin: 5px 3px 5px 10px;
 }
 
+.bnia-compare {
+  font-family: 'Roboto Slab', serif;
+  color: #FFF;
+  font-size: 14px;
+  float: left;
+}
+
 .bnia-stat-value {
   font-family: 'Roboto Slab', serif;
   color: #E0941B;

@@ -635,6 +635,10 @@ $(document).ready(function() {
         'autoDimensions': true
     });
 
+    $("#bniacompare").fancybox({
+        'autoDimensions': true
+    });
+
     $("#search-box").click(function() {
         $("#search-box").toggleClass("active-search");
     });
