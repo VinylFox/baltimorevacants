@@ -496,6 +496,7 @@ var allProps = [],
                 });
             this.cache.active.addLayer(mkr);
             lmap.addLayer(this.cache.active);
+            fn.currentneighborhood = prop.neighborhood;
             fn.populateBNIAView('', fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[\/ -]/g, '_')], prop.neighborhood);
             $('#bnia-details').show();
 
@@ -509,8 +510,8 @@ var allProps = [],
             labels.push("Female");
             values.push(parseInt(bniadata.male12, 10));
             labels.push("Male");
-            $("#bnia-sex").find('svg').remove();
-            Raphael("bnia-sex", 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
+            $("#bnia-sex"+el).find('svg').remove();
+            Raphael("bnia-sex"+el, 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
             var values = [],
                 labels = [];
             values.push(parseInt(bniadata.paa12, 10));
@@ -525,8 +526,8 @@ var allProps = [],
             labels.push("Hispanic");
             values.push(parseInt(bniadata.ppac12, 10));
             labels.push("Other");
-            $("#bnia-race").find('svg').remove();
-            Raphael("bnia-race", 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
+            $("#bnia-race"+el).find('svg').remove();
+            Raphael("bnia-race"+el, 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
             var values = [],
                 labels = [];
             values.push(parseInt(bniadata.age512, 10));
@@ -541,7 +542,7 @@ var allProps = [],
             labels.push("65+");
             $("#bnia-age"+el).find('svg').remove();
             Raphael("bnia-age"+el, 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
-            $("#bnia-details"+el).find('.bnia-area-title').text(neighborhood);
+            $("#bnia-details"+el).find('.bnia-area-title').text(neighborhood.toUpperCase());
             $("#hhsize10"+el).text(Math.floor(bniadata.hhsize12 * 10) / 10);
             $("#mhhi10"+el).text("$" + usMoney(bniadata.mhhi12));
             $("#salepr10"+el).text("$" + bniadata.salepr12);
@@ -557,6 +558,29 @@ var allProps = [],
             $("#liquor10"+el).text("%" + Math.floor(bniadata.liquor12));
             $("#unempr10"+el).text("%" + Math.floor(bniadata.unempr12));
 
+            if ($("#weather10"+el)){
+                $("#weather10"+el).text("%" + Math.floor(bniadata.weather12));
+            }
+            if ($("#hfai10"+el)){
+                $("#hfai10"+el).text(Math.floor(bniadata.hfai12));
+            }
+            if ($("#nomail10"+el)){
+                $("#nomail10"+el).text("%" + Math.floor(bniadata.nomail12));
+            }
+            if ($("#novhcl10"+el)){
+                $("#novhcl10"+el).text("%" + Math.floor(bniadata.novhcl12));
+            }
+            if ($("#totemp10"+el)){
+                $("#totemp10"+el).text(Math.floor(bniadata.totemp12));
+            }
+            if ($("#farms10"+el)){
+                $("#farms10"+el).text("%" + Math.floor(bniadata.farms12));
+            }
+            if ($("#leadvio10"+el)){
+                $("#leadvio10"+el).text("%" + Math.floor(bniadata.leadvio12));
+            }
+            //regvote12 / voted12
+            
         },
 
         updatePano: function(e) {
@@ -627,7 +651,7 @@ $(document).ready(function() {
       }
     });
 	
-	    $("#comparesearch").autocomplete({
+	$("#comparesearch").autocomplete({
       source: function( request, response ) {
         if ( this.xhr ) {
             this.xhr.abort();
@@ -663,25 +687,27 @@ $(document).ready(function() {
                     alert("Multiple matches were found.  Please provide a more specific address. ie: '3600 Roland Ave'");
                 } else {
 				
-            $.ajax({
-                url: '/api/bnia/' + result[0].address_components[2].long_name,
-                dataType: 'json',
-                success: function(data) {
-                    
-                    if (data.data && data.data.length > 0) {
-                        var d = data.data;
-                        console.log(d)
-                    } else {
-                        fn.showErrorMessage(strings.geonoresults);
-                    }
-                },
-                failure: function() {
-                    fn.showErrorMessage(strings.geofailure)
-                },
-                error: function() {
-                    fn.showErrorMessage(strings.geofailure);
-                }
-            });
+                    $.ajax({
+                        url: '/api/bnia/' + result[0].address_components[2].long_name,
+                        dataType: 'json',
+                        success: function(data) {
+                            
+                            if (data.data && data.data.length > 0) {
+                                var d = data.data;
+                                $("#bniacompare").fancybox().trigger('click');
+                                fn.populateBNIAView('_left', fn.cache.data['qqcv-ihn5'].summary.bnia[fn.currentneighborhood.replace(/[\/ -]/g, '_')], fn.currentneighborhood);
+                                fn.populateBNIAView('_right', d[0], result[0].address_components[2].long_name);
+                            } else {
+                                fn.showErrorMessage(strings.geonoresults);
+                            }
+                        },
+                        failure: function() {
+                            fn.showErrorMessage(strings.geofailure)
+                        },
+                        error: function() {
+                            fn.showErrorMessage(strings.geofailure);
+                        }
+                    });
         
 				}
                     

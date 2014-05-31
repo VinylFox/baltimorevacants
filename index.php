@@ -158,6 +158,13 @@
                             <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10_left"></div>
                             <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10_left"></div>
                             <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10_left"></div>
+                            <div class="bnia-stat-label">Weatherized:</div><div class="bnia-stat-value" id="weather10_left"></div>
+                            <div class="bnia-stat-label">Healty Food Index:</div><div class="bnia-stat-value" id="hfai10_left"></div>
+                            <div class="bnia-stat-label">No Mail Delivery:</div><div class="bnia-stat-value" id="nomail10_left"></div>
+                            <div class="bnia-stat-label">No Vehichle Households:</div><div class="bnia-stat-value" id="novhcl10_left"></div>
+                            <div class="bnia-stat-label">Total Employed:</div><div class="bnia-stat-value" id="totemp10_left"></div>
+                            <div class="bnia-stat-label">Subsidized Lunches:</div><div class="bnia-stat-value" id="farms10_left"></div>
+                            <div class="bnia-stat-label">Lead Violations:</div><div class="bnia-stat-value" id="leadviol10_left"></div>
                         </div>
                     </div>
                 </div>
@@ -187,6 +194,13 @@
                             <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10_right"></div>
                             <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10_right"></div>
                             <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10_right"></div>
+                            <div class="bnia-stat-label">Weatherized:</div><div class="bnia-stat-value" id="weather10_right"></div>
+                            <div class="bnia-stat-label">Healty Food Index:</div><div class="bnia-stat-value" id="hfai10_right"></div>
+                            <div class="bnia-stat-label">No Mail Delivery:</div><div class="bnia-stat-value" id="nomail10_right"></div>
+                            <div class="bnia-stat-label">No Vehichle Households:</div><div class="bnia-stat-value" id="novhcl10_right"></div>
+                            <div class="bnia-stat-label">Total Employed:</div><div class="bnia-stat-value" id="totemp10_right"></div>
+                            <div class="bnia-stat-label">Subsidized Lunches:</div><div class="bnia-stat-value" id="farms10_right"></div>
+                            <div class="bnia-stat-label">Lead Violations:</div><div class="bnia-stat-value" id="leadviol10_right"></div>
                         </div>
                     </div>
                 </div>
