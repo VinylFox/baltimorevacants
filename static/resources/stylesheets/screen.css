@@ -1332,6 +1332,7 @@ ul#results-list li.active {
   font-family: 'Roboto Slab', serif;
   color: #FFF;
   font-size: 14px;
+  width:150px;
   float: left;
   margin: 5px 3px 5px 10px;
 }
