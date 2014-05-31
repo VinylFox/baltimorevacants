@@ -132,66 +132,61 @@
         </div>
         <div style="display:none">
             <div id="bnia-compare">
-                <h2>Compare statistics from two areas</h2>
                 <div class="compare-left">
-                    <div id="bnia-details" style="position: relative; top:0; left:0;">
+                    <div id="bnia-details_left" style="position: relative; top:0; left:0;">
                         <div class="bnia-area-title">Community Statistical Area</div>
                         <div class="bnia-stat-column left">
                             <div class="bnia-stat-title">Gender</div>
-                            <div class="bnia-stat-data" id="bnia-sex"></div>
+                            <div class="bnia-stat-data" id="bnia-sex_left"></div>
                             <div class="bnia-stat-title">Ethnicity</div>
-                            <div class="bnia-stat-data" id="bnia-race"></div>
+                            <div class="bnia-stat-data" id="bnia-race_left"></div>
                             <div class="bnia-stat-title">Age</div>
-                            <div class="bnia-stat-data" id="bnia-age"></div>
+                            <div class="bnia-stat-data" id="bnia-age_left"></div>
                         </div>
                         <div class="bnia-stat-column right">
-                            <div class="bnia-stat-label">Household Size: </div><div class="bnia-stat-value" id="hhsize10"></div>
-                            <div class="bnia-stat-label">Household Income: </div><div class="bnia-stat-value" id="mhhi10"></div>
-                            <div class="bnia-stat-label">Home Price:</div><div class="bnia-stat-value" id="salepr10"></div>
-                            <div class="bnia-stat-label">Days on the Market:</div><div class="bnia-stat-value" id="dom10"></div>
-                            <div class="bnia-stat-label">Number of Homes Sold:</div><div class="bnia-stat-value" id="shomes10"></div>
-                            <div class="bnia-stat-label">Owner-Occupied Homes:</div><div class="bnia-stat-value" id="ownroc10"></div>
-                            <div class="bnia-stat-label">Mortgage Foreclosure:</div><div class="bnia-stat-value" id="fore10"></div>
-                            <div class="bnia-stat-label">Vacant and Abandoned:</div><div class="bnia-stat-value" id="vacant10"></div>
-                            <div class="bnia-stat-label">Housing Violations:</div><div class="bnia-stat-value" id="vio10"></div>
-                            <div class="bnia-stat-label">Major Rehabilitation:</div><div class="bnia-stat-value" id="resrehab10"></div>
-                            <div class="bnia-stat-label">Residential Properties:</div><div class="bnia-stat-value" id="totalres10"></div>
-                            <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10"></div>
-                            <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10"></div>
-                            <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10"></div>
-                            <div class="bnia-compare">Compare to: <input type="text" name="compare-to"/></div>
-                            <a href="http://bniajfi.org/communities" target="_blank"><div class="bnia-logo"></div></a>
+                            <div class="bnia-stat-label">Household Size: </div><div class="bnia-stat-value" id="hhsize10_left"></div>
+                            <div class="bnia-stat-label">Household Income: </div><div class="bnia-stat-value" id="mhhi10_left"></div>
+                            <div class="bnia-stat-label">Home Price:</div><div class="bnia-stat-value" id="salepr10_left"></div>
+                            <div class="bnia-stat-label">Days on the Market:</div><div class="bnia-stat-value" id="dom10_left"></div>
+                            <div class="bnia-stat-label">Number of Homes Sold:</div><div class="bnia-stat-value" id="shomes10_left"></div>
+                            <div class="bnia-stat-label">Owner-Occupied Homes:</div><div class="bnia-stat-value" id="ownroc10_left"></div>
+                            <div class="bnia-stat-label">Mortgage Foreclosure:</div><div class="bnia-stat-value" id="fore10_left"></div>
+                            <div class="bnia-stat-label">Vacant and Abandoned:</div><div class="bnia-stat-value" id="vacant10_left"></div>
+                            <div class="bnia-stat-label">Housing Violations:</div><div class="bnia-stat-value" id="vio10_left"></div>
+                            <div class="bnia-stat-label">Major Rehabilitation:</div><div class="bnia-stat-value" id="resrehab10_left"></div>
+                            <div class="bnia-stat-label">Residential Properties:</div><div class="bnia-stat-value" id="totalres10_left"></div>
+                            <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10_left"></div>
+                            <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10_left"></div>
+                            <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10_left"></div>
                         </div>
                     </div>
                 </div>
                 <div class="compare-right">
-                    <div id="bnia-details" style="position: relative; top:0; left:0;">
+                    <div id="bnia-details_right" style="position: relative; top:0; left:0;">
                         <div class="bnia-area-title">Community Statistical Area</div>
                         <div class="bnia-stat-column left">
                             <div class="bnia-stat-title">Gender</div>
-                            <div class="bnia-stat-data" id="bnia-sex"></div>
+                            <div class="bnia-stat-data" id="bnia-sex_right"></div>
                             <div class="bnia-stat-title">Ethnicity</div>
-                            <div class="bnia-stat-data" id="bnia-race"></div>
+                            <div class="bnia-stat-data" id="bnia-race_right"></div>
                             <div class="bnia-stat-title">Age</div>
-                            <div class="bnia-stat-data" id="bnia-age"></div>
+                            <div class="bnia-stat-data" id="bnia-age_right"></div>
                         </div>
                         <div class="bnia-stat-column right">
-                            <div class="bnia-stat-label">Household Size: </div><div class="bnia-stat-value" id="hhsize10"></div>
-                            <div class="bnia-stat-label">Household Income: </div><div class="bnia-stat-value" id="mhhi10"></div>
-                            <div class="bnia-stat-label">Home Price:</div><div class="bnia-stat-value" id="salepr10"></div>
-                            <div class="bnia-stat-label">Days on the Market:</div><div class="bnia-stat-value" id="dom10"></div>
-                            <div class="bnia-stat-label">Number of Homes Sold:</div><div class="bnia-stat-value" id="shomes10"></div>
-                            <div class="bnia-stat-label">Owner-Occupied Homes:</div><div class="bnia-stat-value" id="ownroc10"></div>
-                            <div class="bnia-stat-label">Mortgage Foreclosure:</div><div class="bnia-stat-value" id="fore10"></div>
-                            <div class="bnia-stat-label">Vacant and Abandoned:</div><div class="bnia-stat-value" id="vacant10"></div>
-                            <div class="bnia-stat-label">Housing Violations:</div><div class="bnia-stat-value" id="vio10"></div>
-                            <div class="bnia-stat-label">Major Rehabilitation:</div><div class="bnia-stat-value" id="resrehab10"></div>
-                            <div class="bnia-stat-label">Residential Properties:</div><div class="bnia-stat-value" id="totalres10"></div>
-                            <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10"></div>
-                            <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10"></div>
-                            <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10"></div>
-                            <div class="bnia-compare">Compare to: <input type="text" name="compare-to"/></div>
-                            <a href="http://bniajfi.org/communities" target="_blank"><div class="bnia-logo"></div></a>
+                            <div class="bnia-stat-label">Household Size: </div><div class="bnia-stat-value" id="hhsize10_right"></div>
+                            <div class="bnia-stat-label">Household Income: </div><div class="bnia-stat-value" id="mhhi10_right"></div>
+                            <div class="bnia-stat-label">Home Price:</div><div class="bnia-stat-value" id="salepr10_right"></div>
+                            <div class="bnia-stat-label">Days on the Market:</div><div class="bnia-stat-value" id="dom10_right"></div>
+                            <div class="bnia-stat-label">Number of Homes Sold:</div><div class="bnia-stat-value" id="shomes10_right"></div>
+                            <div class="bnia-stat-label">Owner-Occupied Homes:</div><div class="bnia-stat-value" id="ownroc10_right"></div>
+                            <div class="bnia-stat-label">Mortgage Foreclosure:</div><div class="bnia-stat-value" id="fore10_right"></div>
+                            <div class="bnia-stat-label">Vacant and Abandoned:</div><div class="bnia-stat-value" id="vacant10_right"></div>
+                            <div class="bnia-stat-label">Housing Violations:</div><div class="bnia-stat-value" id="vio10_right"></div>
+                            <div class="bnia-stat-label">Major Rehabilitation:</div><div class="bnia-stat-value" id="resrehab10_right"></div>
+                            <div class="bnia-stat-label">Residential Properties:</div><div class="bnia-stat-value" id="totalres10_right"></div>
+                            <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10_right"></div>
+                            <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10_right"></div>
+                            <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10_right"></div>
                         </div>
                     </div>
                 </div>

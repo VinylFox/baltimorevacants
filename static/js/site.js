@@ -471,6 +471,7 @@ var allProps = [],
         },
 
         showPropDetails: function(prop) {
+
             if (this.cache.active) {
                 this.cache.active.clearLayers();
                 lmap.removeLayer(this.cache.active);
@@ -495,7 +496,13 @@ var allProps = [],
                 });
             this.cache.active.addLayer(mkr);
             lmap.addLayer(this.cache.active);
-            var bniadata = fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[\/ -]/g, '_')];
+            fn.populateBNIAView('', fn.cache.data['qqcv-ihn5'].summary.bnia[prop.neighborhood.replace(/[\/ -]/g, '_')], prop.neighborhood);
+            $('#bnia-details').show();
+
+        },
+
+        populateBNIAView: function(el, bniadata, neighborhood){
+
             var values = [],
                 labels = [];
             values.push(parseInt(bniadata.female12, 10));
@@ -532,24 +539,24 @@ var allProps = [],
             labels.push("25-64");
             values.push(parseInt(bniadata.age6512, 10));
             labels.push("65+");
-            $("#bnia-age").find('svg').remove();
-            Raphael("bnia-age", 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
-            $("#bnia-details").find('.bnia-area-title').text(prop.neighborhood);
-            $("#hhsize10").text(Math.floor(bniadata.hhsize12 * 10) / 10);
-            $("#mhhi10").text("$" + usMoney(bniadata.mhhi12));
-            $("#salepr10").text("$" + bniadata.salepr12);
-            $("#dom10").text((bniadata.dom12));
-            $("#shomes10").text((bniadata.shomes12));
-            $("#ownroc10").text("%" + (bniadata.ownroc12));
-            $("#fore10").text("%" + (bniadata.fore12));
-            $("#vacant10").text("%" + (bniadata.vacant12));
-            $("#vio10").text("%" + Math.floor(bniadata.vio12 * 10) / 10);
-            $("#resrehab10").text("%" + Math.floor(bniadata.resrehab12   * 10) / 10);
-            $("#totalres10").text((bniadata.totalres12));
-            $("#compl10").text("%" + Math.floor(bniadata.compl12));
-            $("#liquor10").text("%" + Math.floor(bniadata.liquor12));
-            $("#unempr10").text("%" + Math.floor(bniadata.unempr12));
-            $('#bnia-details').show();
+            $("#bnia-age"+el).find('svg').remove();
+            Raphael("bnia-age"+el, 170, 160).pieChart(110, 110, 60, values, labels, "#fff");
+            $("#bnia-details"+el).find('.bnia-area-title').text(neighborhood);
+            $("#hhsize10"+el).text(Math.floor(bniadata.hhsize12 * 10) / 10);
+            $("#mhhi10"+el).text("$" + usMoney(bniadata.mhhi12));
+            $("#salepr10"+el).text("$" + bniadata.salepr12);
+            $("#dom10"+el).text((bniadata.dom12));
+            $("#shomes10"+el).text((bniadata.shomes12));
+            $("#ownroc10"+el).text("%" + (bniadata.ownroc12));
+            $("#fore10"+el).text("%" + (bniadata.fore12));
+            $("#vacant10"+el).text("%" + (bniadata.vacant12));
+            $("#vio10"+el).text("%" + Math.floor(bniadata.vio12 * 10) / 10);
+            $("#resrehab10"+el).text("%" + Math.floor(bniadata.resrehab12   * 10) / 10);
+            $("#totalres10"+el).text((bniadata.totalres12));
+            $("#compl10"+el).text("%" + Math.floor(bniadata.compl12));
+            $("#liquor10"+el).text("%" + Math.floor(bniadata.liquor12));
+            $("#unempr10"+el).text("%" + Math.floor(bniadata.unempr12));
+
         },
 
         updatePano: function(e) {
