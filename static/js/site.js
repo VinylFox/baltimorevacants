@@ -381,6 +381,7 @@ var allProps = [],
               }, 50);*/
             });
 
+
           });
 
         },
@@ -614,6 +615,70 @@ $(document).ready(function() {
                     ctr = new L.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
                     lmap.setView(ctr, 17);
                 }
+            }
+        );
+      }
+    });
+	
+	    $("#comparesearch").autocomplete({
+      source: function( request, response ) {
+        if ( this.xhr ) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax({
+            url: "/api/autocomplete/"+request.term,
+            dataType: "json",
+            success: function( data ) {
+                var i = 0, resp = [];
+                for (;i < data.data.length; i++){
+                    resp.push({
+                        label: data.data[i].address,
+                        value: data.data[i].full_address
+                    });
+                }
+                response( resp );
+            },
+            error: function() {
+                response([]);
+            }
+        });
+      },
+      minLength: 3,
+      select: function( event, ui ) {
+        var address = ui.item ? ui.item.value : '',
+            geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+                address: address
+            },
+            function(result) {
+                var dialog, len, point;
+                if (result.length > 1) {
+                    alert("Multiple matches were found.  Please provide a more specific address. ie: '3600 Roland Ave'");
+                } else {
+				
+            $.ajax({
+                url: '/api/bnia/' + result[0].address_components[2].long_name,
+                dataType: 'json',
+                success: function(data) {
+                    
+                    if (data.data && data.data.length > 0) {
+                        var d = data.data;
+                        console.log(d)
+                    } else {
+                        fn.showErrorMessage(strings.geonoresults);
+                    }
+                },
+                failure: function() {
+                    fn.showErrorMessage(strings.geofailure)
+                },
+                error: function() {
+                    fn.showErrorMessage(strings.geofailure);
+                }
+            });
+        
+				}
+                    
+				
             }
         );
       }

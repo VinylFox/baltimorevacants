@@ -48,7 +48,7 @@
                 <div class="bnia-stat-label">High School Completion:</div><div class="bnia-stat-value" id="compl10"></div>
                 <div class="bnia-stat-label">Liquor Outlet density:</div><div class="bnia-stat-value" id="liquor10"></div>
                 <div class="bnia-stat-label">Unemployment Rate:</div><div class="bnia-stat-value" id="unempr10"></div>
-                <div class="bnia-compare"><a id="bniacompare" href="#bnia-compare">Compare to:</a> <input type="text" name="compare-to"/></div>
+                <div class="bnia-compare"><a id="bniacompare" href="#bnia-compare">Compare to:</a> <input id="comparesearch" type="text" name="compare-to"/></div>
                 <a href="http://bniajfi.org/communities" target="_blank"><div class="bnia-logo"></div></a>
             </div>
         </div>
