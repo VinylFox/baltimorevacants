@@ -1309,7 +1309,7 @@ ul#results-list li.active {
   width: 100%;
   color: #FFF;
   font-weight: normal;
-  height: 10px;
+  
   font-size: 15px;
   text-align: center;
   margin: 0 10px 0 10px;
@@ -1328,7 +1328,7 @@ ul#results-list li.active {
 
 .bnia-stat-column.left {
   float: left;
-  width: 170px;
+  width: 240px;
 }
 
 .bnia-stat-column.right {
@@ -1340,6 +1340,7 @@ ul#results-list li.active {
   font-family: 'Roboto Slab', serif;
   color: #FFF;
   font-size: 14px;
+  width:150px;
   float: left;
   margin: 5px 3px 5px 10px;
 }
