@@ -726,8 +726,33 @@ body {
   border: 1px solid #000;
   position: relative;
 }
+
+.address-input {
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFC9C9C9', endColorstr='#FFFFFFFF');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c9c9c9), color-stop(12%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #c9c9c9 0%, #ffffff 12%);
+  background-image: -moz-linear-gradient(top, #c9c9c9 0%, #ffffff 12%);
+  background-image: -o-linear-gradient(top, #c9c9c9 0%, #ffffff 12%);
+  background-image: -ms-linear-gradient(top, #c9c9c9 0%, #ffffff 12%);
+  background-image: linear-gradient(top, #c9c9c9 0%, #ffffff 12%);
+  font-family: 'Roboto Slab', serif;
+  border: 1px solid #000;
+  background-color: #c9c9c9;
+  height: 24px;
+  line-height: 30px;
+  margin-top: 2px;
+  margin-left: 4px;
+  width: 220px;
+  display: block;
+  font-size: 18px;
+  position: relative;
+}
+/* line 165, ../sass/screen.scss */
+.address-input:focus {
+  outline: none;
+}
 /* line 153, ../sass/screen.scss */
-#search-box .search-input {
+.search-input {
   font-family: 'Roboto Slab', serif;
   border: none;
   background: none;
@@ -741,7 +766,7 @@ body {
   position: relative;
 }
 /* line 165, ../sass/screen.scss */
-#search-box .search-input:focus {
+.search-input:focus {
   outline: none;
 }
 /* line 169, ../sass/screen.scss */
@@ -1347,9 +1372,10 @@ ul#results-list li.active {
 
 .bnia-compare {
   font-family: 'Roboto Slab', serif;
-  color: #FFF;
-  font-size: 14px;
+  color: #65FF0F;
+  font-size: 17px;
   float: left;
+  margin: 10px 5px 0 0;
 }
 
 .bnia-stat-value {

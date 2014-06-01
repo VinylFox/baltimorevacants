@@ -232,7 +232,7 @@ var allProps = [],
                 d = Math.sqrt(x * x + y * y) * R,
                 r = Math.floor((d * 10) * 3);
 
-            fn.drawNeighborhoods(bounds);
+            //fn.drawNeighborhoods(bounds);
 
             if (r > 3000) {
                 return '';
@@ -791,7 +791,7 @@ $(document).ready(function() {
     lmap.on('viewreset', fn.mapUpdateView)
     lmap.on('moveend', fn.mapUpdateView);
 
-    fn.drawNeighborhoods();
+    //fn.drawNeighborhoods();
 
     $('#btn-submit').click(function() {
         var address = $('#address').val() + ",Baltimore,MD,USA",

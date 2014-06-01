@@ -360,6 +360,23 @@ if ($param1 == 'data') {
 
             $resp['results'] = $cursor->count();
             $resp['success'] = true;
+    } else if ($param2 == 'ownercity'){
+            $collection = $db->property;
+            $query = array(
+                'owner_city' => $param3
+            );
+            //$query = array('owner_occupied' => true);
+            $cursor = $collection->find($query);
+
+            $i = 0;
+
+            foreach ($cursor as $obj) {
+                $resp['data'][] = $obj;
+                $i++;
+            }
+
+            $resp['results'] = $cursor->count();
+            $resp['success'] = true;
     } elseif ($param2 == 'address') {
         
     }
