@@ -4,16 +4,38 @@ var csv = require('csv-stream');
 var request = require('request');
 var async = require('async');
 
-var missingBlocks = [];
+process.on('uncaughtException', function (error) {
+   console.log(error.stack);
+});
 
+var missingBlocks = [];
+var prefix = 'ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl';
 var MongoClient = require('mongodb').MongoClient;
+
+function looksLikeCityOwned(str){
+	return  (str.indexOf('MAYOR') != -1 || str.indexOf('HOUSING AUTHORITY') != -1);
+}
+
+function looksLikeStateOwned(str){
+	return  (str.indexOf('MAYOR') != -1 || str.indexOf('HOUSING AUTHORITY') != -1);
+}
+
+function looksLikeTransportationOwned(str){
+	return  (str.indexOf('CSX') != -1);
+}
+
+function normalizeOwnerName(str1, str2, str3){
+	return str;
+}
 
 function looksLikeAnAddress(str){
 	return (/^\d/.test(str) == true || str.indexOf('PO') == 0);
 }
 
 function looksLikeCityStateZip(str){
-	return (/\d$/.test(str.trim()) && str.indexOf('PO') != 0 && str.indexOf('#') == -1 && str.indexOf(' LN ') == -1 && str.split(' ')[str.split(' ').length-1].replace(/[a-zA-Z, ]/g,'').length == 5);
+	var splitStr = str.split(' '), 
+		numlen = splitStr[splitStr.length-1].replace(/[a-zA-Z, ]/g,'').length;
+	return (/^\d/.test(str) == false && /\d$/.test(str.trim()) && str.indexOf('PO') != 0 && str.indexOf('#') == -1 && str.indexOf(' LN ') == -1 && numlen >= 5);
 }
 
 function splitAddressCityStateZip(str3, str4){
@@ -96,9 +118,13 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 								console.log(block);
 								missingBlocks.push(block);
 							}
+							setImmediate(function() { 
+						  	    callback(); 
+						    });
 						} else {
 
 							var page = cheerio.load(contents);
+							var inserts = [];
 
 							for (var i = 2; i < 52; i++) {
 								var inc = (i < 10) ? '0' + i : i,
@@ -113,25 +139,25 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 									owner_state = '',
 									owner_zip = '';
 
-								page('#ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl' + inc + '_lblOwner1').closest('td').prev().prev().each(function() {
+								page('#' + prefix + inc + '_lblOwner1').closest('td').prev().prev().each(function() {
 									lot = page(this).text();
 								});
 								if (lot.trim() == ''){
 									//console.log('Lot #'+(i-1)+' does not exist on block #'+block);
 								}else{
-									page('#ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl' + inc + '_lblOwner1').closest('td').prev().each(function() {
+									page('#' + prefix + inc + '_lblOwner1').closest('td').prev().each(function() {
 										address = page(this).text();
 									});
-									page('#ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl' + inc + '_lblOwner1').each(function() {
+									page('#' + prefix + inc + '_lblOwner1').each(function() {
 										owner1 = page(this).text();
 									});
-									page('#ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl' + inc + '_lblOwner2').each(function() {
+									page('#' + prefix + inc + '_lblOwner2').each(function() {
 										owner2 = page(this).text();
 									});
-									page('#ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl' + inc + '_lblOwner3').each(function() {
+									page('#' + prefix + inc + '_lblOwner3').each(function() {
 										owner3 = page(this).text();
 									});
-									page('#ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl' + inc + '_lblOwner4').each(function() {
+									page('#' + prefix + inc + '_lblOwner4').each(function() {
 										owner4 = page(this).text();
 									});
 
@@ -183,6 +209,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 									}
 
 									var entry = {
+										_id: block.trim()+lot.trim(),
 							        	block: block.trim(),
 							        	lot: lot.trim(),
 							        	property_address: address.trim(),
@@ -201,21 +228,24 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 							        	owner4: owner4
 							        };
 
-									var resp = collection.update({
-										_id: block.trim()+lot.trim()+''
-									}, entry, {
-										upsert:true,
-										safe:true,
-										multi:false
-									},function(){
-									    //console.log(x);
-									    x++;
-									    setImmediate(function() { 
-									  	    callback(); 
-									    });
-									});
+							        inserts.push(entry);
+
 								}
+
 							}
+
+							collection.insert(inserts, {w:1}, function(err, result){
+								if (err){
+									console.log(err);
+								} else {
+									console.log(result[0].block+', '+result.length);
+									inserts = [];
+								}
+							    setImmediate(function() { 
+							  	    callback(); 
+							    });
+							});
+
 						}
 					});
 				}
