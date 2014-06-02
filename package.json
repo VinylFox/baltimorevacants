@@ -22,6 +22,8 @@
   "homepage": "https://github.com/VinylFox/baltimorevacants",
   "dependencies": {
     "express": "^4.4.0",
-    "logfmt": "^1.1.2"
+    "logfmt": "^1.1.2",
+    "mongodb": "^1.4.5",
+    "mu2": "^0.5.20"
   }
 }
