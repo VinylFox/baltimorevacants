@@ -4,6 +4,8 @@ var csv = require('csv-stream');
 var request = require('request');
 var async = require('async');
 
+var Property = require('../app/Property.js');
+
 process.on('uncaughtException', function (error) {
    console.log(error.stack);
 });
@@ -11,79 +13,6 @@ process.on('uncaughtException', function (error) {
 var missingBlocks = [];
 var prefix = 'ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ctl';
 var MongoClient = require('mongodb').MongoClient;
-
-function looksLikeCityOwned(str){
-	return  (str.indexOf('MAYOR') != -1 || str.indexOf('HOUSING AUTHORITY') != -1);
-}
-
-function looksLikeStateOwned(str){
-	return  (str.indexOf('MAYOR') != -1 || str.indexOf('HOUSING AUTHORITY') != -1);
-}
-
-function looksLikeTransportationOwned(str){
-	return  (str.indexOf('CSX') != -1);
-}
-
-function normalizeOwnerName(str1, str2, str3){
-	return str;
-}
-
-function looksLikeAnAddress(str){
-	return (/^\d/.test(str) == true || str.indexOf('PO') == 0);
-}
-
-function looksLikeCityStateZip(str){
-	var splitStr = str.split(' '), 
-		numlen = splitStr[splitStr.length-1].replace(/[a-zA-Z, ]/g,'').length;
-	return (/^\d/.test(str) == false && /\d$/.test(str.trim()) && str.indexOf('PO') != 0 && str.indexOf('#') == -1 && str.indexOf(' LN ') == -1 && numlen >= 5);
-}
-
-function splitAddressCityStateZip(str3, str4){
-	var arr = ["","",""], tmp, tmp1, str;
-	if (looksLikeCityStateZip(str3)){
-		str = str3;
-	} else if (looksLikeCityStateZip(str4)){
-		str = str4;
-	} else {
-		str = '';
-	}
-	tmp1 = str.split(' ');
-	tmp = tmp1.filter(function(v){
-		return v !== '';
-	});
-	if (tmp.length > 2 && /\d/.test(tmp[tmp.length-1]) && tmp[tmp.length-2].length == 2){
-		arr[1] = tmp[tmp.length-2];
-		arr[2] = tmp[tmp.length-1];
-		tmp.pop();
-		tmp.pop();
-		arr[0] = tmp.join(' ');
-	}
-	return arr;
-};
-
-function findOwners(str1, str2, str3){
-	// the assumption is that str1 is ALWAYS an owner, the primary owner
-	var arr = [str1.trim(),"",""];
-	// if str2 does not start or end in a number, then it's likely an owner name, a secondary owner
-	if (/^\d/.test(str2) == false && /\d$/.test(str2.trim()) == false){
-		arr[1] = str2.trim();
-	}
-	// if str3 does not start or end in a number and a secondary owner exists, then it's likely an owner name, a tertiary owner
-	if (/^\d/.test(str3) == false && /\d$/.test(str3.trim()) == false && arr[1] != ""){
-		arr[2] = str3.trim();
-	}
-	// if the second owner appears to be part of a corporation name, add it to the first line
-	if (arr[1].indexOf('DEVELOPMENT') != -1 || arr[1].indexOf('INVESTMENT') != -1 || arr[1].indexOf('CORPORATION') != -1 || arr[1].indexOf('LLC') != -1 || arr[1].indexOf('INC') != -1 || arr[1].indexOf('PROPERTIES') != -1){
-		arr[0] = arr[0] + ' ' + arr[1];
-		arr[1] = "";
-	}
-	// if the tertieary owner appears to be part of a corporation name, add it to the first line
-	if (arr[2].indexOf('DEVELOPMENT') != -1 || arr[2].indexOf('INVESTMENT') != -1 || arr[2].indexOf('CORPORATION') != -1 || arr[2].indexOf('LLC') != -1 || arr[2].indexOf('INC') != -1 || arr[2].indexOf('PROPERTIES') != -1){
-		arr[0] = arr[0] + ' ' + arr[2];
-		arr[2] = "";
-	}
-	return arr;
-};
 
 MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
   if(err1) throw err1;
