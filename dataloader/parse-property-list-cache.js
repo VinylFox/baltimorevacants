@@ -37,7 +37,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 			    		console.log('Missing Blocks: '+missingBlocks.join(', '));
 			    	}
 			    	console.log('done');
-	    		}else{
+	    		} else {
 		    		if (data.block){
 						var block = data.block.trim();
 
@@ -144,8 +144,8 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 
 							}
 						}
-					});
-				}
+					}
+				});
 	    	});
 	    })
 	    .on('data',function(data){
