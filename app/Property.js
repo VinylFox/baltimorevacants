@@ -13,11 +13,7 @@ var Property = function(config){
     	owner_address: '',
     	owner_city: '',
     	owner_state: '',
-    	owner_zip: '',
-    	owner1: '',
-    	owner2: '',
-    	owner3: '',
-    	owner4: ''
+    	owner_zip: ''
     };
     this.owner = new Owner();
 };
@@ -33,7 +29,21 @@ Property.prototype.setData = function(data){
 Property.prototype.createFromRaw = function(rawPropObj){
 	this.owner.createFromRaw(rawPropObj);
     var ownerData = this.owner.getData();
-	this.setData(rawPropObj);
+    var newPropObj = {};
+    newPropObj._id = rawPropObj.block+rawPropObj.lot;
+    newPropObj.block = rawPropObj.block;
+    newPropObj.lot = rawPropObj.lot;
+    newPropObj.property_address = rawPropObj.address;
+    newPropObj.primary_owner_name = ownerData.primary_owner_name;
+    newPropObj.secondary_owner_name = ownerData.secondary_owner_name;
+    newPropObj.tertiary_owner_name = ownerData.tertiary_owner_name;
+    newPropObj.owner_type = ownerData.owner_type;
+    newPropObj.owner_occupied = ownerData.owner_occupied;
+    newPropObj.owner_address = ownerData.address;
+    newPropObj.owner_city = ownerData.city;
+    newPropObj.owner_state = ownerData.state;
+    newPropObj.owner_zip = ownerData.zip;
+	this.setData(newPropObj);
 };
 
 Property.prototype.save = function(){

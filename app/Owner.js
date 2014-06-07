@@ -15,25 +15,47 @@ var Owner = function(config){
     	owner4: ''
     };
     this.normalizations = this.normalizations || [
-        '.',
-        ',',
-        '/',
-        'ASSOCIATES',
-        'INC',
-        'LLC',
-        'CORP',
-        'MORTGAGE',
-        'THE',
-        'GROUP',
-        'BUSINESS',
-        'TRUST',
-        'LIMITED',
-        'HOLDINGS',
-        'HOLDING',
-        'RENTALS',
-        'RENTAL',
-        'PROPERTIES',
-        'TAX'
+        ['.',''],
+        [',',''],
+        ['/',''],
+        [' NH RES',''],
+        [' III',''],
+        [' II',''],
+        [' DP',''],  // development partnership
+        [' AND ', ' & '],
+        [' ASSOCIATES',''],
+        [' INVESTMENTS',''],
+        [' INCORPORATED',''],
+        [' INC',''],
+        [' LLC',''],
+        [' LLP',''],
+        [' LP',''],
+        [' PLC',''],
+        [' CORPORATION',''],
+        [' CORP',''],
+        [' OF BALTIMORE',''],
+        [' OF', ''],
+        [' LIMITED',''],
+        [' MORTGAGE', ''],
+        ['THE ',''],
+        [' THE',''],
+        [' GROUP',''],
+        [' BUSINESS',''],
+        [' TRUST',''],
+        [' LIMITED',''],
+        [' HOLDINGS',''],
+        [' HOLDING',''],
+        [' RENTALS',''],
+        [' RENTAL',''],
+        [' PROPERTIES',''],
+        [' TAX',''],
+        [' COMPANY',''],
+        [' PARTNERSHIP',''],
+        [' PARTNERS',''],
+        [' DEVELOPMENT',''],
+        [' INVESTMENTS',''],
+        [' HOMES',''],
+        [' RESIDENTIAL','']
     ];
     this.owner_address = new Address();
 };
@@ -99,7 +121,7 @@ Owner.prototype.getPropertyOwnerType = function(){
 
 Owner.prototype.normalizeOwnerName = function(str){
     for (var i = 0; i < this.normalizations.length; i++){
-        str = str.replace(this.normalizations[i], '');
+        str = str.replace(this.normalizations[i][0], this.normalizations[i][1]);
     }
     return str.replace(/\d/g,'').trim();
 }
@@ -111,7 +133,8 @@ Owner.prototype.looksLikeBusiness = function(str){
         str.indexOf('CORPORATION') != -1 || 
         str.indexOf('LLC') != -1 || 
         str.indexOf('INC') != -1 || 
-        str.indexOf('PROPERTIES') != -1)
+        str.indexOf('PROPERTIES') != -1 ||
+        str.indexOf('HABITAT') != -1)
     ;
 }
 
@@ -129,14 +152,14 @@ Owner.prototype.findOwners = function(str1, str2, str3){
         arr[2] = this.normalizeOwnerName(arr[2]);
     }
     // if the second owner appears to be part of a corporation name, add it to the first line
-    if (this.looksLikeBusiness(arr[1])){
-        arr[0] = arr[0] + ' ' + arr[1];
+    if (this.looksLikeBusiness(str2)){
+        arr[0] = arr[0] + ' ' + str2;
         arr[0] = this.normalizeOwnerName(arr[0]);
         arr[1] = "";
     }
     // if the tertieary owner appears to be part of a corporation name, add it to the first line
-    if (this.looksLikeBusiness(arr[2])){
-        arr[0] = arr[0] + ' ' + arr[2];
+    if (this.looksLikeBusiness(str3)){
+        arr[0] = arr[0] + ' ' + str3;
         arr[0] = this.normalizeOwnerName(arr[0]);
         arr[2] = "";
     }
@@ -146,20 +169,19 @@ Owner.prototype.findOwners = function(str1, str2, str3){
 Owner.prototype.createFromRaw = function(rawOwnerObj){
     this.owner_address.createFromRaw(rawOwnerObj);
     for (var prop in rawOwnerObj) this.data[prop] = rawOwnerObj[prop];
+    var newOwnerObj = {};
 	var owners = this.findOwners(this.data.owner1, this.data.owner2, this.data.owner3);
     var owner_address = this.owner_address.getData();
-    rawOwnerObj.primary_owner_name = owners[0];
-    rawOwnerObj.secondary_owner_name = owners[1];
-    rawOwnerObj.tertiary_owner_name = owners[2];
-    rawOwnerObj.owner_type = this.getPropertyOwnerType();
-    rawOwnerObj.owner_occupied = this.isOwnerOccupied();
-    if (!rawOwnerObj.owner_occupied){
-        rawOwnerObj.owner_address = owner_address.address;
-        rawOwnerObj.owner_city = owner_address.city;
-        rawOwnerObj.owner_state = owner_address.state;
-        rawOwnerObj.owner_zip = owner_address.zip;
-    }
-	this.setData(rawOwnerObj);
+    newOwnerObj.primary_owner_name = owners[0];
+    newOwnerObj.secondary_owner_name = owners[1];
+    newOwnerObj.tertiary_owner_name = owners[2];
+    newOwnerObj.owner_type = this.getPropertyOwnerType();
+    newOwnerObj.owner_occupied = this.isOwnerOccupied();
+    newOwnerObj.owner_address = owner_address.address;
+    newOwnerObj.owner_city = owner_address.city;
+    newOwnerObj.owner_state = owner_address.state;
+    newOwnerObj.owner_zip = owner_address.zip;
+	this.setData(newOwnerObj);
     return true;
 };
 
