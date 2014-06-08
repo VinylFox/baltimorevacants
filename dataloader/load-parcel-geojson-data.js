@@ -1,3 +1,58 @@
+L.geoJson({
+	"type": "FeatureCollection",
+	"crs": {
+		"type": "name",
+		"properties": {
+			"name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+		}
+	},
+	"features": [{
+		"type": "Feature",
+		"properties": {
+			"TAG": "600000000031990",
+			"LAST_ORG": "100",
+			"CAPTURE_ME": "BLK",
+			"LAST_USER": null,
+			"EDIT_DATE": "1997\/03\/18",
+			"BLOCKNUM": "5759",
+			"PARCELNUM": "024",
+			"PIN": "5759024",
+			"CNTGRAPH": "24",
+			"BLOCKLOT": "5759 024",
+			"SUBTYPE_GE": 1,
+			"SHAPE_Leng": 454.022031360000028,
+			"SHAPE_Area": 9211.162293330000466,
+			"FULLADDR": "5700 WALTHER AVE",
+			"STDIRPRE": null,
+			"ST_NAME": "WALTHER",
+			"ST_TYPE": "AVE",
+			"BLDG_NO": 5700,
+			"UNIT_NUM": null
+		},
+		"geometry": {
+			"type": "Polygon",
+			"coordinates": [
+				[
+					[-76.550116308239168, 39.348380530527109],
+					[-76.550102784136087, 39.348394206713969],
+					[-76.549760737165798, 39.348739733679501],
+					[-76.549513629676127, 39.348596022818398],
+					[-76.550047502328184, 39.34834045818512],
+					[-76.550116308239168, 39.348380530527109]
+				]
+			]
+		}
+	}]
+}, {
+	style: function(feature) {
+		return {
+			color: feature.properties.color
+		};
+	},
+	onEachFeature: function(feature, layer) {
+		layer.bindPopup(feature.properties.description);
+	}
+}).addTo(map);
 /*
 
 

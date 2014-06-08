@@ -12,79 +12,40 @@
 <body>
 	<div id="map" style="width: 600px; height: 400px"></div>
 
-	<script src="sample-geojson.js" type="text/javascript"></script>
 	<script src="/lib/leaflet/js/leaflet.js"></script>
+	<script src="/lib/jquery/js/jquery-2.1.1.js"></script>
 
 	<script>
-		var map = L.map('map').setView([39.74739, -105], 13);
+		var map = L.map('map').setView([39.305969,-76.616538], 15);
 
-		L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			id: 'examples.map-20v6611k'
+			attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
 		}).addTo(map);
 
-		var baseballIcon = L.icon({
-			iconUrl: 'baseball-marker.png',
-			iconSize: [32, 37],
-			iconAnchor: [16, 37],
-			popupAnchor: [0, -28]
+		L.polyline([[39.305969,-76.616538],[39.312311,-76.603374]],{color: '#f00'}).addTo(map);
+
+		map.on('viewreset', function(){
+			$.ajax({
+			  url: "/bounds",
+			  data: {
+			  	bbox:'-76.616538,39.305969,-76.603374,39.312311'
+			  }
+			}).done(function( data ) {
+				console.log(data);
+				L.geoJson(data, {
+					style: function(feature) {
+						return {
+							color: '#00f'
+						};
+					},
+					onEachFeature: function(feature, layer) {
+						layer.bindPopup(feature.properties.address + ' | ' + feature.properties.blocklot);
+					}
+				}).addTo(map);
+			});
 		});
 
-		function onEachFeature(feature, layer) {
-			var popupContent = "<p>I started out as a GeoJSON " +
-					feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
-
-			if (feature.properties && feature.properties.popupContent) {
-				popupContent += feature.properties.popupContent;
-			}
-
-			layer.bindPopup(popupContent);
-		}
-
-		L.geoJson([bicycleRental, campus], {
-
-			style: function (feature) {
-				return feature.properties && feature.properties.style;
-			},
-
-			onEachFeature: onEachFeature,
-
-			pointToLayer: function (feature, latlng) {
-				return L.circleMarker(latlng, {
-					radius: 8,
-					fillColor: "#ff7800",
-					color: "#000",
-					weight: 1,
-					opacity: 1,
-					fillOpacity: 0.8
-				});
-			}
-		}).addTo(map);
-
-		L.geoJson(freeBus, {
-
-			filter: function (feature, layer) {
-				if (feature.properties) {
-					// If the property "underConstruction" exists and is true, return false (don't render features under construction)
-					return feature.properties.underConstruction !== undefined ? !feature.properties.underConstruction : true;
-				}
-				return false;
-			},
-
-			onEachFeature: onEachFeature
-		}).addTo(map);
-
-		var coorsLayer = L.geoJson(coorsField, {
-
-			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {icon: baseballIcon});
-			},
-
-			onEachFeature: onEachFeature
-		}).addTo(map);
 
 	</script>
 </body>
