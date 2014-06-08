@@ -11,12 +11,13 @@ mongo.Db.connect(mongoUri, function (err, db) {
   console.log("Connected to database");
   db.collection('properties', function(er, collection) {
   	console.log("Initialized property collection");
-  	//console.log(er, collection);
-    //collection.insert({'mykey': 'myvalue'}, {safe: true}, function(er,rs) {});
   });
 });
 
 var app = express();
+
+app.use('/lib', express.static(__dirname + '/lib'));
+app.use(express.static(__dirname + '/lib'));
 
 app.use(logfmt.requestLogger());
 
@@ -24,6 +25,13 @@ app.get('/', function(req, res) {
   new HtmlPage().render('index', function(page){
   	res.set('Content-Type', 'text/html');
   	res.send(page);
+  });
+});
+
+app.get('/testmap', function(req, res) {
+  new HtmlPage().render('testmap', function(page){
+    res.set('Content-Type', 'text/html');
+    res.send(page);
   });
 });
 
