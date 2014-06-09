@@ -47,12 +47,15 @@ app.get('/bounds', function(req, res) {
     var collection = db.collection('property');
 
     if (!req.query.bbox) res.jsonp({});
+    // south, west, north, east
+    // 0    , 1   ,2     ,3
+    // 
     var bbox = req.query.bbox.split(',').map(function (e) { return parseFloat(e); });
 
-    var topLeft = [bbox[2], bbox[1]];
-    var topRight = [bbox[2], bbox[3]];
-    var botRight = [bbox[0], bbox[3]];
-    var botLeft = [bbox[0], bbox[1]];
+    var topLeft = [bbox[1], bbox[2]];
+    var topRight = [bbox[3], bbox[2]];
+    var botRight = [bbox[3], bbox[0]];
+    var botLeft = [bbox[1], bbox[0]];
 
     //console.log(topLeft, topRight, botRight, botLeft);
 

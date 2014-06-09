@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="/lib/leaflet/css/leaflet.css" />
 </head>
 <body>
-	<div id="map" style="width: 600px; height: 400px"></div>
+	<div id="map" style="width: 800px; height: 600px"></div>
 
 	<script src="/lib/leaflet/js/leaflet.js"></script>
 	<script src="/lib/jquery/js/jquery-2.1.1.js"></script>
@@ -23,17 +23,20 @@
 			attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
 		}).addTo(map);
 
-		L.polyline([[39.305969,-76.616538],[39.312311,-76.603374]],{color: '#f00'}).addTo(map);
-
-		map.on('viewreset', function(){
+		var parcels;
+		var refreshParcels = function(){
+			var bounds = map.getBounds();
+			L.polyline([[bounds.getSouth(),bounds.getWest()],[bounds.getNorth(),bounds.getEast()]],{color: '#f00'}).addTo(map);
 			$.ajax({
 			  url: "/bounds",
 			  data: {
-			  	bbox:'-76.616538,39.305969,-76.603374,39.312311'
+			  	bbox: bounds.getSouth()+','+bounds.getWest()+','+bounds.getNorth()+','+bounds.getEast()
 			  }
 			}).done(function( data ) {
-				console.log(data);
-				L.geoJson(data, {
+				if (parcels) {
+					map.removeLayer(parcels);
+				}
+				parcels = L.geoJson(data, {
 					style: function(feature) {
 						return {
 							color: '#00f'
@@ -42,9 +45,13 @@
 					onEachFeature: function(feature, layer) {
 						layer.bindPopup(feature.properties.address + ' | ' + feature.properties.blocklot);
 					}
-				}).addTo(map);
+				});
+				parcels.addTo(map);
 			});
-		});
+		};
+
+		map.on('moveend', refreshParcels);
+		map.on('zoomend', refreshParcels);
 
 
 	</script>
