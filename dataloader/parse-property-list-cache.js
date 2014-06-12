@@ -4,6 +4,8 @@ var csv = require('csv-stream');
 var request = require('request');
 var async = require('async');
 
+var firstTime = false;
+
 var Property = require('../app/Property.js');
 
 process.on('uncaughtException', function (error) {
@@ -122,25 +124,43 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 										entry.owner2 = owner2;
 								        entry.owner3 = owner3;
 								        entry.owner4 = owner4;
+								        
+								        if (!firstTime) {
+								        	var resp = collection.update({
+		 										_id: item_block+lot
+		 									}, entry, {
+		 										upsert:true,
+		 										safe:true,
+		 										multi:false
+		 									},function(){
+		 									    setImmediate(function() { 
+		 									  	    callback(); 
+		 									    });
+		 									});
+								        }else{
+								        	inserts.push(entry);
+								        }
 
-								        inserts.push(entry);
-								        //console.log(entry);
 
 									}
 
 								}
 
-								collection.insert(inserts, {w:1}, function(err, result){
-									if (err){
-										console.log(err);
-									} else {
-										console.log(result[0].block+', '+result.length);
-										inserts = [];
-									}
-								    setImmediate(function() { 
-								  	    callback(); 
-								    });
-								});
+								if (firstTime){
+
+									collection.insert(inserts, {w:1}, function(err, result){
+										if (err){
+											console.log(err);
+										} else {
+											console.log(result[0].block+', '+result.length);
+											inserts = [];
+										}
+									    setImmediate(function() { 
+									  	    callback(); 
+									    });
+									});
+
+								}
 
 							}
 						});
