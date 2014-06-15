@@ -8,6 +8,8 @@ var mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/baltimorevacants'
 
 var app = express();
 
+app.set('view engine', 'jade');
+
 app.use('/lib', express.static(__dirname + '/lib'));
 app.use(express.static(__dirname + '/lib'));
 

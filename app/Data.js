@@ -49,7 +49,7 @@ Data.prototype.toJson = function(data) {
 Data.prototype.query = function(res, collection, query, resultType, resCb) {
 	var me = this;
 	this.connect(function(db) {
-		console.log(arguments);
+		//console.log(arguments);
 		var col = db.collection(collection);
 
 		col.find(query).toArray(function(err, results) {
