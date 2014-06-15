@@ -61,33 +61,36 @@
 		map.on('zoomend', refreshParcels);
 
 		$('#owner_name').on('keyup', function(){
-			$('#status').html('Loading...');
-			$.ajax({
-			  url: "/owners",
-			  data: {
-			  	owner_name: $('#owner_name').val()
-			  }
-			}).done(function( data ) {
-				if (parcels2) {
-					map.removeLayer(parcels2);
-				}
-				parcels2 = L.geoJson(data, {
-					style: function(feature) {
-						return {
-							color: "#000"
-						};
-					},
-					onEachFeature: function(feature, layer) {
-						var msg = '';
-						for (prop in feature.properties){
-							msg = msg + prop + ': ' + feature.properties[prop] + '<br/>';
-						}
-						layer.bindPopup(msg);
+			var owner_name = $('#owner_name').val().trim();
+			if (owner_name){
+				$('#status').html('Loading...');
+				$.ajax({
+				  url: "/owners",
+				  data: {
+				  	owner_name: owner_name
+				  }
+				}).done(function( data ) {
+					if (parcels2) {
+						map.removeLayer(parcels2);
 					}
+					parcels2 = L.geoJson(data, {
+						style: function(feature) {
+							return {
+								color: "#000"
+							};
+						},
+						onEachFeature: function(feature, layer) {
+							var msg = '';
+							for (prop in feature.properties){
+								msg = msg + prop + ': ' + feature.properties[prop] + '<br/>';
+							}
+							layer.bindPopup(msg);
+						}
+					});
+					parcels2.addTo(map);
+					$('#status').html('Ready');
 				});
-				parcels2.addTo(map);
-				$('#status').html('Ready');
-			});
+			}
 		});
 
 		$('#multipoly').on('click', function(){

@@ -1,193 +1,128 @@
 var mongo = require('mongodb');
 var Data = require('./Data.js');
 
-var Properties = function(config){
-  for (var prop in config) this[prop] = config[prop];
-  this.data = new Data(this);
+var Properties = function(config) {
+	for (var prop in config) this[prop] = config[prop];
+	this.data = new Data(this);
 };
 
-Properties.prototype.lineDistance = function( point1, point2 ) {
-  var xs = 0;
-  var ys = 0;
- 
-  xs = point2[1] - point1[1];
-  xs = xs * xs;
- 
-  ys = point2[0] - point1[0];
-  ys = ys * ys;
- 
-  return Math.sqrt( xs + ys );
+Properties.prototype.lineDistance = function(point1, point2) {
+	var xs = 0;
+	var ys = 0;
+
+	xs = point2[1] - point1[1];
+	xs = xs * xs;
+
+	ys = point2[0] - point1[0];
+	ys = ys * ys;
+
+	return Math.sqrt(xs + ys);
 };
 
-Properties.prototype.doSummary = function(req, res, cb){
+Properties.prototype.doSummary = function(req, res, cb) {
 
-  var me = this;
+	if (!req.query.field) res.jsonp({});
 
-  mongo.Db.connect(this.mongoUri, function (err, db) {
-    if (err) throw err;
-    console.log("Connected to database");
+	var field = req.query.field;
 
-    if (!req.query.field) res.jsonp({});
+	var query = [{
+		'$match': {}
+	}, {
+		'$group': {
+			'_id': '$' + field,
+			'totalSize': {
+				'$sum': 1
+			}
+		}
+	}, {
+		'$sort': {
+			'totalSize': -1
+		}
+	}, {
+		'$limit': 50
+	}];
+	query[0]['$match'][field] = {
+		'$ne': ''
+	};
 
-    var field = req.query.field;
-
-    var collection = db.collection('property');
-
-    query = [{
-        '$match': {}
-    }, {
-        '$group': {
-            '_id': '$'+field,
-            'totalSize': {
-                '$sum': 1
-            }
-        }
-    }, {
-        '$sort': {
-            'totalSize': -1
-        }
-    }, {
-      '$limit': 50
-    }];
-    query[0]['$match'][field] = {
-        '$ne': ''
-    };
-
-    console.log(JSON.stringify(query));
-
-    collection.aggregate(query, function(err, properties) {
-        console.log("owner search complete");
-        var geo = [];
-        if (err) {
-            res.render('error', {
-                status: 500
-            });
-        } else {
-            for(var i = 0; i < properties.length; i++){
-              var feature = {
-                "type": "Feature",
-                geometry: properties[i].geometry,
-                properties: {}
-              };
-              if (!properties[i].properties){
-                for (prop in properties[i]){
-                  feature.properties[prop] = properties[i][prop];
-                }
-              } else {
-                feature.properties = properties[i].properties;
-              }
-              geo.push(feature);
-            }
-            res.json({
-              "type": "FeatureCollection",
-              "features": geo
-            });
-        }
-    });
-  });
+	this.data.query(res, 'property', query, 'json', cb);
 
 };
 
-Properties.prototype.multiPolygons = function(req, res, cb){
+Properties.prototype.doOwnerSearch = function(req, res, cb) {
 
-  var query = {"error":true};
+	if (!req.query.owner_name) res.jsonp({});
 
-  this.data.query(res, 'property', query, 'geojson');
+	var owner_name = req.query.owner_name.toUpperCase();
 
-};
+	var query = {
+		"$text": {
+			"$search": owner_name
+		}
+	};
 
-Properties.prototype.doOwnerSearch = function(req, res, cb){
-
-  if (!req.query.owner_name) res.jsonp({});
-
-  var owner_name = req.query.owner_name.toUpperCase();
-
-  var query = {
-      "$text":{
-          "$search": owner_name
-      }
-  };
-
-  this.data.query(res, 'property', query, 'geojson');
+	this.data.query(res, 'property', query, 'geojson', cb);
 
 };
 
-Properties.prototype.doBoundsSearch = function(req, res, cb){
+Properties.prototype.doTypeSearch = function(req, res, cb) {
 
-  var me = this;
+	if (!req.query.type) res.jsonp({});
 
-  mongo.Db.connect(this.mongoUri, function (err, db) {
-    if (err) throw err;
-    console.log("Connected to database");
+	var type = req.query.type.toUpperCase();
 
-    if (!req.query.bbox) res.jsonp({});
-    // south, west, north, east
-    // 0    , 1   ,2     ,3
+	this.doPropertyMatchSearch('owner_type', type, req, res, cb);
 
-    var bbox = req.query.bbox.split(',').map(function (e) { return parseFloat(e); });
+};
 
-    var topLeft = [bbox[1], bbox[2]];
-    var topRight = [bbox[3], bbox[2]];
-    var botRight = [bbox[3], bbox[0]];
-    var botLeft = [bbox[1], bbox[0]];
+Properties.prototype.doPropertyMatchSearch = function(property, val, req, res, cb) {
 
-    var dist = me.lineDistance([bbox[1], bbox[0]], [bbox[3], bbox[2]])
+	var query = {};
+	query[property] = val;
 
-    console.log((dist < 0.02)?'property':'neighborhood', topLeft, topRight, botRight, botLeft, dist);
+	this.data.query(res, 'property', query, 'geojson', cb);
 
-    if (dist < 0.02){
+};
 
-      var collection = db.collection('property');
+Properties.prototype.doBoundsSearch = function(req, res, cb) {
 
-    }else{
+	if (!req.query.bbox) res.jsonp({});
 
-      var collection = db.collection('neighborhood');
+	var bbox = req.query.bbox.split(',').map(function(e) {
+		return parseFloat(e);
+	});
 
-    }
+	var topLeft = [bbox[1], bbox[2]];
+	var topRight = [bbox[3], bbox[2]];
+	var botRight = [bbox[3], bbox[0]];
+	var botLeft = [bbox[1], bbox[0]];
 
-    var query = {
-      "geometry":{
-        "$geoIntersects":{
-          "$geometry":{
-            type:"Polygon",
-            coordinates:[
-              [topLeft, topRight, botRight, botLeft, topLeft]
-            ]
-          }
-        }
-      }
-    };
+	var dist = this.lineDistance([bbox[1], bbox[0]], [bbox[3], bbox[2]]);
 
-    collection.find(query).toArray(function(err, properties) {
-        console.log("geo search complete");
-        var geo = [];
-        if (err) {
-            res.render('error', {
-                status: 500
-            });
-        } else {
-            for(var i = 0; i < properties.length; i++){
-              var feature = {
-                "type": "Feature",
-                geometry: properties[i].geometry,
-                properties: {}
-              };
-              if (!properties[i].properties){
-                for (prop in properties[i]){
-                  feature.properties[prop] = properties[i][prop];
-                }
-              } else {
-                feature.properties = properties[i].properties;
-              }
-              geo.push(feature);
-            }
-            res.json({
-              "type": "FeatureCollection",
-              "features": geo
-            });
-        }
-    });
-  });
+	if (dist < 0.02) {
+
+		var collection = 'property';
+
+	} else {
+
+		var collection = 'neighborhood';
+
+	}
+
+	var query = {
+		"geometry": {
+			"$geoIntersects": {
+				"$geometry": {
+					type: "Polygon",
+					coordinates: [
+						[topLeft, topRight, botRight, botLeft, topLeft]
+					]
+				}
+			}
+		}
+	};
+
+	this.data.query(res, collection, query, 'geojson', cb);
 
 };
 
