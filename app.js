@@ -1,5 +1,6 @@
 var express = require("express");
 var logfmt = require("logfmt");
+var favicon = require('serve-favicon');
 
 var HtmlPage = require('./app/HtmlPage.js');
 var Properties = require('./app/Properties.js');
@@ -12,6 +13,8 @@ app.set('view engine', 'jade');
 
 app.use('/lib', express.static(__dirname + '/lib'));
 app.use(express.static(__dirname + '/lib'));
+
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use(logfmt.requestLogger());
 
