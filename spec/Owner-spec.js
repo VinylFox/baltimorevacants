@@ -1,7 +1,7 @@
 var Owner = require('../app/Owner.js'),
 	sample = require('../spec/sample-data.js');
 
-beforeEach(function(){
+beforeEach(function() {
 	owner = new Owner();
 });
 
@@ -15,9 +15,9 @@ describe('basic owner setup', function() {
 
 });
 
-describe('ability to set the raw data and create appropriate fields', function(){
+describe('ability to set the raw data and create appropriate fields', function() {
 
-	it('should be able to set and retrieve the basic raw data', function(){
+	it('should be able to set and retrieve the basic raw data', function() {
 
 		owner.createFromRaw(sample.rawProperty[0]);
 		var data = owner.getData();
@@ -31,20 +31,31 @@ describe('ability to set the raw data and create appropriate fields', function()
 
 });
 
-describe('the property owner is identified appropriately', function(){
+describe('the property owner is identified appropriately', function() {
 
-	it('as not being owner occupied', function(){
+	it('as not being owner occupied', function() {
 		owner.createFromRaw(sample.rawProperty[0]);
 		expect(owner.isOwnerOccupied()).toEqual(sample.property[0].owner_occupied);
 	});
 
+	it('as being owner occupied', function() {
+		owner.createFromRaw(sample.rawProperty[5]);
+		expect(owner.isOwnerOccupied()).toEqual(sample.property[5].owner_occupied);
+		expect(owner.getPropertyOwnerType()).toEqual(sample.property[5].owner_type);
+	});
+
 });
 
-describe('the property owner is identified appropriately', function(){
+describe('the property owner is identified appropriately', function() {
 
-	it('as a business', function(){
+	it('as a business', function() {
 		owner.createFromRaw(sample.rawProperty[0]);
 		expect(owner.getPropertyOwnerType()).toEqual(sample.property[0].owner_type);
+	});
+
+	it('as private', function() {
+		owner.createFromRaw(sample.rawProperty[5]);
+		expect(owner.getPropertyOwnerType()).toEqual(sample.property[5].owner_type);
 	});
 
 });

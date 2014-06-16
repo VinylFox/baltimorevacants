@@ -29,7 +29,7 @@
 			$('#status').html('Loading...');
 			var bounds = map.getBounds();
 			$.ajax({
-			  url: "/bounds",
+			  url: "/api/bounds",
 			  data: {
 			  	bbox: bounds.getSouth()+','+bounds.getWest()+','+bounds.getNorth()+','+bounds.getEast()
 			  }
@@ -65,7 +65,7 @@
 			if (owner_name){
 				$('#status').html('Loading...');
 				$.ajax({
-				  url: "/owners",
+				  url: "/api/owner",
 				  data: {
 				  	owner_name: owner_name
 				  }
@@ -96,7 +96,7 @@
 		$('#multipoly').on('click', function(){
 			$('#status').html('Loading...');
 			$.ajax({
-			  url: "/multipoly"
+			  url: "/api/type?type=UNKNOWN"
 			}).done(function( data ) {
 				if (parcels2) {
 					map.removeLayer(parcels2);

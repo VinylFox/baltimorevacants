@@ -16,9 +16,8 @@ app.use(express.static(__dirname + '/lib'));
 app.use(logfmt.requestLogger());
 
 app.get('/', function(req, res) {
-	new HtmlPage().render('index', function(page) {
-		res.set('Content-Type', 'text/html');
-		res.send(page);
+	res.render('index', {
+		title: 'Baltimore Vacants'
 	});
 });
 
@@ -29,44 +28,34 @@ app.get('/testmap', function(req, res) {
 	});
 });
 
-app.get('/owners', function(req, res) {
+app.get('/api/:type', function(req, res) {
 	var properties = new Properties({
 		mongoUri: mongoUri
 	});
-	properties.doOwnerSearch(req, res, function(resp) {
-		res.set('Content-Type', 'application/json');
+	var cb = function(resp) {
 		res.json(resp);
-	});
-});
-
-app.get('/type', function(req, res) {
-	var properties = new Properties({
-		mongoUri: mongoUri
-	});
-	properties.doTypeSearch(req, res, function(resp) {
-		res.set('Content-Type', 'application/json');
-		res.json(resp);
-	});
-});
-
-app.get('/summary', function(req, res) {
-	var properties = new Properties({
-		mongoUri: mongoUri
-	});
-	properties.doSummary(req, res, function(resp) {
-		res.set('Content-Type', 'application/json');
-		res.json(resp);
-	});
-});
-
-app.get('/bounds', function(req, res) {
-	var properties = new Properties({
-		mongoUri: mongoUri
-	});
-	properties.doBoundsSearch(req, res, function(resp) {
-		res.set('Content-Type', 'application/json');
-		res.json(resp);
-	});
+	};
+	switch (req.params.type) {
+		case "owner":
+			properties.doOwnerSearch(req, res, cb);
+			break;
+		case "type":
+			properties.doTypeSearch(req, res, cb);
+			break;
+		case "summary":
+			properties.doSummary(req, res, cb);
+			break;
+		case "bounds":
+			properties.doBoundsSearch(req, res, cb);
+			break;
+		default:
+			cb({
+				data: [],
+				results: 0,
+				success: false,
+				error: ['API method unknown']
+			});
+	}
 });
 
 var port = Number(process.env.PORT || 5000);

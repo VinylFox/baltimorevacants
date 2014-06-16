@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  form#home-search(onsubmit="$('#btn-submit').click();return false;")
+    div#main
+      div.detail-box#detail-box
+        span Select a property
+      div.map-contain
+        div.header
+          div.title-contain
+            h1 Baltimore Vacants
+          div.search-controls
+            div.search-contain
+              div.search
+                div#search-box
+                  input#address.search-input(type="text", name="address", autocomplete="off", placeholder="Enter Baltimore city address")
+                  input#btn-submit.btn-submit(type="submit", value="Submit", class="btn-submit")
+                  div.option-controls
+                    div.options
+                      label.section-label Type:<
+                      input#check1(type="checkbox", checked)
+                      label.btn.btn-house.group.first(for="check1")
+                        | House
+                      input#check2(type="checkbox")
+                      label.btn-lot.btn.group.last(for="check2")
+                        | Lot
+                      label.section-label
+                        | Show:
+                      input#check3(type="checkbox")
+                      label.btn.btn-crime(for="check3")
+                        | Crime
+          div.lmap-wrap
+            div#lmapcontainer(style="width:500px;height:500px;")
+          div#footer
+            div.footer-credit
+              a#credits(href="#credit-text")
+                | Developer Credits
+              | &nbsp;&nbsp;&nbsp;  |  &nbsp;&nbsp;&nbsp;  Data provided through 
+              a(href="http://data.baltimorecity.gov/", target="parent")
+                | Open Baltimore
+              | &nbsp;&nbsp;&nbsp; |  &nbsp;&nbsp;&nbsp;  Map by 
+              a(href="http://www.openstreetmap.org/copyright", target="parent")
+                |&copy; OpenStreetMap contributors
+            div.footer-social
+              p
+                | Spread the word:
+              span
+                a.twitter-share-button(href="http://twitter.com/share", data-url="http://www.baltimorevacants.org/" data-via="bmorevacants" data-text="Search for vacant houses and lots through out the city of Baltimore" data-count="horizontal")
+                  | Tweet
+                iframe(src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.baltimorevacants.org&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21", scrolling="no", frameborder="0", style="border:none; overflow:hidden; width:100px; height:20px;", allowTransparency="true")
+      div#sb-contain
+        div.left-v-shadow
+        div.search-result
+          span#result-value.result-value ...
+          span.result-label Matching results
+        div#sb-contents
+          ul#results-list
+          div.text-btn.next#btn-next
+            a(href="#") Next 25

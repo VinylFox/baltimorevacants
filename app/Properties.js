@@ -51,7 +51,9 @@ Properties.prototype.doSummary = function(req, res, cb) {
 
 Properties.prototype.doOwnerSearch = function(req, res, cb) {
 
-	if (!req.query.owner_name) res.jsonp({});
+	if (!req.query.owner_name) res.jsonp({
+		error: ['no owner specified']
+	});
 
 	var owner_name = req.query.owner_name.toUpperCase();
 
@@ -67,7 +69,9 @@ Properties.prototype.doOwnerSearch = function(req, res, cb) {
 
 Properties.prototype.doTypeSearch = function(req, res, cb) {
 
-	if (!req.query.type) res.jsonp({});
+	if (!req.query.type) res.jsonp({
+		error: ['no type specified']
+	});
 
 	var type = req.query.type.toUpperCase();
 
@@ -86,7 +90,9 @@ Properties.prototype.doPropertyMatchSearch = function(property, val, req, res, c
 
 Properties.prototype.doBoundsSearch = function(req, res, cb) {
 
-	if (!req.query.bbox) res.jsonp({});
+	if (!req.query.bbox) res.jsonp({
+		error: ['no bbox specified']
+	});
 
 	var bbox = req.query.bbox.split(',').map(function(e) {
 		return parseFloat(e);
