@@ -1,6 +1,8 @@
 var express = require("express");
 var logfmt = require("logfmt");
+var path = require("path");
 var favicon = require('serve-favicon');
+var lessMiddleware = require('less-middleware');
 
 var HtmlPage = require('./app/HtmlPage.js');
 var Properties = require('./app/Properties.js');
@@ -11,12 +13,19 @@ var app = express();
 
 app.set('view engine', 'jade');
 
-app.use('/lib', express.static(__dirname + '/lib'));
-app.use(express.static(__dirname + '/lib'));
+app.use(logfmt.requestLogger());
+
+app.use(lessMiddleware(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
-app.use(logfmt.requestLogger());
+
+app.use('/public', express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/lib', express.static(__dirname + '/lib'));
+app.use(express.static(__dirname + '/lib'));
 
 app.get('/', function(req, res) {
 	res.render('index', {
@@ -24,10 +33,9 @@ app.get('/', function(req, res) {
 	});
 });
 
-app.get('/testmap', function(req, res) {
-	new HtmlPage().render('testmap', function(page) {
-		res.set('Content-Type', 'text/html');
-		res.send(page);
+app.get('/map', function(req, res) {
+	res.render('map', {
+		title: 'Baltimore Vacants Map'
 	});
 });
 
@@ -49,7 +57,13 @@ app.get('/api/:type', function(req, res) {
 			properties.doSummary(req, res, cb);
 			break;
 		case "bounds":
-			properties.doBoundsSearch(req, res, cb);
+			properties.doBoxSearch(req, res, cb);
+			break;
+		case "neighborhood":
+			properties.doNeighborhoodSearch(req, res, cb);
+			break;
+		case "neighborhoodlist":
+			properties.neighborhoodList(req, res, cb);
 			break;
 		default:
 			cb({
@@ -64,5 +78,5 @@ app.get('/api/:type', function(req, res) {
 var port = Number(process.env.PORT || 5000);
 
 app.listen(port, function() {
-	console.log("Listening on " + port);
+	console.log("Server started. Listening on " + port);
 });

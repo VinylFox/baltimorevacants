@@ -88,7 +88,41 @@ Properties.prototype.doPropertyMatchSearch = function(property, val, req, res, c
 
 };
 
-Properties.prototype.doBoundsSearch = function(req, res, cb) {
+Properties.prototype.neighborhoodList = function(req, res, cb) {
+
+	var me = this,
+		query = {};
+
+	this.data.query(res, 'neighborhood', query, 'json', function(resp) {
+		var hoods = [],
+			data = resp.data;
+
+		for (var i = 0; i < data.length; i++) {
+			hoods.push({
+				name: data[i]._id
+			});
+		}
+
+		cb(hoods);
+	});
+
+};
+
+Properties.prototype.doNeighborhoodSearch = function(req, res, cb) {
+
+	var me = this,
+		query = {
+			"_id": req.query.name.trim()
+		};
+
+	this.data.query(res, 'neighborhood', query, 'json', function(resp) {
+		var bounds = resp.data[0].geometry.coordinates;
+		me.doBoundsSearch(req, res, cb, bounds, 'property');
+	});
+
+};
+
+Properties.prototype.doBoxSearch = function(req, res, cb) {
 
 	if (!req.query.bbox) res.jsonp({
 		error: ['no bbox specified']
@@ -105,7 +139,7 @@ Properties.prototype.doBoundsSearch = function(req, res, cb) {
 
 	var dist = this.lineDistance([bbox[1], bbox[0]], [bbox[3], bbox[2]]);
 
-	if (dist < 0.02) {
+	if (dist < 0.03) {
 
 		var collection = 'property';
 
@@ -115,14 +149,22 @@ Properties.prototype.doBoundsSearch = function(req, res, cb) {
 
 	}
 
+	var bounds = [
+		[topLeft, topRight, botRight, botLeft, topLeft]
+	];
+
+	this.doBoundsSearch(req, res, cb, bounds, collection)
+
+};
+
+Properties.prototype.doBoundsSearch = function(req, res, cb, bounds, collection) {
+
 	var query = {
 		"geometry": {
 			"$geoIntersects": {
 				"$geometry": {
 					type: "Polygon",
-					coordinates: [
-						[topLeft, topRight, botRight, botLeft, topLeft]
-					]
+					coordinates: bounds
 				}
 			}
 		}
