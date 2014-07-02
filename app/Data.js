@@ -55,8 +55,11 @@ Data.prototype.query = function(res, collection, query, resultType, resCb) {
 		col.find(query).toArray(function(err, results) {
 			console.log("query complete");
 			if (err) {
-				res.render('error', {
-					status: 500
+				console.log(err);
+				resCb({
+					status: 500,
+					data: [],
+					error: err
 				});
 			} else {
 				if (resultType == 'geojson') {
