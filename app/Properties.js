@@ -108,15 +108,24 @@ Properties.prototype.neighborhoodList = function(req, res, cb) {
 
 };
 
+Properties.prototype.neighborhoodShapes = function(req, res, cb) {
+
+	var me = this,
+		query = {};
+
+	this.data.query(res, 'neighborhood', query, 'geojson', cb);
+
+};
+
 Properties.prototype.doNeighborhoodSearch = function(req, res, cb) {
 
 	var me = this,
-		query = {
+		query = (req.query.name && req.query.name != 'undefined') ? {
 			"_id": req.query.name.trim()
-		};
+		} : {};
 
 	this.data.query(res, 'neighborhood', query, 'json', function(resp) {
-		var bounds = resp.data[0].geometry.coordinates;
+		var bounds = (resp.data[0] && resp.data[0].geometry && resp.data[0].geometry.coordinates) ? resp.data[0].geometry.coordinates : [];
 		me.doBoundsSearch(req, res, cb, bounds, 'property');
 	});
 

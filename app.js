@@ -20,6 +20,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
+app.use('/script', express.static(__dirname + '/html'));
+app.use('/html', express.static(__dirname + '/html'));
+app.use(express.static(path.join(__dirname, 'html')));
 
 app.use('/public', express.static(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -61,6 +64,9 @@ app.get('/api/:type', function(req, res) {
 			break;
 		case "neighborhood":
 			properties.doNeighborhoodSearch(req, res, cb);
+			break;
+		case "neighborhoodshapes":
+			properties.neighborhoodShapes(req, res, cb);
 			break;
 		case "neighborhoodlist":
 			properties.neighborhoodList(req, res, cb);

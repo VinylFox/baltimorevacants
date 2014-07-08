@@ -8,8 +8,8 @@ var firstTime = false;
 
 var Property = require('../app/Property.js');
 
-process.on('uncaughtException', function (error) {
-   console.log(error.stack);
+process.on('uncaughtException', function(error) {
+	console.log(error.stack);
 });
 
 var missingBlocks = [];
@@ -17,46 +17,47 @@ var prefix = 'ctl00_ctl00_rootMasterContent_LocalContentPlaceHolder_DataGrid1_ct
 var MongoClient = require('mongodb').MongoClient;
 
 MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
-  if(err1) throw err1;
+	if (err1) throw err1;
 
 	var collection = db.collection('property');
-	var queue = [], x = 0;
+	var queue = [],
+		x = 0;
 	var cvsrs = csv.createStream();
 	//queue.push({block:'0023'});
 	var rs = fs.createReadStream('./data/block.csv', {
-		autoClose: true
-	}).pipe(cvsrs)
-	    .on('error',function(err){
-	        console.error(err);
-	    })
-	    .on('end', function(){
-	    	queue.push({
-	    		done: true
-	    	});
-	    	async.eachSeries(queue, function(data, callback){
-	    		if (data.done){
-					if (missingBlocks.length > 0){
-			    		console.log('Missing Blocks: '+missingBlocks.join(', '));
-			    	}
-			    	console.log('done');
-	    		} else {
-		    		if (data.block){
+			autoClose: true
+		}).pipe(cvsrs)
+		.on('error', function(err) {
+			console.error(err);
+		})
+		.on('end', function() {
+			queue.push({
+				done: true
+			});
+			async.eachSeries(queue, function(data, callback) {
+				if (data.done) {
+					if (missingBlocks.length > 0) {
+						console.log('Missing Blocks: ' + missingBlocks.join(', '));
+					}
+					console.log('done');
+				} else {
+					if (data.block) {
 						var block = data.block.trim();
 
-						block = (block.length == 1)?'000'+block:block;
-						block = (block.length == 2)?'00'+block:block;
-						block = (block.length == 3)?'0'+block:block;
+						block = (block.length == 1) ? '000' + block : block;
+						block = (block.length == 2) ? '00' + block : block;
+						block = (block.length == 3) ? '0' + block : block;
 
-				    	fs.readFile('./cache/block-list-'+block+'.html', 'utf-8', function(err2, contents) {
+						fs.readFile('./cache/block-list-' + block + '.html', 'utf-8', function(err2, contents) {
 							if (err2) {
 								//console.log(err2);
-								if (block){
+								if (block) {
 									console.log(block);
 									missingBlocks.push(block);
 								}
-								setImmediate(function() { 
-							  	    callback(); 
-							    });
+								setImmediate(function() {
+									callback();
+								});
 							} else {
 
 								var page = cheerio.load(contents);
@@ -81,9 +82,9 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 									page('#' + prefix + inc + '_lblOwner1').closest('td').prev().prev().each(function() {
 										lot = page(this).text().trim();
 									});
-									if (lot.trim() == ''){
+									if (lot.trim() == '') {
 										//console.log('Lot #'+(i-1)+' does not exist on block #'+block);
-									}else{
+									} else {
 										page('#' + prefix + inc + '_lblOwner1').closest('td').prev().each(function() {
 											address = page(this).text();
 										});
@@ -107,57 +108,59 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 										owner3 = owner3.replace('.', '').trim();
 										owner4 = owner4.replace('.', '').trim();
 
-								        var prop = new Property();
-								        prop.createFromRaw({
-								        	block: item_block,
-								        	lot: lot,
-								        	address: address,
-								        	owner1: owner1,
-								        	owner2: owner2,
-								        	owner3: owner3,
-								        	owner4: owner4
-								        });
+										var prop = new Property();
+										prop.createFromRaw({
+											block: item_block,
+											lot: lot,
+											address: address,
+											owner1: owner1,
+											owner2: owner2,
+											owner3: owner3,
+											owner4: owner4
+										});
 
-								        var entry = prop.getData();
+										var entry = prop.getData();
 
-								        entry.owner1 = owner1;
+										entry.owner1 = owner1;
 										entry.owner2 = owner2;
-								        entry.owner3 = owner3;
-								        entry.owner4 = owner4;
-								        
-								        if (!firstTime) {
-								        	var resp = collection.update({
-		 										_id: item_block+lot
-		 									}, entry, {
-		 										upsert:true,
-		 										safe:true,
-		 										multi:false
-		 									},function(){
-		 									    setImmediate(function() { 
-		 									  	    callback(); 
-		 									    });
-		 									});
-								        }else{
-								        	inserts.push(entry);
-								        }
+										entry.owner3 = owner3;
+										entry.owner4 = owner4;
+
+										if (!firstTime) {
+											var resp = collection.update({
+												_id: item_block + lot
+											}, entry, {
+												upsert: true,
+												safe: true,
+												multi: false
+											}, function() {
+												setImmediate(function() {
+													callback();
+												});
+											});
+										} else {
+											inserts.push(entry);
+										}
 
 
 									}
 
 								}
 
-								if (firstTime){
+								if (firstTime) {
 
-									collection.insert(inserts, {w:1}, function(err, result){
-										if (err){
+									collection.insert(inserts, {
+										w: 1
+									}, function(err, result) {
+										if (err) {
 											console.log(err);
 										} else {
-											console.log(result[0].block+', '+result.length);
+											console.log(result[0].block + ', ' + result.length);
 											inserts = [];
 										}
-									    setImmediate(function() { 
-									  	    callback(); 
-									    });
+										setImmediate(function() {
+											callback();
+										});
 									});
 
 								}
@@ -166,11 +169,11 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 						});
 					}
 				}
-	    	});
-	    })
-	    .on('data',function(data){
-		    	
+			});
+		})
+		.on('data', function(data) {
+
 			queue.push(data);
 
-	    });
+		});
 });
