@@ -1,9 +1,12 @@
 extends layout
 
 block content
-  div#map(style="width: 1000px; height: 700px")
-  div#status Ready
-  input#owner_name(type="text")
-  input#neighborhood(type="checkbox")
-  input#properties(type="checkbox")
-  button#multipoly(text="multipoly")
+  div.masthead(ng-controller="MastheadController")
+    leaflet(id="navmap", width=50, height=50, center="center", defaults="defaults", geojson="geojson")
+    div.title Baltimore Vacants
+    div.search
+      autocomplete(ng-model="result", attr-placeholder="type to search movies...", click-activation="true", data="movies", on-type="doSomething", on-select="doSomethingElse")
+  div.mapcontain(ng-controller="MapController")
+    leaflet(id="mainmap", center="center", events="events", legend="legend" geojson="geojson")
+    div.info
+      div(ng-bind-html="geojson.selected.DisplayValue")
