@@ -1,33 +1,38 @@
 {
-  "name": "baltimorevacants",
-  "version": "2.0.0",
-  "description": "Vacant housing listing web site for Baltimore City",
-  "main": "app.js",
-  "scripts": {
-    "test": "jasmine-node spec"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/VinylFox/baltimorevacants.git"
-  },
-  "keywords": [
-    "baltimore",
-    "vacant"
-  ],
-  "author": "Shea Frederick",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/VinylFox/baltimorevacants/issues"
-  },
-  "homepage": "https://github.com/VinylFox/baltimorevacants",
-  "dependencies": {
-    "express": "^4.4.0",
-    "jade": "^1.3.0",
-    "less-middleware": "^1.0.3",
-    "logfmt": "^1.1.2",
-    "mongodb": "^1.4.5",
-    "mu2": "^0.5.20",
-    "node-sass": "^0.9.3",
-    "serve-favicon": "^2.0.1"
-  }
+	"name": "baltimorevacants",
+	"version": "2.0.0",
+	"description": "Vacant housing listing web site for Baltimore City",
+	"main": "app.js",
+	"scripts": {
+		"test": "jasmine-node spec"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/VinylFox/baltimorevacants.git"
+	},
+	"keywords": [
+		"baltimore",
+		"vacant"
+	],
+	"author": "Shea Frederick",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/VinylFox/baltimorevacants/issues"
+	},
+	"homepage": "https://github.com/VinylFox/baltimorevacants",
+	"dependencies": {
+		"express": "^4.4.0",
+		"jade": "^1.3.0",
+		"less-middleware": "^1.0.3",
+		"logfmt": "^1.1.2",
+		"mongodb": "^1.4.5",
+		"mu2": "^0.5.20",
+		"node-sass": "^0.8.0",
+		"serve-favicon": "^2.0.1"
+	},
+	"devDependencies": {
+		"grunt": "^0.4.5",
+		"grunt-cli": "^0.1.13",
+		"grunt-sass": "^0.14.0"
+	}
 }

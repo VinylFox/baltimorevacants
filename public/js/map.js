@@ -1,244 +1,338 @@
-app.controller('MapController', ["$scope", "$http", "leafletData",
-	function($scope, $http, leafletData) {
-
-		$scope.$on("leafletDirectiveMap.geojsonMouseover", function(ev, leafletEvent) {
-			countryMouseover(leafletEvent);
-		});
-
-		$scope.$on("leafletDirectiveMap.geojsonClick", function(ev, featureSelected, leafletEvent) {
-			countryClick(featureSelected, leafletEvent);
-		});
-
-		angular.extend($scope, {
+var MainMap = React.createClass({
+	displayName: 'MainMap',
+	getInitialState: function() {
+		return {
+			center: config.defaultMapCenter
+		};
+	},
+	setMapCenter: function(lat, lon, zoom) {
+		this.setState({
 			center: {
-				lat: 39.2854197594374,
-				lng: -76.61796569824219,
-				zoom: 12
-			},
-			legend: {
-				colors: ['#FF0000', '#006699'],
-				labels: ['Vacant Houses', 'Search Result']
+				lat: lat,
+				lon: lon,
+				zoom: zoom
 			}
 		});
+	},
+	componentDidMount: function() {
+		$('.loading').show();
+		$('.hoodinfo').hide();
+		$('.propdetails').hide();
+		this.createMap();
+		this.addTileLayer();
+		this.fixMapSize();
+		this.createLegend();
+		this.addCityOutline();
+		this.addNeighborhoodOutlines();
+	},
+	createMap: function() {
+		this.map = L.map('mainmap').setView([this.state.center.lat, this.state.center.lon], this.state.center.zoom);
+	},
+	createLegend: function() {
+		var ME = this;
 
-		function countryClick(country, event) {
-			console.log(country.properties.Name);
-			$scope.currentNeighborhood = country.properties.Name;
-			leafletData.getMap('mainmap').then(function(map) {
-				console.log('success', arguments);
-				map.fitBounds(event.target.getBounds());
-				if (country.properties.Name) {
-					$http.get("/api/neighborhood?name=" + country.properties.Name).success(function(data, status) {
+		this.legend = L.control({
+			position: 'bottomright'
+		});
 
-						addDisplayValue(data);
-						for (var i = 0; i < $scope.allHoodData.features.length; i++) {
-							if ($scope.allHoodData.features[i].properties.Name == $scope.currentNeighborhood) {
-								if ($scope.removedNeighborhood) {
-									$scope.allHoodData.features.concat($scope.removedNeighborhood);
-								}
-								$scope.removedNeighborhood = $scope.allHoodData.features.splice(i, 1);
-							}
-						}
+		this.legend.onAdd = function(map) {
 
-						data.features = data.features.concat($scope.allHoodData.features);
-						angular.extend($scope, {
-							geojson: {
-								data: data,
-								style: style,
-								resetStyleOnMouseout: true
-							}
-						});
-					});
+			var div = L.DomUtil.create('div', 'info legend'),
+				grades = [{
+					vacant: true,
+					owner_occupied: false,
+					label: 'Vacant Property'
+				}, {
+					vacant: false,
+					owner_occupied: false,
+					owner_type: 'RENTAL',
+					label: 'Rental Property'
+				}, {
+					owner_occupied: false,
+					owner_type: 'UNKNOWN',
+					label: 'Non-owner Occupied'
+				}, {
+					vacant: false,
+					owner_occupied: true,
+					label: 'Owner Occupied'
+				}, {
+					owner_type: 'CHARITY',
+					label: 'Charity Org.'
+				}, {
+					owner_type: 'RELIGIOUS',
+					label: 'Religoius Org.'
+				}, {
+					owner_name1: 'MAYOR & CITY COUNCIL',
+					label: 'City Owned'
+				}, {
+					label: 'Other'
+				}],
+				labels = [];
 
-				}
-			}, function() {
-				console.log('failure', arguments);
-			});
+			for (var i = 0; i < grades.length; i++) {
+				div.innerHTML += '<i style="background:' + ME.getPropertyColor(grades[i]) + '"></i> ' + grades[i].label + '<br/>';
+			}
+
+			return div;
+		};
+
+		this.legend.addTo(this.map);
+	},
+	addTileLayer: function() {
+		L.tileLayer(this.props.tileServerUrl, {
+			maxZoom: this.props.tileMaxZoom,
+			attribution: this.props.tileAttribution
+		}).addTo(this.map);
+	},
+	fixMapSize: function() {
+		$('#mainmap').css({
+			'width': $(window).width() + 'px',
+			'height': $(window).height() + 'px'
+		});
+		this.map.invalidateSize();
+	},
+	addCityOutline: function() {
+		L.geoJson(config.cityOutlineGeoJson, {
+			color: "#ff7800",
+			weight: 5,
+			opacity: 0.65
+		}).addTo(this.map);
+	},
+	addNeighborhoodOutlines: function() {
+		var ME = this;
+		$.get("/api/neighborhoodshapes").success(function(data, status) {
+			//addDisplayValue(data);
+			ME.neighborhoods = L.geoJson(data, {
+				style: ME.getNeighborhoodStyle,
+				onEachFeature: ME.onEachFeature
+			}).addTo(ME.map);
+			$('.loading').hide();
+		});
+	},
+	onEachFeature: function(feature, layer) {
+		layer.on({
+			mouseover: this.shapeHover,
+			mouseout: this.shapeMouseOut,
+			click: this.shapeClick
+		});
+	},
+	getPropertyStyle: function(feature) {
+		return {
+			fillColor: this.getPropertyColor(feature.properties),
+			weight: 1,
+			opacity: 1,
+			color: 'white',
+			fillOpacity: 0.65
+		}
+	},
+	getNeighborhoodStyle: function(feature) {
+		return {
+			fillColor: this.getNeighborhoodColor(feature.properties.Vacant, feature.properties.Housing),
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: 3,
+			fillOpacity: 0.65
+		}
+	},
+	getPropertyColor: function(p) {
+		var color = '#CCC';
+		if (p.vacant === true) {
+			color = '#F00';
+		} else if (p.owner_occupied === true) {
+			color = '#0F0';
+		} else if (p.owner_type == 'RENTAL') {
+			color = '#00F';
+		} else if (p.owner_type == 'CHARITY') {
+			color = '#FF66FF';
+		} else if (p.owner_type == 'RELIGIOUS') {
+			color = '#FFFF00';
+		} else if (p.owner_name1 == 'MAYOR & CITY COUNCIL') {
+			color = '#FF6600';
+		} else if (p.owner_occupied == false && p.owner_type == 'UNKNOWN') {
+			color = '#0066FF';
 		}
 
-		// Get a country paint color from the continents array of colors
-		function getColor(country) {
-			return "#CC0066";
-		}
+		return color;
+	},
+	getNeighborhoodColor: function(d, t) {
 
-		function style(feature) {
-			return {
-				fillColor: (feature.properties.vacant) ? "#FF0000" : (feature.properties.Vacant == 0 || feature.properties.Housing < 200) ? '#ccc' : $scope.color.evaluate(((((feature.properties.Vacant / feature.properties.Housing) * 100) - 100) * -1).toFixed(0)),
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				dashArray: '3',
-				fillOpacity: 0.7
-			};
-		}
+		var n = (d == 0 || t < 200) ? 0 : ((((d / t) * 100) - 100) * -1).toFixed(0),
+			G = (((255 * n) / 100) - 80).toFixed(0),
+			R = ((255 * (100 - n)) / 100).toFixed(0),
+			B = '10',
+			val = (n > 0) ? 'rgb(' + R + ',' + G + ',' + B + ')' : '#CCCCCC';
 
-		// Mouse over function, called from the Leaflet Map Events
-		function countryMouseover(leafletEvent) {
-			var layer = leafletEvent.target;
+		return val;
+	},
+	shapeHover: function(e) {
+		var layer = e.target,
+			props = layer.feature.properties,
+			html;
+		if (props.Name) {
 			layer.setStyle({
-				weight: 2,
+				weight: 5,
 				color: '#666',
-				fillColor: 'white'
+				dashArray: '',
+				fillOpacity: 0.7
 			});
-		}
-
-		function addDisplayValue(data) {
-			for (i = 0; i < data.features.length; i++) {
-				if (data.features[i].properties.Name) {
-					data.features[i].DisplayValue = data.features[i].properties.Name + " (" + data.features[i].properties.Vacant + " Vacants of " + data.features[i].properties.Housing + " Houses)";
-				} else if (data.features[i].properties.primary_owner_name) {
-					data.features[i].DisplayValue = "<p>" + data.features[i].owner_type + " | " + data.features[i].properties.property_address + "</p><p>Owner: " + data.features[i].properties.primary_owner_name + "</p><p>Owner Address: " + data.features[i].properties.owner_address + "</p><p>" + data.features[i].properties.owner_city + ", " + data.features[i].properties.owner_state + " " + data.features[i].properties.owner_zip + "</p>";
+			html = props.Name;
+		} else {
+			if (props.property_address == 0) {
+				if (props.owner_name1) {
+					html = 'No address available for this parcel. <br/>Likely an easment, park, or other non-residential or commercial space.<br/>';
+					html += 'Owner: ' + props.owner_name1 + '<br/>';
 				} else {
-					data.features[i].DisplayValue = (data.features[i].properties.property_address == '0') ? 'Unknown ownership (Likely an easment or public right of way)' : data.features[i].properties.property_address;
+					html = 'No address available for this parcel. <br/>Likely an easment, park, or other non-residential or commercial space.';
 				}
-			}
-		}
-
-		// Get the countries data from a JSON
-		$http.get("/api/neighborhoodlist").success(function(data, status) {
-
-			$scope.allData = data;
-			$scope.color = new L.HSLLuminosityFunction(new L.Point(0, 0.3), new L.Point(data.length - 1, 2), {
-				outputHue: 0,
-				outputLuminosity: '100%'
-			})
-			// Put the countries on an associative array
-			$scope.countries = {};
-			for (var i = 0; i < data.length; i++) {
-				var country = data[i];
-				$scope.countries[country['name']] = country;
-			}
-
-			// Get the countries geojson data from a JSON
-			$http.get("/api/neighborhoodshapes").success(function(data, status) {
-				$scope.allHoodData = data;
-				addDisplayValue(data);
-				angular.extend($scope, {
-					geojson: {
-						data: data,
-						style: style,
-						resetStyleOnMouseout: true
-					}
-				});
-			});
-		});
-	}
-]);
-
-/*	$(window).resize(function() {
-		$('#map').css({
-			'width': (($(window).width()) - 260) + 'px',
-			'height': (($(window).height())) + 'px'
-		});
-		map.invalidateSize();
-	});
-
-	var map = L.map('map').setView([39.2854197594374, -76.61796569824219], 12);
-
-	$('#map').css({
-		'width': (($(window).width()) - 260) + 'px',
-		'height': (($(window).height())) + 'px'
-	});
-	map.invalidateSize();
-
-	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 18,
-		attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
-	}).addTo(map);
-
-	var parcels, parcels2;
-	var refreshParcels = function() {
-		$('#status').html('Loading...');
-		var bounds = map.getBounds();
-		$.ajax({
-			url: "/api/bounds",
-			data: {
-				bbox: bounds.getSouth() + ',' + bounds.getWest() + ',' + bounds.getNorth() + ',' + bounds.getEast()
-			}
-		}).done(function(data) {
-			if (parcels) {
-				map.removeLayer(parcels);
-			}
-			parcels = L.geoJson(data, {
-				style: function(feature) {
-					var color = (feature.properties.primary_owner_name) ? '#00f' : '#0f0';
-					return {
-						color: color
-					};
-				},
-				onEachFeature: function(feature, layer) {
-					var msg = '';
-					for (prop in feature.properties) {
-						msg = msg + prop + ': ' + feature.properties[prop] + '<br/>';
-					}
-					layer.bindPopup(msg);
-				}
-			});
-			parcels.addTo(map);
-			$('#status').html('Ready');
-		});
-	};
-
-	map.on('moveend', refreshParcels);
-	map.on('zoomend', refreshParcels);
-
-	$('#owner_name').on('keyup', function() {
-		var owner_name = $('#owner_name').val().trim();
-		if (owner_name) {
-			$('#status').html('Loading...');
-			$.ajax({
-				url: "/api/owner",
-				data: {
-					owner_name: owner_name
-				}
-			}).done(function(data) {
-				if (parcels2) {
-					map.removeLayer(parcels2);
-				}
-				parcels2 = L.geoJson(data, {
-					style: function(feature) {
-						return {
-							color: "#000"
-						};
-					},
-					onEachFeature: function(feature, layer) {
-						var msg = '';
-						for (prop in feature.properties) {
-							msg = msg + prop + ': ' + feature.properties[prop] + '<br/>';
+			} else {
+				if (props.owner_name1) {
+					html = '<span class="addr">' + props.property_address + '</span><br/>' + props.block + ' ' + props.lot + '<br/>Owner: ' + props.owner_name1 + '<br/>';
+					if (props.owner_name2) {
+						html += 'Owner 2: ' + props.owner_name2 + '<br/>';
+						if (props.owner_name3) {
+							html += 'Owner 3: ' + props.owner_name3 + '<br/>';
 						}
-						layer.bindPopup(msg);
 					}
-				});
-				parcels2.addTo(map);
-				$('#status').html('Ready');
-			});
-		}
-	});
-
-	$('#multipoly').on('click', function() {
-		$('#status').html('Loading...');
-		$.ajax({
-			url: "/api/type?type=UNKNOWN"
-		}).done(function(data) {
-			if (parcels2) {
-				map.removeLayer(parcels2);
-			}
-			parcels2 = L.geoJson(data, {
-				style: function(feature) {
-					return {
-						color: "#F00"
-					};
-				},
-				onEachFeature: function(feature, layer) {
-					var msg = '';
-					for (prop in feature.properties) {
-						msg = msg + prop + ': ' + feature.properties[prop] + '<br/>';
+					if (props.owner_address) {
+						html += 'Owner Address: ' + props.owner_address + '. ' + props.owner_city + ', ' + props.owner_state + ' ' + props.owner_zip + '<br/>';
 					}
-					layer.bindPopup(msg);
+				} else {
+					html = '<span class="addr">' + props.property_address + '</span><br/>' + props.block + ' ' + props.lot + '<br/>No details on property<br/>';
 				}
-			});
-			parcels2.addTo(map);
-			$('#status').html('Ready');
-		});
-	});
-});*/
+			}
+		}
+		$('.propinfo').html(html);
+	},
+	shapeMouseOut: function(e) {
+		if (e.target.feature.properties.Name) {
+			(this.neighborhoods) ? this.neighborhoods.resetStyle(e.target) : '';
+		}
+	},
+	shapeClick: function(e) {
+		var shape = e.target.feature,
+			html,
+			props = shape.properties;
+		if (props.Name) {
+			$('.hoodinfo').hide();
+			$('.loading').show();
+			this.currentNeighborhood = props.Name;
+			this.map.fitBounds(e.target.getBounds());
+			if (props.Name) {
+				var ME = this;
+
+				if (ME.hiddenNeighborhood) {
+					ME.map.addLayer(ME.hiddenNeighborhood);
+				}
+				if (ME.parcels) {
+					this.map.removeLayer(ME.parcels);
+				}
+				ME.hiddenNeighborhood = e.target;
+				this.map.removeLayer(e.target);
+				var bounds = this.map.getBounds(),
+					n = bounds.getNorth(),
+					s = bounds.getSouth(),
+					e = bounds.getEast(),
+					w = bounds.getWest(),
+					bbox = n + ',' + w + ',' + s + ',' + e;
+				$.get("/api/summary?field=owner_name1&bbox=" + bbox).success(function(data, status) {
+					var c = 0,
+						html = 'Top Owners<br/>';
+					$.each(data.data, function(i, item) {
+						if (item._id !== null && c < 10) {
+							html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
+							c++;
+						}
+					});
+					$('.hoodinfo .owners').show().html(html);
+				});
+				$.get("/api/summary?field=owner_type&bbox=" + bbox).success(function(data, status) {
+					var c = 0,
+						html = 'Owner Type<br/>';
+					$.each(data.data, function(i, item) {
+						if (item._id !== null && c < 10 && item._id !== 'UNKNOWN') {
+							html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
+							c++;
+						}
+					});
+					$('.hoodinfo').show();
+					$('.hoodinfo .types').html(html);
+				});
+				$.get("/api/summary?field=owner_state&bbox=" + bbox).success(function(data, status) {
+					var c = 0,
+						html = 'Owner State<br/>';
+					$.each(data.data, function(i, item) {
+						if (item._id !== null && c < 10) {
+							html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
+							c++;
+						}
+					});
+					$('.hoodinfo').show();
+					$('.hoodinfo .states').html(html);
+				});
+				$.get("/api/neighborhood?name=" + this.currentNeighborhood).success(function(data, status) {
+					ME.parcels = L.geoJson(data, {
+						style: ME.getPropertyStyle,
+						onEachFeature: ME.onEachFeature
+					}).addTo(ME.map);
+					$('.loading').hide();
+				});
+			}
+		} else {
+			if (false && props.block && props.lot) {
+				var block = (props.block.length < 5) ? props.block + '%20' : props.block,
+					lot = (props.lot.length < 4) ? props.lot + '%20' : props.lot,
+					url = 'http://data.baltimorecity.gov/resource/ywty-nmtg.json?$select=citation,fineamount,balance,violdesc,violdate,agency,block,lot&block=' + block + '&lot=' + lot + '&$jsonp=';
+				$.ajax({
+					url: url,
+					crossDomain: true,
+					jsonp: false,
+					jsonpCallback: ''
+				}).done(function(data) {
+					console.log(data);
+				});
+			}
+
+
+			if (props.owner_name1) {
+				html = '<span class="addr">' + props.property_address + '</span><br/>' + props.block + ' ' + props.lot + '<br/>Owner: ' + props.owner_name1 + '<br/>';
+				if (props.owner_name2) {
+					html += 'Owner 2: ' + props.owner_name2 + '<br/>';
+					if (props.owner_name3) {
+						html += 'Owner 3: ' + props.owner_name3 + '<br/>';
+					}
+				}
+				if (props.owner_address) {
+					html += 'Owner Address: ' + props.owner_address + '. ' + props.owner_city + ', ' + props.owner_state + ' ' + props.owner_zip + '<br/>';
+				}
+				if (props.owner1) {
+					html += 'Owner 1 (raw): ' + props.owner1 + '<br/>';
+					if (props.owner2) {
+						html += 'Owner 2 (raw): ' + props.owner2 + '<br/>';
+						if (props.owner3) {
+							html += 'Owner 3 (raw): ' + props.owner3 + '<br/>';
+							if (props.owner4) {
+								html += 'Owner 4 (raw): ' + props.owner4 + '<br/>';
+							}
+						}
+					}
+				}
+
+				$('.propdetails').show().html(html);
+			} else {
+				$('.propdetails').show().html('No owner information available');
+			}
+		}
+	},
+	render: function() {
+		return React.DOM.div();
+	}
+});
+
+$(function() {
+	React.renderComponent(MainMap({
+		tileServerUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		tileMaxZoom: 22,
+		tileAttribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
+	}), document.getElementById('mainmap'));
+});

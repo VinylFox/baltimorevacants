@@ -23,13 +23,27 @@ Properties.prototype.doSummary = function(req, res, cb) {
 
 	if (!req.query.field) res.jsonp({});
 
-	var field = req.query.field;
+	var field = req.query.field,
+		bbox;
+
+	if (req.query.bbox) {
+		bbox = req.query.bbox.split(',').map(function(e) {
+			return parseFloat(e);
+		});
+		var topLeft = [bbox[1], bbox[2]];
+		var topRight = [bbox[3], bbox[2]];
+		var botRight = [bbox[3], bbox[0]];
+		var botLeft = [bbox[1], bbox[0]];
+		bbox = [
+			[topLeft, topRight, botRight, botLeft, topLeft]
+		];
+	}
 
 	var query = [{
 		'$match': {}
 	}, {
 		'$group': {
-			'_id': '$' + field,
+			'_id': '$properties.' + field,
 			'totalSize': {
 				'$sum': 1
 			}
@@ -41,11 +55,22 @@ Properties.prototype.doSummary = function(req, res, cb) {
 	}, {
 		'$limit': 50
 	}];
-	query[0]['$match'][field] = {
+	query[0]['$match']['properties.' + field] = {
 		'$ne': ''
 	};
 
-	this.data.query(res, 'property', query, 'json', cb);
+	if (bbox) {
+		query[0]['$match']['geometry'] = {
+			"$geoIntersects": {
+				"$geometry": {
+					type: "Polygon",
+					coordinates: bbox
+				}
+			}
+		};
+	}
+
+	this.data.aggregate(res, 'property', query, 'json', cb);
 
 };
 
@@ -67,6 +92,16 @@ Properties.prototype.doOwnerSearch = function(req, res, cb) {
 
 };
 
+Properties.prototype.propertyList = function(req, res, cb) {
+
+	if (!req.query.block) res.jsonp({
+		error: ['no block specified']
+	});
+
+	this.doPropertyMatchSearch('block', req.query.block, req, res, cb);
+
+};
+
 Properties.prototype.doTypeSearch = function(req, res, cb) {
 
 	if (!req.query.type) res.jsonp({
@@ -82,7 +117,7 @@ Properties.prototype.doTypeSearch = function(req, res, cb) {
 Properties.prototype.doPropertyMatchSearch = function(property, val, req, res, cb) {
 
 	var query = {};
-	query[property] = val;
+	query["properties." + property] = val;
 
 	this.data.query(res, 'property', query, 'geojson', cb);
 

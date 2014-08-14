@@ -76,8 +76,8 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 						console.log('result of find has no error');
 						if (result != null) {
 							console.log('Updating existing property for ' + data[8]);
-							result.vacant = true;
-							result.property_address = data[9];
+							result.properties.vacant = true;
+							//result.property_address = data[9];
 							if (!test) {
 								collection.update({
 									_id: data[8].replace(' ', '')
@@ -96,9 +96,12 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 								console.log('No property exists yet, adding one for ' + data[8].replace(' ', ''));
 								var entry = {
 									_id: data[8].replace(' ', ''),
-									block: data[8].substr(0, 5).trim(),
-									lot: data[8].substr(4, 4).trim(),
-									property_address: data[9].trim()
+									properties: {
+										vacant: true,
+										block: data[8].substr(0, 5).trim(),
+										lot: data[8].substr(4, 4).trim(),
+										property_address: data[9].trim()
+									}
 								};
 								if (!test) {
 									collection.insert(entry, {

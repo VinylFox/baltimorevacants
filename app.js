@@ -20,15 +20,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
-app.use('/script', express.static(__dirname + '/html'));
-app.use('/html', express.static(__dirname + '/html'));
-app.use(express.static(path.join(__dirname, 'html')));
-
 app.use('/public', express.static(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/lib', express.static(__dirname + '/lib'));
-app.use(express.static(__dirname + '/lib'));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
+app.use(express.static(__dirname + '/bower_components'));
 
 app.get('/', function(req, res) {
 	res.render('index', {
@@ -70,6 +66,9 @@ app.get('/api/:type', function(req, res) {
 			break;
 		case "neighborhoodlist":
 			properties.neighborhoodList(req, res, cb);
+			break;
+		case "properties":
+			properties.propertyList(req, res, cb);
 			break;
 		default:
 			cb({

@@ -1,3 +1,34 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+
+.loading {
+  line-height: 100px;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+}
+
 html {
     font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
@@ -9,6 +40,16 @@ html, body {
     margin:0px;
 }
 
+#mainmap {
+  position: absolute;
+}
+
+.mapcontain {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .info {
     padding: 6px 8px;
     font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -18,9 +59,24 @@ html, body {
     font-weight: bold;
     line-height: 18px;
     color: #555;
+}
+
+#propinfo {
     position: absolute;
     top: 65px;
     left: 50px;
+}
+
+#propdetails {
+    position: absolute;
+    bottom: 20px;
+    left: 20px; 
+}
+
+#hoodinfo {
+    position: absolute;
+    top: 65px;
+    right: 8px; 
 }
 
 .info p{
@@ -64,6 +120,16 @@ html, body {
     margin-right: 8px;
 }
 
+.search input {
+  font-size: 14px;
+  width: 140px;
+  height: 13px;
+  margin: 14px;
+  box-shadow: inset 1px 1px 5px rgba(0,0,0,0.65);
+  border: 1px solid #000;
+  padding: 8px;
+}
+
 .angular-leaflet-map, .mapcontain {
     height:100%;
     width:100%;
@@ -82,10 +148,17 @@ html, body {
 .title {
     float: left;
     color: rgba(255, 255, 255, 0.9);
-    font-size: 20px;
-    margin: 5px 0 0 10px;
+    font-size: 33px;
+    margin: 5px 0 0 15px;
 }
 
 .search {
     float: right;
+}
+
+.search-title {
+    float: left;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 22px;
+    margin: 14px 0 0 0;
 }

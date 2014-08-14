@@ -1,0 +1,1 @@
+http: //data.baltimorecity.gov/resource/ywty-nmtg.json?$select=citation,fineamount,balance,violdesc,violdate,agency,block,lot&block=6286 &lot=005 &$jsonp=test

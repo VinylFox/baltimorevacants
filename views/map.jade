@@ -1,12 +1,21 @@
 extends layout
 
 block content
-  div.masthead(ng-controller="MastheadController")
-    leaflet(id="navmap", width=50, height=50, center="center", defaults="defaults", geojson="geojson")
+  div.masthead
+    leaflet#navmap(width=50, height=50)
     div.title Baltimore Vacants
-    div.search
-      autocomplete(ng-model="result", attr-placeholder="type to search movies...", click-activation="true", data="movies", on-type="doSomething", on-select="doSomethingElse")
-  div.mapcontain(ng-controller="MapController")
-    leaflet(id="mainmap", center="center", events="events", legend="legend" geojson="geojson")
-    div.info
-      div(ng-bind-html="geojson.selected.DisplayValue")
+    div.search 
+      div.search-title Search:
+      div(style='float:right;') 
+        div#search
+  div.mapcontain
+    div#mainmap
+    div.info.propinfo#propinfo
+      div
+    div.info.propdetails#propdetails
+      div
+    div.info.hoodinfo#hoodinfo
+      div.owners
+      div.types
+      div.states
+  span.loading.fa-gear.fa-spin Loading
