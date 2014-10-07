@@ -69,14 +69,18 @@ html, body {
 
 #propdetails {
     position: absolute;
-    bottom: 20px;
-    left: 20px; 
+    right: 0;
+    top: 60px;
+    height: 100%;
+    width: 350px;
+    z-index: 1001;
+    border-radius: 0;
 }
 
 #hoodinfo {
     position: absolute;
-    top: 65px;
-    right: 8px; 
+    bottom: 20px;
+    left: 20px; 
 }
 
 .info p{
@@ -161,4 +165,8 @@ html, body {
     color: rgba(255, 255, 255, 0.9);
     font-size: 22px;
     margin: 14px 0 0 0;
+}
+
+li.viols {
+  overflow: hidden;
 }

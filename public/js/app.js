@@ -1,4 +1,6 @@
-var config = {};
+var config = {},
+	map,
+	search;
 
 config.cityOutlineGeoJson = {
 	"type": "Feature",
@@ -31,5 +33,16 @@ $(window).resize(function() {
 		'width': $(window).width() + 'px',
 		'height': $(window).height() + 'px'
 	});
-	//map.invalidateSize();
+});
+
+$(function() {
+	map = React.renderComponent(MainMap({
+		tileServerUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		//tileServerUrl: 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',
+		tileMaxZoom: 22,
+		tileAttribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
+	}), document.getElementById('mainmap'));
+	search = React.renderComponent(Search({
+		map: map
+	}), document.getElementById('search'));
 });

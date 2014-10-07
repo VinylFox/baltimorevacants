@@ -4,7 +4,8 @@ var csv = require('csv-stream');
 var request = require('request');
 var async = require('async');
 
-var firstTime = false;
+var firstTime = false,
+	x = 0;
 
 var min = process.argv.slice(2);
 var max = process.argv.slice(3);
@@ -132,10 +133,11 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 								collection.update({
 									_id: result._id
 								}, result, function() {
-									console.log('udated property');
-									setImmediate(function() {
+									x++;
+									console.log('udated property', x);
+									setTimeout(function() {
 										callback2();
-									});
+									}, 500);
 								});
 							} else {
 								console.log('***** ERROR ****** Updating existing property for ', rawdata2);

@@ -84,7 +84,7 @@ Properties.prototype.doOwnerSearch = function(req, res, cb) {
 
 	var query = {
 		"$text": {
-			"$search": owner_name
+			"$search": '"' + owner_name + '"'
 		}
 	};
 

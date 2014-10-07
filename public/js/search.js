@@ -58,6 +58,7 @@ var Search = React.createClass({
 			me.setState({
 				items: data.features
 			});
+			me.props.map.addSearchResults.call(me.props.map, data);
 			/*if (parcels2) {
 				map.removeLayer(parcels2);
 			}
@@ -105,10 +106,6 @@ var Search = React.createClass({
 			)
 		);
 	}
-});
-
-$(function() {
-	React.renderComponent(Search({}), document.getElementById('search'));
 });
 
 /*
