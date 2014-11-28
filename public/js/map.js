@@ -365,7 +365,8 @@ var MainMap = React.createClass({
 						left: window.innerWidth - 350
 					});
 				} else {
-					$('.propdetails .owner').html('No owner information available');
+					html = props.block + props.lot + '<br/>' + props.property_address;
+					$('.propdetails .owner').html(html + '<br/>No extended owner information available');
 					$('.propdetails').show();
 					$('.propdetails').animate({
 						left: window.innerWidth - 350

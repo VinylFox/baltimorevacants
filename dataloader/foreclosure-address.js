@@ -28,19 +28,19 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
             address_parts = address.split(',');
           address = address_parts[0].replace(' Balto', '');
           address = address.toUpperCase();
+          console.log(address);
+          var processResult = function(err3, data1) {
+            if (!err3 && data1[0]) {
+              console.log('Found:', data1[0]);
+            }
+          };
           property_collection.find({
             'properties.property_address': address
           }, {
             'properties.block': 1,
             'properties.lot': 1,
             'properties.property_address': 1
-          }).toArray(function(err3, data1) {
-            if (err3 || !data1[0]) {
-              //console.log('not found');
-            } else {
-              console.log('Found:', data1[0]);
-            }
-          });
+          }).toArray(processResult);
         }
       }
     }
