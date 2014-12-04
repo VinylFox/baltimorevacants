@@ -4,15 +4,18 @@ var request = require('request');
 var async = require('async');
 var MongoClient = require('mongodb').MongoClient;
 
-var cookieVal = "aa638f0430d62443009967204933ab0da62808b34cd1.e38ObheKb3aPbi0LbheRbxySbhyOe6fznA5Pp7ftolbGmkTy";
+var cookieVal = process.argv[6];
 var j = request.jar();
 var cookie = request.cookie('JSESSIONID=' + cookieVal);
 var url = 'http://casesearch.courts.state.md.us';
 var page = '/inquiry/inquiryDetail.jis';
 var region = '24';
-var casetype = 'C'; // foreclosure = O, tax sale = C
+var casetype = process.argv[5]; // foreclosure = O, tax sale = C
+var year = process.argv[4];
+var min = process.argv[2];
+var max = process.argv[3];
 
-console.log('starting');
+console.log('starting', process.argv);
 
 var propMap = {
 	"Case Number:": "caseNo",
@@ -50,14 +53,11 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 		console.log('set cookie');
 
 		var queue = [];
-		var startCase = 4000;
 		var done = false;
 
-		for (var i = startCase; i <= 6100; i++) {
-			queue.push("14" + ("000000" + i).substr(-6, 6));
+		for (var i = min; i <= max; i++) {
+			queue.push(year + '' + ("000000" + i).substr(-6, 6));
 		}
-
-
 
 		async.eachSeries(queue, function(data, callback) {
 

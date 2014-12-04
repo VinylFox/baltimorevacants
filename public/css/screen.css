@@ -248,3 +248,36 @@ html, body {
   font-size: 22px;
   margin: 14px 0 0 0;
 }
+
+/* line 170, ../../sass/screen.scss */
+li.viols {
+  overflow: hidden;
+}
+
+/* line 174, ../../sass/screen.scss */
+div.pano {
+  width: 355px;
+  height: 200px;
+}
+
+/* line 179, ../../sass/screen.scss */
+div.blocklot {
+  float: left;
+  font-size: 20px;
+}
+
+/* line 184, ../../sass/screen.scss */
+div.address {
+  float: right;
+  font-size: 20px;
+}
+
+/* line 189, ../../sass/screen.scss */
+span.ownertitle {
+  font-size: 20px;
+}
+
+/* line 193, ../../sass/screen.scss */
+span.violationtitle {
+  font-size: 20px;
+}

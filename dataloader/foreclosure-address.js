@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var googleAddressUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&input={0}&key=AIzaSyCpq4isEKP2F86bk578zz8MS3V9Fo69Afk&location=39.331267,-76.632679&radius=200&type=street_address&components=country:us";
 
+
 MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
   if (err1) throw err1;
 
