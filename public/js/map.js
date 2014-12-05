@@ -222,13 +222,14 @@ var MainMap = React.createClass({
 	},
 	shapeMouseOut: function(e) {
 		if (e.target.feature.properties.Name) {
-			(this.neighborhoods) ? this.neighborhoods.resetStyle(e.target) : '';
+			(this.neighborhoods) ? this.neighborhoods.resetStyle(e.target): '';
 		}
 	},
 	shapeClick: function(e) {
 		var shape = e.target.feature,
 			html,
-			props = shape.properties;
+			props = shape.properties,
+			coords = shape.geometry.coordinates;
 
 		$('.propdetails .owner').html('');
 		$('.propdetails .viol').html('');
@@ -314,7 +315,7 @@ var MainMap = React.createClass({
 					var block = (props.block.length < 5) ? props.block + '%20' : props.block,
 						lot = (props.lot.length < 4) ? props.lot + '%20' : props.lot,
 						url = 'http://data.baltimorecity.gov/resource/ywty-nmtg.json?$select=citation,fineamount,balance,violdesc,violdate,agency,block,lot&block=' + block + '&lot=' + lot,
-						viols = '<ul>';
+						viols = '<span class="violationtitle">Violations</span><ul>';
 					$.ajax({
 						url: url,
 						jsonp: '$jsonp'
@@ -333,47 +334,110 @@ var MainMap = React.createClass({
 					});
 				}
 
+				$('div.location > .blocklot').html(props.block + ' ' + props.lot);
+				$('div.location > .address').html(props.property_address);
 
 				if (props.owner_name1) {
-					html = '<span class="addr">' + props.property_address + '</span><br/>' + props.block + ' ' + props.lot + '<br/>Owner: ' + props.owner_name1 + '<br/>';
+					html = '<br/><span class="ownertitle">Owner (s)</span><br/>Primary: ' + props.owner_name1 + '<br/>';
 					if (props.owner_name2) {
-						html += 'Owner 2: ' + props.owner_name2 + '<br/>';
+						html += 'Secondary: ' + props.owner_name2 + '<br/>';
 						if (props.owner_name3) {
-							html += 'Owner 3: ' + props.owner_name3 + '<br/>';
+							html += 'Terciary: ' + props.owner_name3 + '<br/>';
 						}
 					}
 					if (props.owner_address) {
 						html += 'Owner Address: ' + props.owner_address + '. ' + props.owner_city + ', ' + props.owner_state + ' ' + props.owner_zip + '<br/>';
 					}
-					if (props.owner1) {
-						html += 'Owner 1 (raw): ' + props.owner1 + '<br/>';
-						if (props.owner2) {
-							html += 'Owner 2 (raw): ' + props.owner2 + '<br/>';
-							if (props.owner3) {
-								html += 'Owner 3 (raw): ' + props.owner3 + '<br/>';
-								if (props.owner4) {
-									html += 'Owner 4 (raw): ' + props.owner4 + '<br/>';
-								}
-							}
-						}
-					}
 
 					$('.propdetails .owner').html(html);
 					$('.propdetails').show();
 					$('.propdetails').animate({
-						left: window.innerWidth - 350
+						left: window.innerWidth - 370
 					});
+					var lat = coords[0][0][0],
+						lng = coords[0][0][1];
+					this.addSummaryStreetView(lat, lng);
 				} else {
-					html = props.block + props.lot + '<br/>' + props.property_address;
-					$('.propdetails .owner').html(html + '<br/>No extended owner information available');
+					$('.propdetails .owner').html('<br/>No extended owner information available');
 					$('.propdetails').show();
 					$('.propdetails').animate({
-						left: window.innerWidth - 350
+						left: window.innerWidth - 370
 					});
 				}
 			}
 			this.curSel = props.block + props.lot;
 		}
+	},
+	addSummaryEarth: function(lat, lng) {
+
+	},
+	addSummaryStreetView: function(lat, lng) {
+
+		var latLng = new google.maps.LatLng(lng, lat);
+		var panoramaOptions = {
+			addressControl: false,
+			zoomControl: false,
+			panControl: false,
+			linksControl: false,
+			clickToGo: false,
+			position: latLng,
+			pov: {
+				heading: 165,
+				pitch: 0
+			},
+			zoom: 1
+		};
+		var myPano = new google.maps.StreetViewPanorama(
+			document.getElementById('pano'),
+			panoramaOptions);
+		myPano.setVisible(true);
+
+	},
+	showPanoData: function(panoData, status) {
+		if (status != google.maps.StreetViewStatus.OK) {
+			$('#pano').html('No StreetView Picture Available').attr('style', 'text-align:center;font-weight:bold').show();
+			return;
+		}
+		$('#pano').show();
+		var angle = this.computeAngle(this.addLatLng, panoData.location.latLng);
+
+		var panoOptions = {
+			position: this.addLatLng,
+			addressControl: false,
+			linksControl: false,
+			panControl: false,
+			zoomControlOptions: {
+				style: google.maps.ZoomControlStyle.SMALL
+			},
+			pov: {
+				heading: angle,
+				pitch: 10,
+				zoom: 1
+			},
+			enableCloseButton: false,
+			visible: true
+		};
+
+		this.panorama.setOptions(panoOptions);
+	},
+	computeAngle: function(endLatLng, startLatLng) {
+		var DEGREE_PER_RADIAN = 57.2957795;
+		var RADIAN_PER_DEGREE = 0.017453;
+
+		var dlat = endLatLng.lat() - startLatLng.lat();
+		var dlng = endLatLng.lng() - startLatLng.lng();
+		// We multiply dlng with cos(endLat), since the two points are very closeby,
+		// so we assume their cos values are approximately equal.
+		var yaw = Math.atan2(dlng * Math.cos(endLatLng.lat() * RADIAN_PER_DEGREE), dlat) * DEGREE_PER_RADIAN;
+		return this.wrapAngle(yaw);
+	},
+	wrapAngle: function(angle) {
+		if (angle >= 360) {
+			angle -= 360;
+		} else if (angle < 0) {
+			angle += 360;
+		}
+		return angle;
 	},
 	render: function() {
 		return React.DOM.div();
