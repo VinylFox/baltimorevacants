@@ -14,7 +14,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 	var queue = [],
 		x = 0;
 
-	fs.readFile('./data/neighborhoods.json', 'utf-8', function(err2, contents) {
+	fs.readFile('./data/nhood_2010.geojson', 'utf-8', function(err2, contents) {
 		var data = JSON.parse(contents),
 			len = data.features.length;
 		//console.log(len);

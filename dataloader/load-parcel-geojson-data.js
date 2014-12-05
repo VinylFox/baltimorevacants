@@ -93,7 +93,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 					} else {
 						//console.log('result of find has no error');
 
-						if (data.geometry) {
+						if (data.geometry && data.properties.FULLADDR != '0' && data.properties.FULLADDR != null) {
 							// lets find out if the geometry is valid (ish)
 							var coords = data.geometry.coordinates,
 								coordlen = data.geometry.coordinates.length;
@@ -108,10 +108,10 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 								}
 							}
 
-							if (coordlen > 1) {
+							/*if (coordlen > 1) {
 								console.log("found a ", "MultiPolygon", coordlen);
 								data.geometry.type = "MultiPolygon";
-							}
+							}*/
 
 							if (result != null) {
 								console.log('Updating existing property for ' + data.properties.PIN);

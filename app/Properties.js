@@ -156,7 +156,7 @@ Properties.prototype.doNeighborhoodSearch = function(req, res, cb) {
 
 	var me = this,
 		query = (req.query.name && req.query.name != 'undefined') ? {
-			"_id": req.query.name.trim()
+			"properties.LABEL": req.query.name.trim()
 		} : {};
 
 	this.data.query(res, 'neighborhood', query, 'json', function(resp) {
@@ -207,12 +207,14 @@ Properties.prototype.doBoundsSearch = function(req, res, cb, bounds, collection)
 		"geometry": {
 			"$geoIntersects": {
 				"$geometry": {
-					type: "Polygon",
+					type: "MultiPolygon",
 					coordinates: bounds
 				}
 			}
 		}
 	};
+
+	console.log(query);
 
 	this.data.query(res, collection, query, 'geojson', cb);
 

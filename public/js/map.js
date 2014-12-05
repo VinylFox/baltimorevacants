@@ -234,74 +234,73 @@ var MainMap = React.createClass({
 		$('.propdetails .viol').html('');
 		$('.propdetails .legal').html('');
 
-		if (props.Name) {
+		if (props.LABEL) {
 			$('.propdetails').animate({
 				left: window.innerWidth
 			});
 			$('.hoodinfo').hide();
 			$('.loading').show();
-			this.currentNeighborhood = props.Name;
+			this.currentNeighborhood = props.LABEL;
 			this.map.fitBounds(e.target.getBounds());
-			if (props.Name) {
-				var ME = this;
 
-				if (ME.hiddenNeighborhood) {
-					ME.map.addLayer(ME.hiddenNeighborhood);
-				}
-				if (ME.parcels) {
-					this.map.removeLayer(ME.parcels);
-				}
-				ME.hiddenNeighborhood = e.target;
-				this.map.removeLayer(e.target);
-				var bounds = this.map.getBounds(),
-					n = bounds.getNorth(),
-					s = bounds.getSouth(),
-					e = bounds.getEast(),
-					w = bounds.getWest(),
-					bbox = n + ',' + w + ',' + s + ',' + e;
-				/*$.get("/api/summary?field=owner_name1&bbox=" + bbox).success(function(data, status) {
-					var c = 0,
-						html = 'Top Owners<br/>';
-					$.each(data.data, function(i, item) {
-						if (item._id !== null && c < 10) {
-							html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
-							c++;
-						}
-					});
-					$('.hoodinfo .owners').show().html(html);
-				});
-				$.get("/api/summary?field=owner_type&bbox=" + bbox).success(function(data, status) {
-					var c = 0,
-						html = 'Owner Type<br/>';
-					$.each(data.data, function(i, item) {
-						if (item._id !== null && c < 10 && item._id !== 'UNKNOWN') {
-							html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
-							c++;
-						}
-					});
-					$('.hoodinfo').show();
-					$('.hoodinfo .types').html(html);
-				});
-				$.get("/api/summary?field=owner_state&bbox=" + bbox).success(function(data, status) {
-					var c = 0,
-						html = 'Owner State<br/>';
-					$.each(data.data, function(i, item) {
-						if (item._id !== null && c < 10) {
-							html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
-							c++;
-						}
-					});
-					$('.hoodinfo').show();
-					$('.hoodinfo .states').html(html);
-				});*/
-				$.get("/api/neighborhood?name=" + this.currentNeighborhood).success(function(data, status) {
-					ME.parcels = L.geoJson(data, {
-						style: ME.getPropertyStyle,
-						onEachFeature: ME.onEachFeature
-					}).addTo(ME.map);
-					$('.loading').hide();
-				});
+			var ME = this;
+
+			if (ME.hiddenNeighborhood) {
+				ME.map.addLayer(ME.hiddenNeighborhood);
 			}
+			if (ME.parcels) {
+				this.map.removeLayer(ME.parcels);
+			}
+			ME.hiddenNeighborhood = e.target;
+			this.map.removeLayer(e.target);
+			var bounds = this.map.getBounds(),
+				n = bounds.getNorth(),
+				s = bounds.getSouth(),
+				e = bounds.getEast(),
+				w = bounds.getWest(),
+				bbox = n + ',' + w + ',' + s + ',' + e;
+			/*$.get("/api/summary?field=owner_name1&bbox=" + bbox).success(function(data, status) {
+				var c = 0,
+					html = 'Top Owners<br/>';
+				$.each(data.data, function(i, item) {
+					if (item._id !== null && c < 10) {
+						html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
+						c++;
+					}
+				});
+				$('.hoodinfo .owners').show().html(html);
+			});
+			$.get("/api/summary?field=owner_type&bbox=" + bbox).success(function(data, status) {
+				var c = 0,
+					html = 'Owner Type<br/>';
+				$.each(data.data, function(i, item) {
+					if (item._id !== null && c < 10 && item._id !== 'UNKNOWN') {
+						html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
+						c++;
+					}
+				});
+				$('.hoodinfo').show();
+				$('.hoodinfo .types').html(html);
+			});
+			$.get("/api/summary?field=owner_state&bbox=" + bbox).success(function(data, status) {
+				var c = 0,
+					html = 'Owner State<br/>';
+				$.each(data.data, function(i, item) {
+					if (item._id !== null && c < 10) {
+						html += item.totalSize + ' : <b>' + item._id + '</b><br/>';
+						c++;
+					}
+				});
+				$('.hoodinfo').show();
+				$('.hoodinfo .states').html(html);
+			});*/
+			$.get("/api/neighborhood?name=" + this.currentNeighborhood).success(function(data, status) {
+				ME.parcels = L.geoJson(data, {
+					style: ME.getPropertyStyle,
+					onEachFeature: ME.onEachFeature
+				}).addTo(ME.map);
+				$('.loading').hide();
+			});
 		} else {
 
 			if (this.curSel == props.block + props.lot) {
