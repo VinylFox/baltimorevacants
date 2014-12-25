@@ -70,6 +70,9 @@ app.get('/api/:type', function(req, res) {
 		case "properties":
 			properties.propertyList(req, res, cb);
 			break;
+		case "v2vproperties":
+			properties.doV2VSearch(req, res, cb);
+			break;
 		default:
 			cb({
 				data: [],

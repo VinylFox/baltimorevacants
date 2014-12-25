@@ -23,7 +23,8 @@ var MainMap = React.createClass({
 		this.fixMapSize();
 		this.createLegend();
 		this.addCityOutline();
-		this.addNeighborhoodOutlines();
+		//this.addNeighborhoodOutlines();
+		this.addV2VPurchases();
 	},
 	createMap: function() {
 		this.map = L.map('mainmap').setView([this.state.center.lat, this.state.center.lon], this.state.center.zoom);
@@ -107,6 +108,22 @@ var MainMap = React.createClass({
 			//addDisplayValue(data);
 			ME.neighborhoods = L.geoJson(data, {
 				style: ME.getNeighborhoodStyle,
+				onEachFeature: ME.onEachFeature
+			}).addTo(ME.map);
+			$('.loading').hide();
+		});
+	},
+	addV2VPurchases: function() {
+		var ME = this;
+		$.get("/api/v2vproperties").success(function(data, status) {
+			//addDisplayValue(data);
+			ME.v2vproperties = L.geoJson(data, {
+				style: {
+					weight: 5,
+					color: '#0F0',
+					dashArray: '',
+					fillOpacity: 0.7
+				},
 				onEachFeature: ME.onEachFeature
 			}).addTo(ME.map);
 			$('.loading').hide();

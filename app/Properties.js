@@ -214,10 +214,18 @@ Properties.prototype.doBoundsSearch = function(req, res, cb, bounds, collection)
 		}
 	};
 
-	console.log(query);
-
 	this.data.query(res, collection, query, 'geojson', cb);
 
 };
+
+Properties.prototype.doV2VSearch = function(req, res, cb) {
+	var query = {
+		"properties.v2vpurchases.0": { 
+			"$exists": true 
+		}
+	};
+
+	this.data.query(res, 'property', query, 'geojson', cb);
+}
 
 module.exports = Properties;

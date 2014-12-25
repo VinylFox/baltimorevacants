@@ -37,7 +37,7 @@ $(window).resize(function() {
 
 $(function() {
 	map = React.renderComponent(MainMap({
-		tileServerUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		tileServerUrl: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 		//tileServerUrl: 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',
 		tileMaxZoom: 22,
 		tileAttribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'

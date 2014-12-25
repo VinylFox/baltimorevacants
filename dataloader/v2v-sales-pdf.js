@@ -25,7 +25,10 @@ var processData = function(cb){
 	var pdfParser = new PDFParser();
 
 	var _onPFBinDataReady = function(pdf){
-		if (pdf.parsePropCount == 8){
+
+		console.log(pdf);
+		if (pdf.parsePropCount){
+			console.log('processing data');
 			for (var x = 0; x < pdf.data.Pages.length; x++){
 				var page = pdf.data.Pages[x];
 				var l = 0;
@@ -71,7 +74,8 @@ var processData = function(cb){
 			queue = _.uniq(queue, function (item) {
     			return item.block + item.lot + item.purchaser + item.date;
 			});
-			cb();
+			//console.log(queue);
+			cb(queue);
 		}
 	};
 
@@ -86,13 +90,6 @@ var processData = function(cb){
 	var pdfFilePath = salesPdf;
 
 	pdfParser.loadPDF(pdfFilePath);
-
-	// or call directly with buffer
-	fs.readFile(pdfFilePath, function (err, pdfBuffer) {
-	  if (!err) {
-	    pdfParser.parseBuffer(pdfBuffer);
-	  }
-	});
 };
 
 var MongoClient = require('mongodb').MongoClient;
@@ -104,7 +101,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 	var updates = 0;
 	var inserts = 0;
 	
-	processData(function(){
+	processData(function(queue){
 		console.log('Found '+queue.length+' owners');
 		queue.push({
 			done: true
@@ -117,10 +114,11 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 					process.exit(0);
 				});
 			} else {
-				//console.log('working on : '+data.block+data.lot);
+				console.log('working on : '+data.block+data.lot);
 				collection.findOne({
 					_id: data.block+data.lot
 				}, function(err, result) {
+					console.log('returned on : '+data.block+data.lot);
 					if (err) {
 						console.log(err);
 						setImmediate(function() {
@@ -128,10 +126,11 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 							process.exit(1);
 						});
 					} else {
+						console.log('updated on : '+data.block+data.lot);
 						if (result != null) {
 							var purchaser = {
 								name: data.purchaser,
-								price: data.price,
+								price: parseFloat(data.price.replace(',','').replace('-','0.00')),
 								date: new Date(data.date)
 							};
 							if (!result.properties.v2vpurchases) { 
@@ -157,6 +156,10 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 								setImmediate(function() {
 									callback();
 								});
+							});
+						} else {
+							setImmediate(function() {
+								callback();
 							});
 						}
 					}
