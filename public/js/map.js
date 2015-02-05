@@ -23,7 +23,7 @@ var MainMap = React.createClass({
 		this.fixMapSize();
 		this.createLegend();
 		this.addCityOutline();
-		//this.addNeighborhoodOutlines();
+		this.addNeighborhoodOutlines();
 		this.addV2VPurchases();
 	},
 	createMap: function() {
@@ -252,13 +252,13 @@ var MainMap = React.createClass({
 		$('.propdetails .viol').html('');
 		$('.propdetails .legal').html('');
 
-		if (props.LABEL) {
+		if (props.LABEL || props.Name) {
 			$('.propdetails').animate({
 				left: window.innerWidth
 			});
 			$('.hoodinfo').hide();
 			$('.loading').show();
-			this.currentNeighborhood = props.LABEL;
+			this.currentNeighborhood = props.LABEL || props.Name;
 			this.map.fitBounds(e.target.getBounds());
 
 			var ME = this;

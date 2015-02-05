@@ -7,8 +7,8 @@ var async = require('async');
 var firstTime = false,
 	x = 0;
 
-var min = process.argv.slice(2);
-var max = process.argv.slice(3);
+var min = process.argv.slice(2) || 0;
+var max = process.argv.slice(3) || 9999;
 
 var Property = require('../app/Property.js');
 
@@ -68,7 +68,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 		queueprop = [];
 	var cvsrs = csv.createStream();
 	//queue.push({block:'0023'});
-	var rs = fs.createReadStream('./data/block.csv', {
+	var rs = fs.createReadStream('./data/missing-block.csv', {
 		autoClose: true
 	}).pipe(cvsrs).on('error', function(err) {
 		console.error(err);
@@ -205,11 +205,12 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 		}); //end each series
 	}).on('data', function(data) {
 
-		if (parseInt(data.block) >= parseInt(min) && parseInt(data.block) <= parseInt(max)) {
+		//if (parseInt(data.block) >= parseInt(min) && parseInt(data.block) <= parseInt(max)) {
 
-			queue.push(data);
+		queue.push(data);
+		console.log(data);
 
-		}
+		//}
 
 	}); // end read stream
 });

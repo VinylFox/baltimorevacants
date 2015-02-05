@@ -156,8 +156,14 @@ Properties.prototype.doNeighborhoodSearch = function(req, res, cb) {
 
 	var me = this,
 		query = (req.query.name && req.query.name != 'undefined') ? {
-			"properties.LABEL": req.query.name.trim()
+			"$or": [{
+				"properties.LABEL": req.query.name.trim()
+			}, {
+				"properties.Name": req.query.name.trim()
+			}]
 		} : {};
+
+	console.log(query);
 
 	this.data.query(res, 'neighborhood', query, 'json', function(resp) {
 		var bounds = (resp.data[0] && resp.data[0].geometry && resp.data[0].geometry.coordinates) ? resp.data[0].geometry.coordinates : [];
@@ -207,12 +213,14 @@ Properties.prototype.doBoundsSearch = function(req, res, cb, bounds, collection)
 		"geometry": {
 			"$geoIntersects": {
 				"$geometry": {
-					type: "MultiPolygon",
+					type: "Polygon",
 					coordinates: bounds
 				}
 			}
 		}
 	};
+
+	console.log(JSON.stringify(query));
 
 	this.data.query(res, collection, query, 'geojson', cb);
 
@@ -220,8 +228,8 @@ Properties.prototype.doBoundsSearch = function(req, res, cb, bounds, collection)
 
 Properties.prototype.doV2VSearch = function(req, res, cb) {
 	var query = {
-		"properties.v2vpurchases.0": { 
-			"$exists": true 
+		"properties.v2vpurchases.0": {
+			"$exists": true
 		}
 	};
 
