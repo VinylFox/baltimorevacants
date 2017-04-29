@@ -1,11 +1,11 @@
-app.factory('MovieRetriever', function($http, $q, $timeout) {
+app.factory('MovieRetriever', ($http, $q, $timeout) => {
 	var MovieRetriever = new Object();
 
-	MovieRetriever.getmovies = function(i) {
+	MovieRetriever.getmovies = i => {
 		var moviedata = $q.defer();
 		var movies;
 
-		$http.get("/api/neighborhood?name=" + i).success(function(data, status) {
+		$http.get("/api/neighborhood?name=" + i).success((data, status) => {
 			moviedata.resolve(data.data);
 		});
 
@@ -17,7 +17,7 @@ app.factory('MovieRetriever', function($http, $q, $timeout) {
 
 app.controller('MastheadController', ["$scope", "$http", "MovieRetriever",
 
-	function($scope, $http, MovieRetriever) {
+	($scope, $http, MovieRetriever) => {
 
 		var data = cityOutlineGeoJson;
 
@@ -35,8 +35,8 @@ app.controller('MastheadController', ["$scope", "$http", "MovieRetriever",
 		angular.extend($scope, {
 			center: defaultMapCenter,
 			geojson: {
-				data: data,
-				style: style,
+				data,
+				style,
 				resetStyleOnMouseout: true
 			},
 			defaults: {
@@ -48,23 +48,21 @@ app.controller('MastheadController', ["$scope", "$http", "MovieRetriever",
 		});
 
 		$scope.movies = MovieRetriever.getmovies("...");
-		$scope.movies.then(function(data) {
+		$scope.movies.then(data => {
 			$scope.movies = data;
 		});
 
-		$scope.getmovies = function() {
-			return $scope.movies;
-		}
+		$scope.getmovies = () => $scope.movies
 
-		$scope.doSomething = function(typedthings) {
+		$scope.doSomething = typedthings => {
 			console.log("Do something like reload data with this: " + typedthings);
 			$scope.newmovies = MovieRetriever.getmovies(typedthings);
-			$scope.newmovies.then(function(data) {
+			$scope.newmovies.then(data => {
 				$scope.movies = data;
 			});
 		}
 
-		$scope.doSomethingElse = function(suggestion) {
+		$scope.doSomethingElse = suggestion => {
 			console.log("Suggestion selected: " + suggestion);
 		}
 

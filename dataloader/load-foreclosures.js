@@ -43,12 +43,12 @@ var documentDefaultOffsets = [+1, +3, +5, +7, +9, +11, +13, +15];
 
 var partyDefaultOffsets = [+1, +3, +5, +7];
 
-MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
+MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', (err1, db) => {
 	if (err1) throw err1;
 
 	var collection = db.collection('cases');
 
-	j.setCookie(cookie, url, function() {
+	j.setCookie(cookie, url, () => {
 
 		console.log('set cookie');
 
@@ -59,7 +59,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 			queue.push(year + '' + ("000000" + i).substr(-6, 6));
 		}
 
-		async.eachSeries(queue, function(data, callback) {
+		async.eachSeries(queue, (data, callback) => {
 
 			//console.log('case id ' + data);
 
@@ -69,7 +69,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 			request({
 				url: url + page + '?caseId=' + region + casetype + caseid + '&detailLoc=CC',
 				jar: j
-			}, function(error, response, body) {
+			}, (error, response, body) => {
 				if (!error && response.statusCode == 200) {
 					var page = cheerio.load(body);
 					var els = page('td > span');
@@ -138,22 +138,22 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 							_id: caseObj._id
 						}, caseObj, {
 							upsert: true
-						}, function() {
+						}, () => {
 							console.log('udated/inserted case');
-							setTimeout(function() {
+							setTimeout(() => {
 								callback();
 							}, 500);
 						});
 
 					} else {
-						setTimeout(function() {
+						setTimeout(() => {
 							callback();
 						}, 500);
 					}
 
 				} else {
 					console.log('error page');
-					setTimeout(function() {
+					setTimeout(() => {
 						callback();
 					}, 500);
 				}

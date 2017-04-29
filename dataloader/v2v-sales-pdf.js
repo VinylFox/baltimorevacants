@@ -1,20 +1,20 @@
 var remotePdf = "http://static.baltimorehousing.org/pdf/vtov_settlements.pdf";
 var salesPdf = "./data/vtov_settlements.pdf";
 
-var nodeUtil = require("util"),
-	fs = require('fs'),
-	http = require('http'),
-	_ = require('underscore'),
-	PDFParser = require("pdf2json/pdfparser"),
-	async = require('async');
+var nodeUtil = require("util");
+var fs = require('fs');
+var http = require('http');
+var _ = require('underscore');
+var PDFParser = require("pdf2json/pdfparser");
+var async = require('async');
 
 var file = fs.createWriteStream(salesPdf);
 
-file.on('finish', function() {
+file.on('finish', () => {
 	file.close(connectDbAndProcess);
 });
 
-http.get(remotePdf, function(response) {
+http.get(remotePdf, response => {
 	response.pipe(file);
 });
 
@@ -24,7 +24,7 @@ var processData = function(cb) {
 
 	var pdfParser = new PDFParser();
 
-	var _onPFBinDataReady = function(pdf) {
+	var _onPFBinDataReady = pdf => {
 
 		console.log(pdf);
 		if (pdf.parsePropCount) {
@@ -40,7 +40,7 @@ var processData = function(cb) {
 				if (x > 1) {
 					start = 8;
 				}
-				page.Texts.forEach(function(text) {
+				page.Texts.forEach(text => {
 					if (l > start) {
 						var val = unescape(text.R[0].T).trim();
 						//console.log(((c - shift) % 8)+':'+x+':'+c+':'+val);
@@ -71,16 +71,14 @@ var processData = function(cb) {
 				});
 				//}
 			}
-			queue = _.uniq(queue, function(item) {
-				return item.block + item.lot + item.purchaser + item.date;
-			});
+			queue = _.uniq(queue, item => item.block + item.lot + item.purchaser + item.date);
 			//console.log(queue);
 			cb(queue);
 		}
 	};
 
-	var _onPFBinDataError = function() {
-		console.log(arguments);
+	var _onPFBinDataError = function(...args) {
+		console.log(args);
 	};
 
 	pdfParser.on("pdfParser_dataReady", _.bind(_onPFBinDataReady, this));
@@ -92,26 +90,26 @@ var processData = function(cb) {
 	pdfParser.loadPDF(pdfFilePath);
 };
 
-var connectDbAndProcess = function() {
+var connectDbAndProcess = () => {
 
 	var MongoClient = require('mongodb').MongoClient;
 
-	MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
+	MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', (err1, db) => {
 		if (err1) throw err1;
 
 		var collection = db.collection('property');
 		var updates = 0;
 		var inserts = 0;
 
-		processData(function(queue) {
+		processData(queue => {
 			console.log('Found ' + queue.length + ' owners');
 			queue.push({
 				done: true
 			});
-			async.eachSeries(queue, function(data, callback) {
+			async.eachSeries(queue, (data, callback) => {
 				if (data.done) {
 					console.log('Done, updated ' + updates + ' and inserted ' + inserts + ' new records.');
-					setImmediate(function() {
+					setImmediate(() => {
 						callback();
 						process.exit(0);
 					});
@@ -119,11 +117,11 @@ var connectDbAndProcess = function() {
 					console.log('working on : ' + data.block + data.lot);
 					collection.findOne({
 						_id: data.block + data.lot
-					}, function(err, result) {
+					}, (err, result) => {
 						console.log('returned on : ' + data.block + data.lot);
 						if (err) {
 							console.log(err);
-							setImmediate(function() {
+							setImmediate(() => {
 								callback();
 								process.exit(1);
 							});
@@ -154,13 +152,13 @@ var connectDbAndProcess = function() {
 								}
 								collection.update({
 									_id: data.block + data.lot
-								}, result, function() {
-									setImmediate(function() {
+								}, result, () => {
+									setImmediate(() => {
 										callback();
 									});
 								});
 							} else {
-								setImmediate(function() {
+								setImmediate(() => {
 									callback();
 								});
 							}

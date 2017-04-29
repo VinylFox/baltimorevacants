@@ -6,7 +6,7 @@ var Properties = function(config) {
 	this.data = new Data(this);
 };
 
-Properties.prototype.lineDistance = function(point1, point2) {
+Properties.prototype.lineDistance = (point1, point2) => {
 	var xs = 0;
 	var ys = 0;
 
@@ -20,16 +20,13 @@ Properties.prototype.lineDistance = function(point1, point2) {
 };
 
 Properties.prototype.doSummary = function(req, res, cb) {
+    if (!req.query.field) res.jsonp({});
 
-	if (!req.query.field) res.jsonp({});
+    var field = req.query.field;
+    var bbox;
 
-	var field = req.query.field,
-		bbox;
-
-	if (req.query.bbox) {
-		bbox = req.query.bbox.split(',').map(function(e) {
-			return parseFloat(e);
-		});
+    if (req.query.bbox) {
+		bbox = req.query.bbox.split(',').map(e => parseFloat(e));
 		var topLeft = [bbox[1], bbox[2]];
 		var topRight = [bbox[3], bbox[2]];
 		var botRight = [bbox[3], bbox[0]];
@@ -39,7 +36,7 @@ Properties.prototype.doSummary = function(req, res, cb) {
 		];
 	}
 
-	var query = [{
+    var query = [{
 		'$match': {}
 	}, {
 		'$group': {
@@ -55,11 +52,11 @@ Properties.prototype.doSummary = function(req, res, cb) {
 	}, {
 		'$limit': 50
 	}];
-	query[0]['$match']['properties.' + field] = {
+    query[0]['$match']['properties.' + field] = {
 		'$ne': ''
 	};
 
-	if (bbox) {
+    if (bbox) {
 		query[0]['$match']['geometry'] = {
 			"$geoIntersects": {
 				"$geometry": {
@@ -70,8 +67,7 @@ Properties.prototype.doSummary = function(req, res, cb) {
 		};
 	}
 
-	this.data.aggregate(res, 'property', query, 'json', cb);
-
+    this.data.aggregate(res, 'property', query, 'json', cb);
 };
 
 Properties.prototype.doOwnerSearch = function(req, res, cb) {
@@ -124,52 +120,47 @@ Properties.prototype.doPropertyMatchSearch = function(property, val, req, res, c
 };
 
 Properties.prototype.neighborhoodList = function(req, res, cb) {
+    var me = this;
+    var query = {};
 
-	var me = this,
-		query = {};
+    this.data.query(res, 'neighborhood', query, 'json', resp => {
+        var hoods = [];
+        var data = resp.data;
 
-	this.data.query(res, 'neighborhood', query, 'json', function(resp) {
-		var hoods = [],
-			data = resp.data;
-
-		for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
 			hoods.push({
 				name: data[i]._id
 			});
 		}
 
-		cb(hoods);
-	});
-
+        cb(hoods);
+    });
 };
 
 Properties.prototype.neighborhoodShapes = function(req, res, cb) {
+    var me = this;
+    var query = {};
 
-	var me = this,
-		query = {};
-
-	this.data.query(res, 'neighborhood', query, 'geojson', cb);
-
+    this.data.query(res, 'neighborhood', query, 'geojson', cb);
 };
 
 Properties.prototype.doNeighborhoodSearch = function(req, res, cb) {
+    var me = this;
 
-	var me = this,
-		query = (req.query.name && req.query.name != 'undefined') ? {
-			"$or": [{
-				"properties.LABEL": req.query.name.trim()
-			}, {
-				"properties.Name": req.query.name.trim()
-			}]
-		} : {};
+    var query = (req.query.name && req.query.name != 'undefined') ? {
+        "$or": [{
+            "properties.LABEL": req.query.name.trim()
+        }, {
+            "properties.Name": req.query.name.trim()
+        }]
+    } : {};
 
-	console.log(query);
+    console.log(query);
 
-	this.data.query(res, 'neighborhood', query, 'json', function(resp) {
+    this.data.query(res, 'neighborhood', query, 'json', resp => {
 		var bounds = (resp.data[0] && resp.data[0].geometry && resp.data[0].geometry.coordinates) ? resp.data[0].geometry.coordinates : [];
 		me.doBoundsSearch(req, res, cb, bounds, 'property');
 	});
-
 };
 
 Properties.prototype.doBoxSearch = function(req, res, cb) {
@@ -178,9 +169,7 @@ Properties.prototype.doBoxSearch = function(req, res, cb) {
 		error: ['no bbox specified']
 	});
 
-	var bbox = req.query.bbox.split(',').map(function(e) {
-		return parseFloat(e);
-	});
+	var bbox = req.query.bbox.split(',').map(e => parseFloat(e));
 
 	var topLeft = [bbox[1], bbox[2]];
 	var topRight = [bbox[3], bbox[2]];

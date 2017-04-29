@@ -12,13 +12,13 @@ var conn = new db.createConnection({
     database : 'baltimorevacants'
 });
 
-var i = 0, 
-	i_len = csa_shapes.features.length,
-	k = 0,
-	k_len,
-	csa_points,
-	m = 0,
-	m_len;
+var i = 0;
+var i_len = csa_shapes.features.length;
+var k = 0;
+var k_len;
+var csa_points;
+var m = 0;
+var m_len;
 
 for (;i < i_len; i++){
 	var points = [];
@@ -55,8 +55,8 @@ function createCSAFeature(name, points){
 			//});
 		}
 	});*/
-};
+}
 
 function createCSAFeaturePoints(id, points){
 
-};
+}

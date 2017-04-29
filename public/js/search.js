@@ -1,8 +1,8 @@
 var SearchItem = React.createClass({
-	handleClick: function(e) {
+	handleClick(e) {
 		console.log(e);
 	},
-	render: function() {
+	render() {
 		return (React.DOM.button({
 			text: (this.context) ? this.context.properties.owner1 : 'None',
 			onClick: this.handleClick
@@ -12,13 +12,13 @@ var SearchItem = React.createClass({
 
 
 var SearchItemList = React.createClass({
-	getInitialState: function() {
+	getInitialState() {
 		return {};
 	},
-	whenClicked: function(e) {
+	whenClicked(e) {
 		console.log(e);
 	},
-	render: function() {
+	render() {
 		return (SearchItem({
 			clicked: this.whenClicked
 		}));
@@ -28,24 +28,24 @@ var SearchItemList = React.createClass({
 var Search = React.createClass({
 	displayName: 'Search',
 	keyUpWaitTime: 600,
-	getInitialState: function() {
+	getInitialState() {
 		return {
 			term: '',
 			items: []
 		};
 	},
-	getTerm: function() {
+	getTerm() {
 		return this.getState().term;
 	},
-	setTerm: function(term) {
+	setTerm(term) {
 		this.setState({
-			term: term
+			term
 		});
 	},
-	componentDidMount: function() {
+	componentDidMount() {
 
 	},
-	doSearch: function(term) {
+	doSearch(term) {
 		var me = this;
 		console.log('doing search:', term);
 		$.ajax({
@@ -53,7 +53,7 @@ var Search = React.createClass({
 			data: {
 				owner_name: term
 			}
-		}).done(function(data) {
+		}).done(data => {
 			console.log(data);
 			me.setState({
 				items: data.features
@@ -79,21 +79,21 @@ var Search = React.createClass({
 			parcels2.addTo(map);*/
 		});
 	},
-	onChange: function(e) {
-		var me = this,
-			fld = $(e.target),
-			val = fld.val();
-		this.setTerm(val);
-		if (this.timer) {
+	onChange(e) {
+        var me = this;
+        var fld = $(e.target);
+        var val = fld.val();
+        this.setTerm(val);
+        if (this.timer) {
 			clearTimeout(this.timer);
 		}
-		if (val && val.length > 2) {
-			this.timer = setTimeout(function() {
+        if (val && val.length > 2) {
+			this.timer = setTimeout(() => {
 				me.doSearch(fld.val());
 			}, this.keyUpWaitTime);
 		}
-	},
-	render: function() {
+    },
+	render() {
 		return (
 			React.DOM.div(null,
 				React.DOM.input({

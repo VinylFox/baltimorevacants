@@ -82,38 +82,24 @@ Owner.prototype.isOwnerOccupied = function() {
 	}
 };
 
-Owner.prototype.looksLikeRental = function(str1, str2) {
-	return (str1.indexOf('HOMES') != -1 || str1.indexOf('MANAGEMENT') != -1 || str1.indexOf('RENTAL') != -1 || str1.indexOf('PROPERTY') != -1 || str1.indexOf('PROPERTIES') != -1 || str2.indexOf('HOMES') != -1 || str2.indexOf('MANAGEMENT') != -1 || str2.indexOf('RENTAL') != -1 || str2.indexOf('PROPERTY') != -1 || str2.indexOf('PROPERTIES') != -1);
-};
+Owner.prototype.looksLikeRental = (str1, str2) => str1.indexOf('HOMES') != -1 || str1.indexOf('MANAGEMENT') != -1 || str1.indexOf('RENTAL') != -1 || str1.indexOf('PROPERTY') != -1 || str1.indexOf('PROPERTIES') != -1 || str2.indexOf('HOMES') != -1 || str2.indexOf('MANAGEMENT') != -1 || str2.indexOf('RENTAL') != -1 || str2.indexOf('PROPERTY') != -1 || str2.indexOf('PROPERTIES') != -1;
 
 Owner.prototype.isCityOwned = function() {
 	var data = this.getData();
 	return (this.looksLikeCityOwned(data.owner1) || this.looksLikeCityOwned(data.owner2) || this.looksLikeCityOwned(data.owner3));
 }
 
-Owner.prototype.looksLikeCityOwned = function(str) {
-	return (str.indexOf('MAYOR') != -1 || str.indexOf('HOUSING AUTHORITY') != -1);
-}
+Owner.prototype.looksLikeCityOwned = str => str.indexOf('MAYOR') != -1 || str.indexOf('HOUSING AUTHORITY') != -1
 
-Owner.prototype.looksLikeFederal = function(str) {
-	return (str.indexOf('UNITED STATES') != -1);
-}
+Owner.prototype.looksLikeFederal = str => str.indexOf('UNITED STATES') != -1
 
-Owner.prototype.looksLikeStateOwned = function(str) {
-	return (str.indexOf('STATE') != -1);
-}
+Owner.prototype.looksLikeStateOwned = str => str.indexOf('STATE') != -1
 
-Owner.prototype.looksLikeReligious = function(str, str2) {
-	return (str.indexOf('CHURCH') != -1 || str.indexOf('TABERNACLE') != -1 || str.indexOf('MINISTRIES') != -1 || str.indexOf('SYNAGOGUE') != -1 || str2.indexOf('CHURCH') != -1 || str2.indexOf('TABERNACLE') != -1 || str2.indexOf('MINISTRIES') != -1 || str2.indexOf('SYNAGOGUE') != -1);
-}
+Owner.prototype.looksLikeReligious = (str, str2) => str.indexOf('CHURCH') != -1 || str.indexOf('TABERNACLE') != -1 || str.indexOf('MINISTRIES') != -1 || str.indexOf('SYNAGOGUE') != -1 || str2.indexOf('CHURCH') != -1 || str2.indexOf('TABERNACLE') != -1 || str2.indexOf('MINISTRIES') != -1 || str2.indexOf('SYNAGOGUE') != -1
 
-Owner.prototype.looksLikeCharity = function(str) {
-	return (str.indexOf('HABITAT') != -1);
-}
+Owner.prototype.looksLikeCharity = str => str.indexOf('HABITAT') != -1
 
-Owner.prototype.looksLikeTransportationOwned = function(str) {
-	return (str.indexOf('CSX') != -1 || str.indexOf('MASS TRANSIT') != -1 || str.indexOf('MARYLAND TRANSIT') != -1);
-}
+Owner.prototype.looksLikeTransportationOwned = str => str.indexOf('CSX') != -1 || str.indexOf('MASS TRANSIT') != -1 || str.indexOf('MARYLAND TRANSIT') != -1
 
 Owner.prototype.getPropertyOwnerType = function() {
 	var data = this.getData();
@@ -156,24 +142,18 @@ Owner.prototype.normalizeOwnerName = function(str) {
 	return str.replace(/\d/g, '').trim();
 }
 
-Owner.prototype.looksLikeBank = function(str) {
-	return (
-		(str.indexOf('BANK') != -1 && str.indexOf('BANKS') == -1) ||
-		str.indexOf('WELLS FARGO') != -1 ||
-		str.indexOf('NATIONAL TRUST') != -1);
-}
+Owner.prototype.looksLikeBank = str => (str.indexOf('BANK') != -1 && str.indexOf('BANKS') == -1) ||
+str.indexOf('WELLS FARGO') != -1 ||
+str.indexOf('NATIONAL TRUST') != -1
 
-Owner.prototype.looksLikeBusiness = function(str) {
-	return (
-		str.indexOf('DEVELOPMENT') != -1 ||
-		str.indexOf('INVESTMENT') != -1 ||
-		str.indexOf('CORPORATION') != -1 ||
-		str.indexOf('LLC') != -1 ||
-		str.indexOf('INC') != -1 ||
-		str.indexOf('PROPERTIES') != -1 ||
-		str.indexOf('TRUST') != -1 ||
-		str.indexOf('BUSINESS') != -1);
-}
+Owner.prototype.looksLikeBusiness = str => str.indexOf('DEVELOPMENT') != -1 ||
+str.indexOf('INVESTMENT') != -1 ||
+str.indexOf('CORPORATION') != -1 ||
+str.indexOf('LLC') != -1 ||
+str.indexOf('INC') != -1 ||
+str.indexOf('PROPERTIES') != -1 ||
+str.indexOf('TRUST') != -1 ||
+str.indexOf('BUSINESS') != -1
 
 Owner.prototype.looksLikeContinuation = function(str) {
 	return this.looksLikeBusiness(str) || (

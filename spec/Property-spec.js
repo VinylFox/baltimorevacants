@@ -1,13 +1,13 @@
-var Property = require('../app/Property.js'),
-	sample = require('../spec/sample-data.js');
+var Property = require('../app/Property.js');
+var sample = require('../spec/sample-data.js');
 
-beforeEach(function(){
+beforeEach(() => {
 	property = new Property();
 });
 
-describe('basic property setup', function() {
+describe('basic property setup', () => {
 
-	it('should have an data object', function() {
+	it('should have an data object', () => {
 
 		expect(property.getData() instanceof Object).toBeTruthy();
 
@@ -15,9 +15,9 @@ describe('basic property setup', function() {
 
 });
 
-describe('ability to set the raw data and create appropriate fields', function(){
+describe('ability to set the raw data and create appropriate fields', () => {
 
-	it('and be able to set and retrieve the basic raw data', function(){
+	it('and be able to set and retrieve the basic raw data', () => {
 
 		property.createFromRaw(sample.rawProperty[0]);
 		var data = property.getData();

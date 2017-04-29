@@ -26,23 +26,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 app.use(express.static(__dirname + '/bower_components'));
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
 	res.render('index', {
 		title: 'Baltimore Vacants'
 	});
 });
 
-app.get('/map', function(req, res) {
+app.get('/map', (req, res) => {
 	res.render('map', {
 		title: 'Baltimore Vacants Map'
 	});
 });
 
-app.get('/api/:type', function(req, res) {
+app.get('/api/:type', (req, res) => {
 	var properties = new Properties({
-		mongoUri: mongoUri
+		mongoUri
 	});
-	var cb = function(resp) {
+	var cb = resp => {
 		res.json(resp);
 	};
 	switch (req.params.type) {
@@ -85,6 +85,6 @@ app.get('/api/:type', function(req, res) {
 
 var port = Number(process.env.PORT || 5000);
 
-app.listen(port, function() {
+app.listen(port, () => {
 	console.log("Server started. Listening on " + port);
 });

@@ -4,15 +4,15 @@ var csv = require('csv-stream');
 var request = require('request');
 var async = require('async');
 
-var firstTime = false,
-	x = 0;
+var firstTime = false;
+var x = 0;
 
 var min = process.argv.slice(2) || 0;
 var max = process.argv.slice(3) || 9999;
 
 var Property = require('../app/Property.js');
 
-process.on('uncaughtException', function(error) {
+process.on('uncaughtException', error => {
 	console.log(error.stack);
 });
 
@@ -59,31 +59,31 @@ function parsePage(page) {
 	return props;
 }
 
-MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
-	if (err1) throw err1;
+MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', (err1, db) => {
+    if (err1) throw err1;
 
-	var collection = db.collection('property');
-	var queue = [],
-		x = 0,
-		queueprop = [];
-	var cvsrs = csv.createStream();
-	//queue.push({block:'0023'});
-	var rs = fs.createReadStream('./data/missing-block.csv', {
+    var collection = db.collection('property');
+    var queue = [];
+    var x = 0;
+    var queueprop = [];
+    var cvsrs = csv.createStream();
+    //queue.push({block:'0023'});
+    var rs = fs.createReadStream('./data/missing-block.csv', {
 		autoClose: true
-	}).pipe(cvsrs).on('error', function(err) {
+	}).pipe(cvsrs).on('error', err => {
 		console.error(err);
-	}).on('end', function() {
+	}).on('end', () => {
 		queue.push({
 			done: true
 		});
-		async.eachSeries(queue, function(data, callback) {
+		async.eachSeries(queue, (data, callback) => {
 			if (data.done) {
 				console.log("done parsing property files");
 				queueprop.push({
 					done: true
 				});
 				console.log("going to update " + queueprop.length);
-				async.eachSeries(queueprop, function(rawdata2, callback2) {
+				async.eachSeries(queueprop, (rawdata2, callback2) => {
 					//console.log('starting to update properties', rawdata2);
 					if (rawdata2.done) {
 						if (missingBlocks.length > 0) {
@@ -91,7 +91,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 						}
 						console.log('done');
 
-						setImmediate(function() {
+						setImmediate(() => {
 							callback2();
 						});
 
@@ -99,11 +99,11 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 						console.log("finding property");
 						collection.findOne({
 							_id: rawdata2.properties.block + rawdata2.properties.lot
-						}, function(err, result) {
+						}, (err, result) => {
 							//console.log('result of find being processed');
 							if (err) {
 								console.log("Error:", err);
-								setImmediate(function() {
+								setImmediate(() => {
 									callback2();
 								});
 							} else if (rawdata2 !== null && result !== null) {
@@ -132,16 +132,16 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 
 								collection.update({
 									_id: result._id
-								}, result, function() {
+								}, result, () => {
 									x++;
 									console.log('udated property', x);
-									setTimeout(function() {
+									setTimeout(() => {
 										callback2();
 									}, 500);
 								});
 							} else {
 								console.log('***** ERROR ****** Updating existing property for ', rawdata2);
-								setImmediate(function() {
+								setImmediate(() => {
 									callback2();
 								});
 							}
@@ -157,14 +157,14 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 					block = (block.length == 2) ? '00' + block : block;
 					block = (block.length == 3) ? '0' + block : block;
 
-					fs.readFile('./cache/block-list-' + block + '.html', 'utf-8', function(err2, contents) {
+					fs.readFile('./cache/block-list-' + block + '.html', 'utf-8', (err2, contents) => {
 						if (err2) {
 							//console.log(err2);
 							if (block) {
 								console.log(block);
 								missingBlocks.push(block);
 							}
-							setImmediate(function() {
+							setImmediate(() => {
 								callback();
 							});
 						} else {
@@ -192,7 +192,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 
 									queueprop.push(rawdata);
 
-									setImmediate(function() {
+									setImmediate(() => {
 										callback();
 									});
 
@@ -203,7 +203,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 				} //end data done
 			}
 		}); //end each series
-	}).on('data', function(data) {
+	}).on('data', data => {
 
 		//if (parseInt(data.block) >= parseInt(min) && parseInt(data.block) <= parseInt(max)) {
 

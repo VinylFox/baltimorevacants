@@ -4,21 +4,21 @@ var csv = require('csv-stream');
 var request = require('request');
 var async = require('async');
 
-fs.readFile('./pagestate.txt', 'utf-8', function(err2, contents) {
-	if (err2) throw err2;
+fs.readFile('./pagestate.txt', 'utf-8', (err2, contents) => {
+    if (err2) throw err2;
 
-	var queue = [],
-		pagestate = contents;
+    var queue = [];
+    var pagestate = contents;
 
-	var cvsrs = csv.createStream();
-	var rs = fs.createReadStream('./data/missing-block.csv', {
+    var cvsrs = csv.createStream();
+    var rs = fs.createReadStream('./data/missing-block.csv', {
 		autoClose: true
 	}).pipe(cvsrs)
-	    .on('error',function(err){
+	    .on('error',err => {
 	        console.error(err);
 	    })
-	    .on('end', function(){
-	    	async.eachSeries(queue, function(data, callback){
+	    .on('end', () => {
+	    	async.eachSeries(queue, (data, callback) => {
 
 	    		console.log(data);
 
@@ -45,17 +45,17 @@ fs.readFile('./pagestate.txt', 'utf-8', function(err2, contents) {
 							"ctl00$ctl00$rootMasterContent$LocalContentPlaceHolder$btnSearch":"Search"
 				    	} 
 				    },
-				    function (error, response, body) {
+				    (error, response, body) => {
 				        if (!error && response.statusCode == 200) {
-				        	fs.writeFile("./cache/block-list-"+block+".html", body, function(err) {
+				        	fs.writeFile("./cache/block-list-"+block+".html", body, err => {
 							    if(err) {
 							        console.log("Error on block "+block+"!",err);
-							        setImmediate(function() { 
+							        setImmediate(() => { 
 									  	callback(err); 
 									});
 							    } else {
 							        console.log("Block "+block+" was saved!");
-							    	setImmediate(function() { 
+							    	setImmediate(() => { 
 									  	callback(); 
 									});
 							    }
@@ -63,7 +63,7 @@ fs.readFile('./pagestate.txt', 'utf-8', function(err2, contents) {
 				        }else{
 				        	console.log(error);
 				        	console.log("Block "+block+" errored!");
-				        	setImmediate(function() { 
+				        	setImmediate(() => { 
 							  	callback(error); 
 							});
 				        }
@@ -72,7 +72,7 @@ fs.readFile('./pagestate.txt', 'utf-8', function(err2, contents) {
 
 			});
 	    })
-	    .on('data',function(data){
+	    .on('data',data => {
 	    	queue.push(data);
 	    });
 });

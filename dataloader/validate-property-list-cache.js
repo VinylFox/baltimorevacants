@@ -4,13 +4,13 @@ var async = require('async');
 
 var path = './cache';
 
-fs.readdir(path, function(err, filenames){
+fs.readdir(path, (err, filenames) => {
 	console.log(filenames.length);
-	async.eachSeries(filenames, function(data, callback){
+	async.eachSeries(filenames, (data, callback) => {
 		//console.log(data);
 		//console.log(data.indexOf('.html'));
 		if (data && data.indexOf('.html') > 0){
-			fs.readFile('./cache/'+data, 'utf-8', function(err2, contents) {
+			fs.readFile('./cache/'+data, 'utf-8', (err2, contents) => {
 				if (!err2){
 					//console.log(contents);
 					var page = cheerio.load(contents);
@@ -19,19 +19,19 @@ fs.readdir(path, function(err, filenames){
 						console.log(data, page(this).text());
 						block = page(this).text().trim();
 					});
-					fs.rename('./cache/'+data, './cache/block-list-'+block+'.html', function(){});
-					setImmediate(function() { 
+					fs.rename('./cache/'+data, './cache/block-list-'+block+'.html', () => {});
+					setImmediate(() => { 
 				  	    callback(); 
 				    });
 				} else {
 					throw err2;
-					setImmediate(function() { 
+					setImmediate(() => { 
 				  	    callback(err2); 
 				    });
 				}
 			});
 		} else{
-			setImmediate(function() { 
+			setImmediate(() => { 
 		  	    callback(); 
 		    });
 		}
