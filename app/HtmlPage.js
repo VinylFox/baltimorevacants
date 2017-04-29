@@ -6,7 +6,7 @@ var HtmlPage = function(config){
 }
 
 HtmlPage.prototype.render = function(pageName, cb){
-	fs.readFile(this.htmlDir + pageName + '.html', function(err, contents){
+	fs.readFile(this.htmlDir + pageName + '.html', (err, contents) => {
 		if (err) throw err;
 		cb(contents);
 	});

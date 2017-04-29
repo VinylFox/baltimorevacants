@@ -1,11 +1,11 @@
 var remotePdf = "http://static.baltimorehousing.org/pdf/vtov_list.pdf";
 var salesPdf = "./data/vtov_list.pdf";
 
-var nodeUtil = require("util"),
-	fs = require('fs'),
-	http = require('http'),
-	_ = require('underscore'),
-	PDFParser = require("pdf2json/pdfparser");
+var nodeUtil = require("util");
+var fs = require('fs');
+var http = require('http');
+var _ = require('underscore');
+var PDFParser = require("pdf2json/pdfparser");
 
 /*var file = fs.createWriteStream(salesPdf);
 
@@ -20,10 +20,10 @@ http.get(remotePdf, function(response) {
 var queue = [];
 
 var helpers = {
-	isAddress: function(val) {
+	isAddress(val) {
 		return /\d .* (ST|AVE|PL|CIR|AL|ROAD|BLVD|UNIT.*|NORTHWAY|SOUTHWAY)/.test(val);
 	},
-	getBlock: function(texts, i) {
+	getBlock(texts, i) {
 		var block = unescape(texts[i - 1].R[0].T).trim().substr(0, 5).trim();
 		if (block.length > 3) {
 			return block;
@@ -31,14 +31,14 @@ var helpers = {
 			return unescape(texts[i - 2].R[0].T).trim().substr(0, 5).trim()
 		}
 	},
-	getLot: function(texts, i) {
+	getLot(texts, i) {
 		var lot = unescape(texts[i - 1].R[0].T).trim().substr(5, 4).trim();
 		if (!lot) {
 			lot = unescape(texts[i - 1].R[0].T).trim();
 		}
 		return lot;
 	},
-	getZip: function(texts, i) {
+	getZip(texts, i) {
 		if (unescape(texts[i + 2].R[0].T).trim() == '-') {
 			if (this.isZip(unescape(texts[i + 3].R[0].T).trim())) {
 				return unescape(texts[i + 1].R[0].T).trim() + "-" + unescape(texts[i + 3].R[0].T).trim();
@@ -49,7 +49,7 @@ var helpers = {
 			return unescape(texts[i + 1].R[0].T).trim();
 		}
 	},
-	getNeighborhood: function(texts, i) {
+	getNeighborhood(texts, i) {
 		if (unescape(texts[i + 2].R[0].T).trim() == '-') {
 			if (!this.isType(unescape(texts[i + 4].R[0].T).trim())) {
 				return unescape(texts[i + 4].R[0].T).trim();
@@ -64,7 +64,7 @@ var helpers = {
 			}
 		}
 	},
-	getType: function(texts, i) {
+	getType(texts, i) {
 		for (var k = 2; k < 10; k++) {
 			if (this.isType(unescape(texts[i + k].R[0].T).trim())) {
 				var type = unescape(texts[i + k].R[0].T).trim();
@@ -82,10 +82,10 @@ var helpers = {
 		}
 		return null;
 	},
-	isType: function(val) {
+	isType(val) {
 		return /(Vacant|Building|Lot|Commercial|Vacant Building|Vacant Lot|Commercial-Vacant Building)/.test(val);
 	},
-	getZoning: function(texts, i) {
+	getZoning(texts, i) {
 		for (var k = 2; k < 10; k++) {
 			if (texts[i + k] && this.isZoningStart(unescape(texts[i + k].R[0].T).trim())) {
 				if (texts[i + k + 3] && unescape(texts[i + k + 3].R[0].T).trim() == "-") {
@@ -101,24 +101,24 @@ var helpers = {
 		}
 		return null;
 	},
-	isZoningStart: function(val) {
+	isZoningStart(val) {
 		return (val == 'B' || val == 'R' || val == 'M' || val == 'O' || val == 'TBD');
 	},
-	isZip: function(val) {
+	isZip(val) {
 		return /\d/.test(val);
 	},
-	getId: function(texts, i) {
-		var id = unescape(texts[i - 2].R[0].T).trim(),
-			block = this.getBlock(texts, i);
-		if (id == block) {
+	getId(texts, i) {
+        var id = unescape(texts[i - 2].R[0].T).trim();
+        var block = this.getBlock(texts, i);
+        if (id == block) {
 			id = unescape(texts[i - 3].R[0].T).trim()
 		}
-		return id;
-	},
-	isNextId: function(val, id) {
+        return id;
+    },
+	isNextId(val, id) {
 		return (parseInt(val, 10) == (parseInt(id, 10) + 1));
 	},
-	getPrice: function(texts, i) {
+	getPrice(texts, i) {
 		var id = this.getId(texts, i);
 		for (var k = 4; k < 14; k++) {
 			if (texts[i + k - 1] && texts[i + k] && this.isNextId(unescape(texts[i + k].R[0].T).trim(), id)) {
@@ -136,7 +136,7 @@ var processData = function(cb) {
 
 	var pdfParser = new PDFParser();
 
-	var _onPFBinDataReady = function(pdf) {
+	var _onPFBinDataReady = pdf => {
 		var list = '';
 		console.log('processing ' + pdf.data.Pages.length + ' pages of vacants');
 		for (var x = 0; x < pdf.data.Pages.length; x++) {
@@ -145,7 +145,7 @@ var processData = function(cb) {
 			//console.log(texts);
 			var l = 0;
 
-			pdf.data.Pages[x].Texts.forEach(function(text, i) {
+			pdf.data.Pages[x].Texts.forEach((text, i) => {
 				var prop = {};
 				//console.log(text.R);
 				var val = unescape(text.R[0].T).trim();
@@ -176,8 +176,8 @@ var processData = function(cb) {
 		cb(queue);
 	};
 
-	var _onPFBinDataError = function() {
-		console.log(arguments);
+	var _onPFBinDataError = function(...args) {
+		console.log(args);
 	};
 
 	pdfParser.on("pdfParser_dataReady", _.bind(_onPFBinDataReady, this));
@@ -190,30 +190,30 @@ var processData = function(cb) {
 
 };
 
-var connectDbAndProcess = function() {
+var connectDbAndProcess = () => {
 
 	var MongoClient = require('mongodb').MongoClient;
 
-	MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
+	MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', (err1, db) => {
 		if (err1) throw err1;
 
 		var collection = db.collection('property');
 		var updates = 0;
 		var inserts = 0;
 
-		processData(function(queue) {
+		processData(queue => {
 			console.log('Found ' + queue.length + ' offerings');
 			queue.push({
 				done: true
 			});
 			console.log(queue.length + ' done');
 			//async.eachSeries(queue, function(data, callback) {
-			var callback = function() {};
-			queue.forEach(function(data) {
+			var callback = () => {};
+			queue.forEach(data => {
 				console.log('doing something');
 				if (data.done) {
 					console.log('Done, updated ' + updates + ' and inserted ' + inserts + ' new records.');
-					setImmediate(function() {
+					setImmediate(() => {
 						callback();
 						process.exit(0);
 					});
@@ -221,11 +221,11 @@ var connectDbAndProcess = function() {
 					console.log('working on : ' + data.block + data.lot);
 					collection.findOne({
 						_id: data.block + data.lot
-					}, function(err, result) {
+					}, (err, result) => {
 						console.log('returned on : ' + data.block + data.lot);
 						if (err) {
 							console.log(err);
-							setImmediate(function() {
+							setImmediate(() => {
 								callback();
 								process.exit(1);
 							});
@@ -265,7 +265,7 @@ var connectDbAndProcess = function() {
 								});*/
 							} else {
 								console.log('null record');
-								setImmediate(function() {
+								setImmediate(() => {
 									callback();
 								});
 							}

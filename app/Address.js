@@ -24,19 +24,19 @@ Address.prototype.setData = function(data) {
     this.data = data;
 };
 
-Address.prototype.looksLikeAnAddress = function(str) {
-    return (/^\d/.test(str) == true || str.indexOf('PO') == 0 || str.indexOf('PLAZA') != -1 || str.indexOf('SUITE') != -1);
-}
+Address.prototype.looksLikeAnAddress = str => /^\d/.test(str) == true || str.indexOf('PO') == 0 || str.indexOf('PLAZA') != -1 || str.indexOf('SUITE') != -1
 
-Address.prototype.looksLikeCityStateZip = function(str) {
-    var splitStr = str.split(' '),
-        numlen = splitStr[splitStr.length - 1].replace(/[a-zA-Z, ]/g, '').length;
+Address.prototype.looksLikeCityStateZip = str => {
+    var splitStr = str.split(' ');
+    var numlen = splitStr[splitStr.length - 1].replace(/[a-zA-Z, ]/g, '').length;
     return (/^\d/.test(str) == false && /\d$/.test(str.trim()) && str.indexOf('PO') != 0 && str.indexOf('#') == -1 && str.indexOf(' LN ') == -1 && numlen >= 5);
 }
 
 Address.prototype.splitAddressCityStateZip = function(str3, str4) {
-    var arr = ["", "", ""],
-        tmp, tmp1, str;
+    var arr = ["", "", ""];
+    var tmp;
+    var tmp1;
+    var str;
     if (this.looksLikeCityStateZip(str3)) {
         str = str3;
     } else if (this.looksLikeCityStateZip(str4)) {
@@ -45,9 +45,7 @@ Address.prototype.splitAddressCityStateZip = function(str3, str4) {
         str = '';
     }
     tmp1 = str.split(' ');
-    tmp = tmp1.filter(function(v) {
-        return v !== '';
-    });
+    tmp = tmp1.filter(v => v !== '');
     if (tmp.length > 2 && /\d/.test(tmp[tmp.length - 1]) && tmp[tmp.length - 2].length == 2) {
         arr[1] = tmp[tmp.length - 2];
         arr[2] = tmp[tmp.length - 1];

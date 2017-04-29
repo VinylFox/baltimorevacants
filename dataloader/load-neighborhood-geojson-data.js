@@ -1,44 +1,44 @@
 var fs = require('fs');
 var async = require('async');
 
-process.on('uncaughtException', function(error) {
+process.on('uncaughtException', error => {
 	console.log(error.stack);
 });
 
 var MongoClient = require('mongodb').MongoClient;
 
-MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1, db) {
-	if (err1) throw err1;
+MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', (err1, db) => {
+    if (err1) throw err1;
 
-	var collection = db.collection('neighborhood');
-	var queue = [],
-		x = 0;
+    var collection = db.collection('neighborhood');
+    var queue = [];
+    var x = 0;
 
-	fs.readFile('./data/nhood_2010.geojson', 'utf-8', function(err2, contents) {
-		var data = JSON.parse(contents),
-			len = data.features.length;
-		//console.log(len);
-		for (var i = 0; i < len; i++) {
+    fs.readFile('./data/nhood_2010.geojson', 'utf-8', (err2, contents) => {
+        var data = JSON.parse(contents);
+        var len = data.features.length;
+        //console.log(len);
+        for (var i = 0; i < len; i++) {
 			queue.push(data.features[i]);
 		}
-		queue.push({
+        queue.push({
 			done: true
 		});
-		async.eachSeries(queue, function(data, callback) {
+        async.eachSeries(queue, (data, callback) => {
 			if (data.done) {
 				console.log('done');
-				setImmediate(function() {
+				setImmediate(() => {
 					callback();
 				});
 			} else {
 				console.log(data.properties.Name);
 				collection.findOne({
 					_id: data.properties.Name
-				}, function(err, result) {
+				}, (err, result) => {
 					console.log('result of find being processed');
 					if (err) {
 						console.log(err);
-						setImmediate(function() {
+						setImmediate(() => {
 							callback();
 						});
 					} else {
@@ -49,8 +49,8 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 							result.properties = data.properties;
 							collection.update({
 								_id: data.properties.Name
-							}, result, function() {
-								setImmediate(function() {
+							}, result, () => {
+								setImmediate(() => {
 									callback();
 								});
 							});
@@ -64,19 +64,19 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 								};
 								collection.insert(entry, {
 									w: 1
-								}, function(err, result2) {
+								}, (err, result2) => {
 									if (err) {
 										console.log(err);
 									} else {
 										console.log(result2[0].properties.Name);
 									}
-									setImmediate(function() {
+									setImmediate(() => {
 										callback();
 									});
 								});
 							} else {
 								console.log('Result is something else : ' + result);
-								setImmediate(function() {
+								setImmediate(() => {
 									callback();
 								});
 							}
@@ -85,5 +85,5 @@ MongoClient.connect('mongodb://127.0.0.1:27017/baltimorevacants', function(err1,
 				});
 			}
 		});
-	});
+    });
 });

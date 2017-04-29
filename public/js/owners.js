@@ -1,12 +1,12 @@
 var Owners = React.createClass({
   displayName: 'Owners',
-  getInitialState: function() {
+  getInitialState() {
     return {};
   },
-  componentDidMount: function() {
+  componentDidMount() {
 
   },
-  createMap: function() {
+  createMap() {
     $('#owners .usmap').vectorMap({
       map: 'usa_en',
       backgroundColor: null,
@@ -15,7 +15,7 @@ var Owners = React.createClass({
       showTooltip: true
     });
   },
-  render: function() {
+  render() {
     return (
       React.DOM.div(null,
         React.DOM.div('class=usmap')
@@ -24,6 +24,6 @@ var Owners = React.createClass({
   }
 });
 
-$(function() {
+$(() => {
   React.renderComponent(Owners({}), document.getElementById('owners'));
 });

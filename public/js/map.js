@@ -1,20 +1,20 @@
 var MainMap = React.createClass({
 	displayName: 'MainMap',
-	getInitialState: function() {
+	getInitialState() {
 		return {
 			center: config.defaultMapCenter
 		};
 	},
-	setMapCenter: function(lat, lon, zoom) {
+	setMapCenter(lat, lon, zoom) {
 		this.setState({
 			center: {
-				lat: lat,
-				lon: lon,
-				zoom: zoom
+				lat,
+				lon,
+				zoom
 			}
 		});
 	},
-	componentDidMount: function() {
+	componentDidMount() {
 		$('.loading').show();
 		$('.hoodinfo').hide();
 		$('.propdetails').hide();
@@ -26,85 +26,86 @@ var MainMap = React.createClass({
 		this.addNeighborhoodOutlines();
 		this.addV2VPurchases();
 	},
-	createMap: function() {
+	createMap() {
 		this.map = L.map('mainmap').setView([this.state.center.lat, this.state.center.lon], this.state.center.zoom);
 	},
-	createLegend: function() {
+	createLegend() {
 		var ME = this;
 
 		this.legend = L.control({
 			position: 'bottomleft'
 		});
 
-		this.legend.onAdd = function(map) {
+		this.legend.onAdd = map => {
+            var div = L.DomUtil.create('div', 'info legend');
 
-			var div = L.DomUtil.create('div', 'info legend'),
-				grades = [{
-					vacant: true,
-					owner_occupied: false,
-					label: 'Vacant'
-				}, {
-					vacant: false,
-					owner_occupied: false,
-					owner_type: 'RENTAL',
-					label: 'Corporate'
-				}, {
-					vacant: false,
-					owner_occupied: true,
-					label: 'Individual'
-				}, {
-					owner_type: 'CHARITY',
-					label: 'Charity Org.'
-				}, {
-					owner_type: 'RELIGIOUS',
-					label: 'Religoius Org.'
-				}, {
-					owner_name1: 'MAYOR & CITY COUNCIL',
-					label: 'City'
-				}, {
-					label: 'Other'
-				}],
-				labels = [];
+            var grades = [{
+                vacant: true,
+                owner_occupied: false,
+                label: 'Vacant'
+            }, {
+                vacant: false,
+                owner_occupied: false,
+                owner_type: 'RENTAL',
+                label: 'Corporate'
+            }, {
+                vacant: false,
+                owner_occupied: true,
+                label: 'Individual'
+            }, {
+                owner_type: 'CHARITY',
+                label: 'Charity Org.'
+            }, {
+                owner_type: 'RELIGIOUS',
+                label: 'Religoius Org.'
+            }, {
+                owner_name1: 'MAYOR & CITY COUNCIL',
+                label: 'City'
+            }, {
+                label: 'Other'
+            }];
 
-			for (var i = 0; i < grades.length; i++) {
+            var labels = [];
+
+            for (var i = 0; i < grades.length; i++) {
 				div.innerHTML += '<i style="background:' + ME.getPropertyColor(grades[i]) + ';border: 1px solid ' + ME.getPropertyOutline(grades[i]) + ';"></i> ' + grades[i].label + '<br/>';
 			}
 
-			return div;
-		};
+            return div;
+        };
 
 		this.legend.addTo(this.map);
 	},
-	addTileLayer: function() {
+	addTileLayer() {
 		L.tileLayer(this.props.tileServerUrl, {
 			maxZoom: this.props.tileMaxZoom,
 			attribution: this.props.tileAttribution
 		}).addTo(this.map);
 	},
-	fixMapSize: function() {
+	fixMapSize() {
 		$('#mainmap').css({
 			'width': $(window).width() + 'px',
 			'height': $(window).height() + 'px'
 		});
 		this.map.invalidateSize();
 	},
-	addSearchResults: function(data) {
+	addSearchResults(data) {
 		console.log('results', data.features);
 		if (this.search) {
 			this.map.removeLayer(this.search);
 		}
 		this.search = L.geoJson(data).addTo(this.map);
 	},
-	addCityOutline: function() {
+	addCityOutline() {
 		L.geoJson(config.cityOutlineGeoJson, {
 			color: "#ff7800",
 			weight: 5,
 			opacity: 0.65
 		}).addTo(this.map);
 	},
-	addNeighborhoodOutlines: function() {
+	addNeighborhoodOutlines() {
 		var ME = this;
-		$.get("/api/neighborhoodshapes").success(function(data, status) {
+		$.get("/api/neighborhoodshapes").success((data, status) => {
 			//addDisplayValue(data);
 			ME.neighborhoods = L.geoJson(data, {
 				style: ME.getNeighborhoodStyle,
@@ -113,9 +114,9 @@ var MainMap = React.createClass({
 			$('.loading').hide();
 		});
 	},
-	addV2VPurchases: function() {
+	addV2VPurchases() {
 		var ME = this;
-		$.get("/api/v2vproperties").success(function(data, status) {
+		$.get("/api/v2vproperties").success((data, status) => {
 			//addDisplayValue(data);
 			ME.v2vproperties = L.geoJson(data, {
 				style: {
@@ -129,7 +130,7 @@ var MainMap = React.createClass({
 			$('.loading').hide();
 		});
 	},
-	onEachFeature: function(feature, layer) {
+	onEachFeature(feature, layer) {
 		//ME.parcelMap
 		layer.on({
 			mouseover: this.shapeHover,
@@ -137,7 +138,7 @@ var MainMap = React.createClass({
 			click: this.shapeClick
 		});
 	},
-	getPropertyStyle: function(feature) {
+	getPropertyStyle(feature) {
 		return {
 			fillColor: this.getPropertyColor(feature.properties),
 			weight: 1,
@@ -146,7 +147,7 @@ var MainMap = React.createClass({
 			fillOpacity: 0.65
 		}
 	},
-	getNeighborhoodStyle: function(feature) {
+	getNeighborhoodStyle(feature) {
 		return {
 			fillColor: this.getNeighborhoodColor(feature.properties.Vacant, feature.properties.Housing),
 			weight: 2,
@@ -156,7 +157,7 @@ var MainMap = React.createClass({
 			fillOpacity: 0.65
 		}
 	},
-	getPropertyColor: function(p) {
+	getPropertyColor(p) {
 		var color = '#E5E2E0';
 		/*if (p.vacant === true) {
 			color = '#F00';
@@ -178,7 +179,7 @@ var MainMap = React.createClass({
 
 		return color;
 	},
-	getPropertyOutline: function(p) {
+	getPropertyOutline(p) {
 		var color = '#FFF';
 		if (p.vacant === true) {
 			color = '#BD2D28';
@@ -188,21 +189,20 @@ var MainMap = React.createClass({
 
 		return color;
 	},
-	getNeighborhoodColor: function(d, t) {
+	getNeighborhoodColor(d, t) {
+        var n = (d == 0 || t < 200) ? 0 : ((((d / t) * 100) - 100) * -1).toFixed(0);
+        var G = (((255 * n) / 100) - 80).toFixed(0);
+        var R = ((255 * (100 - n)) / 100).toFixed(0);
+        var B = '10';
+        var val = (n > 0) ? 'rgb(' + R + ',' + G + ',' + B + ')' : '#CCCCCC';
 
-		var n = (d == 0 || t < 200) ? 0 : ((((d / t) * 100) - 100) * -1).toFixed(0),
-			G = (((255 * n) / 100) - 80).toFixed(0),
-			R = ((255 * (100 - n)) / 100).toFixed(0),
-			B = '10',
-			val = (n > 0) ? 'rgb(' + R + ',' + G + ',' + B + ')' : '#CCCCCC';
-
-		return val;
-	},
-	shapeHover: function(e) {
-		var layer = e.target,
-			props = layer.feature.properties,
-			html;
-		if (props.Name) {
+        return val;
+    },
+	shapeHover(e) {
+        var layer = e.target;
+        var props = layer.feature.properties;
+        var html;
+        if (props.Name) {
 			layer.setStyle({
 				weight: 5,
 				color: '#666',
@@ -235,49 +235,49 @@ var MainMap = React.createClass({
 				}
 			}
 		}
-		$('.propinfo').html(html);
-	},
-	shapeMouseOut: function(e) {
+        $('.propinfo').html(html);
+    },
+	shapeMouseOut(e) {
 		if (e.target.feature.properties.Name) {
 			(this.neighborhoods) ? this.neighborhoods.resetStyle(e.target): '';
 		}
 	},
-	shapeClick: function(e) {
-		var shape = e.target.feature,
-			html,
-			props = shape.properties,
-			coords = shape.geometry.coordinates;
+	shapeClick(e) {
+        var shape = e.target.feature;
+        var html;
+        var props = shape.properties;
+        var coords = shape.geometry.coordinates;
 
-		$('.propdetails .owner').html('');
-		$('.propdetails .viol').html('');
-		$('.propdetails .legal').html('');
+        $('.propdetails .owner').html('');
+        $('.propdetails .viol').html('');
+        $('.propdetails .legal').html('');
 
-		if (props.LABEL || props.Name) {
-			$('.propdetails').animate({
+        if (props.LABEL || props.Name) {
+            $('.propdetails').animate({
 				left: window.innerWidth
 			});
-			$('.hoodinfo').hide();
-			$('.loading').show();
-			this.currentNeighborhood = props.LABEL || props.Name;
-			this.map.fitBounds(e.target.getBounds());
+            $('.hoodinfo').hide();
+            $('.loading').show();
+            this.currentNeighborhood = props.LABEL || props.Name;
+            this.map.fitBounds(e.target.getBounds());
 
-			var ME = this;
+            var ME = this;
 
-			if (ME.hiddenNeighborhood) {
+            if (ME.hiddenNeighborhood) {
 				ME.map.addLayer(ME.hiddenNeighborhood);
 			}
-			if (ME.parcels) {
+            if (ME.parcels) {
 				this.map.removeLayer(ME.parcels);
 			}
-			ME.hiddenNeighborhood = e.target;
-			this.map.removeLayer(e.target);
-			var bounds = this.map.getBounds(),
-				n = bounds.getNorth(),
-				s = bounds.getSouth(),
-				e = bounds.getEast(),
-				w = bounds.getWest(),
-				bbox = n + ',' + w + ',' + s + ',' + e;
-			/*$.get("/api/summary?field=owner_name1&bbox=" + bbox).success(function(data, status) {
+            ME.hiddenNeighborhood = e.target;
+            this.map.removeLayer(e.target);
+            var bounds = this.map.getBounds();
+            var n = bounds.getNorth();
+            var s = bounds.getSouth();
+            var e = bounds.getEast();
+            var w = bounds.getWest();
+            var bbox = n + ',' + w + ',' + s + ',' + e;
+            /*$.get("/api/summary?field=owner_name1&bbox=" + bbox).success(function(data, status) {
 				var c = 0,
 					html = 'Top Owners<br/>';
 				$.each(data.data, function(i, item) {
@@ -312,14 +312,14 @@ var MainMap = React.createClass({
 				$('.hoodinfo').show();
 				$('.hoodinfo .states').html(html);
 			});*/
-			$.get("/api/neighborhood?name=" + this.currentNeighborhood).success(function(data, status) {
+            $.get("/api/neighborhood?name=" + this.currentNeighborhood).success((data, status) => {
 				ME.parcels = L.geoJson(data, {
 					style: ME.getPropertyStyle,
 					onEachFeature: ME.onEachFeature
 				}).addTo(ME.map);
 				$('.loading').hide();
 			});
-		} else {
+        } else {
 
 			if (this.curSel == props.block + props.lot) {
 				$('.propdetails').animate({
@@ -329,16 +329,16 @@ var MainMap = React.createClass({
 			} else {
 
 				if (props.block && props.lot) {
-					var block = (props.block.length < 5) ? props.block + '%20' : props.block,
-						lot = (props.lot.length < 4) ? props.lot + '%20' : props.lot,
-						url = 'http://data.baltimorecity.gov/resource/ywty-nmtg.json?$select=citation,fineamount,balance,violdesc,violdate,agency,block,lot&block=' + block + '&lot=' + lot,
-						viols = '<span class="violationtitle">Violations</span><ul>';
-					$.ajax({
-						url: url,
+                    var block = (props.block.length < 5) ? props.block + '%20' : props.block;
+                    var lot = (props.lot.length < 4) ? props.lot + '%20' : props.lot;
+                    var url = 'http://data.baltimorecity.gov/resource/ywty-nmtg.json?$select=citation,fineamount,balance,violdesc,violdate,agency,block,lot&block=' + block + '&lot=' + lot;
+                    var viols = '<span class="violationtitle">Violations</span><ul>';
+                    $.ajax({
+						url,
 						jsonp: '$jsonp'
-					}).done(function(data) {
+					}).done(data => {
 						var existing = [];
-						$.each(data, function(i, itm) {
+						$.each(data, (i, itm) => {
 							if (itm.violdesc) {
 								var ret = existing.indexOf(itm.citation) !== -1;
 								if (!ret) {
@@ -349,32 +349,32 @@ var MainMap = React.createClass({
 						});
 						$('.propdetails .viol').html(viols + '</ul>');
 					});
-				}
+                }
 
 				$('div.location > .blocklot').html(props.block + ' ' + props.lot);
 				$('div.location > .address').html(props.property_address);
 
 				if (props.owner_name1) {
-					html = '<br/><span class="ownertitle">Owner (s)</span><br/>Primary: ' + props.owner_name1 + '<br/>';
-					if (props.owner_name2) {
+                    html = '<br/><span class="ownertitle">Owner (s)</span><br/>Primary: ' + props.owner_name1 + '<br/>';
+                    if (props.owner_name2) {
 						html += 'Secondary: ' + props.owner_name2 + '<br/>';
 						if (props.owner_name3) {
 							html += 'Terciary: ' + props.owner_name3 + '<br/>';
 						}
 					}
-					if (props.owner_address) {
+                    if (props.owner_address) {
 						html += 'Owner Address: ' + props.owner_address + '. ' + props.owner_city + ', ' + props.owner_state + ' ' + props.owner_zip + '<br/>';
 					}
 
-					$('.propdetails .owner').html(html);
-					$('.propdetails').show();
-					$('.propdetails').animate({
+                    $('.propdetails .owner').html(html);
+                    $('.propdetails').show();
+                    $('.propdetails').animate({
 						left: window.innerWidth - 370
 					});
-					var lat = coords[0][0][0],
-						lng = coords[0][0][1];
-					this.addSummaryStreetView(lat, lng);
-				} else {
+                    var lat = coords[0][0][0];
+                    var lng = coords[0][0][1];
+                    this.addSummaryStreetView(lat, lng);
+                } else {
 					$('.propdetails .owner').html('<br/>No extended owner information available');
 					$('.propdetails').show();
 					$('.propdetails').animate({
@@ -384,11 +384,11 @@ var MainMap = React.createClass({
 			}
 			this.curSel = props.block + props.lot;
 		}
-	},
-	addSummaryEarth: function(lat, lng) {
+    },
+	addSummaryEarth(lat, lng) {
 
 	},
-	addSummaryStreetView: function(lat, lng) {
+	addSummaryStreetView(lat, lng) {
 
 		var latLng = new google.maps.LatLng(lng, lat);
 		var panoramaOptions = {
@@ -410,7 +410,7 @@ var MainMap = React.createClass({
 		myPano.setVisible(true);
 
 	},
-	showPanoData: function(panoData, status) {
+	showPanoData(panoData, status) {
 		if (status != google.maps.StreetViewStatus.OK) {
 			$('#pano').html('No StreetView Picture Available').attr('style', 'text-align:center;font-weight:bold').show();
 			return;
@@ -437,7 +437,7 @@ var MainMap = React.createClass({
 
 		this.panorama.setOptions(panoOptions);
 	},
-	computeAngle: function(endLatLng, startLatLng) {
+	computeAngle(endLatLng, startLatLng) {
 		var DEGREE_PER_RADIAN = 57.2957795;
 		var RADIAN_PER_DEGREE = 0.017453;
 
@@ -448,7 +448,7 @@ var MainMap = React.createClass({
 		var yaw = Math.atan2(dlng * Math.cos(endLatLng.lat() * RADIAN_PER_DEGREE), dlat) * DEGREE_PER_RADIAN;
 		return this.wrapAngle(yaw);
 	},
-	wrapAngle: function(angle) {
+	wrapAngle(angle) {
 		if (angle >= 360) {
 			angle -= 360;
 		} else if (angle < 0) {
@@ -456,7 +456,7 @@ var MainMap = React.createClass({
 		}
 		return angle;
 	},
-	render: function() {
+	render() {
 		return React.DOM.div();
 	}
 });
